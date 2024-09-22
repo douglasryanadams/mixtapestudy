@@ -13,14 +13,14 @@ clean:
 .PHONY: tidy
 tidy:
 	.venv/bin/ruff check --fix mixtapestudy
-	.venv/bin/ruff check --fix mock-spotify
 	.venv/bin/ruff format mixtapestudy
-	.venv/bin/ruff format mock-spotify
 
 .PHONY: lint
 lint:
 	.venv/bin/ruff check mixtapestudy
-	.venv/bin/ruff check mock-spotify
+	# Pyright's quirky about discovering the virtual environment for resolving dependencies
+	# and activating the virtual environment was easier than understanding the config for now.
+	source .venv/bin/activate && .venv/bin/pyright mixtapestudy
 
 .PHONY: test
 test:
@@ -32,3 +32,7 @@ check: .venv/bin/python tidy lint test
 .PHONY: run
 run:
 	trap 'docker-compose down --volumes --remove-orphans' EXIT; docker-compose up --build
+
+.PHONY: dev
+dev:
+	.venv/bin/flask --app mixtapestudy.app run --debug

@@ -1,16 +1,13 @@
-from flask import Flask, request, jsonify
+from pathlib import Path
+
+from flask import Flask, request, jsonify, render_template, Response, send_from_directory
 
 app = Flask(__name__)
 
 
 @app.route("/")
-def hello():
-    return "Hello World!"
-
-
-@app.route("/cache-me")
-def cache():
-    return "nginx will cache this response"
+def login() -> str:
+    return render_template("login.html.j2")
 
 
 @app.route("/info")

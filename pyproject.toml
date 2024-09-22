@@ -1,5 +1,4 @@
 [tool.pyright]
 pythonVersion = '3.12'
-include = ['mixtapestudy', 'mock-spotify']
-strict = ['mixtapestudy', 'mock-spotify']
-
+include = ['mixtapestudy']
+strict = ['mixtapestudy']

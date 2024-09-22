@@ -35,4 +35,4 @@ run:
 
 .PHONY: dev
 dev:
-	.venv/bin/flask --app mixtapestudy.app run --debug
+	OAUTH_REDIRECT_URI='http://127.0.0.1:5000' .venv/bin/flask --app mixtapestudy.app run --debug

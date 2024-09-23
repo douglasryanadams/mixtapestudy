@@ -18,9 +18,9 @@ class Config:
     def __post_init__(self):
         logger.debug(f"{self.oauth_redirect_base_url=}")
         logger.debug(f"{self.spotify_client_id=}")
-        logger.debug("SPOTIFY_CLIENT_SECRET defined (not shown)")
         if not self.spotify_client_secret:
             raise Exception("No SPOTIFY_CLIENT_SECRET environment variable provided")
+        logger.debug("SPOTIFY_CLIENT_SECRET defined (not shown)")
 
 
 _config: Config | None = None

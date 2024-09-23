@@ -8,19 +8,15 @@ RUN apk add curl
 
 RUN adduser -D nonroot
 RUN mkdir /home/app/ && chown -R nonroot:nonroot /home/app
-RUN mkdir -p /var/log/flask-app && touch /var/log/flask-app/flask-app.err.log && touch /var/log/flask-app/flask-app.out.log
-RUN chown -R nonroot:nonroot /var/log/flask-app
+#RUN mkdir -p /var/log/flask-app && touch /var/log/flask-app/flask-app.err.log && touch /var/log/flask-app/flask-app.out.log
+#RUN chown -R nonroot:nonroot /var/log/flask-app
 WORKDIR /home/app
 USER nonroot
 
 COPY --chown=nonroot:nonroot requirements.txt .
-
 RUN python -m venv $VIRTUAL_ENV
-RUN export FLASK_APP=app.py
 RUN pip install -r requirements.txt
 
-COPY --chown=nonroot:nonroot mixtapestudy .
+COPY --chown=nonroot:nonroot mixtapestudy mixtapestudy
 
-EXPOSE 5000
-
-CMD ["python", "app.py"]
+CMD ["gunicorn", "-w 4", "-t 30", "-b 0.0.0.0", "mixtapestudy.app:create_app()"]

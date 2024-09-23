@@ -1,7 +1,6 @@
 services:
   nginx-proxy:
     build: nginx
-    restart: always
     volumes:
       - ./nginx/default.conf:/tmp/default.conf
     environment:
@@ -12,20 +11,19 @@ services:
       - mixtapestudy
     healthcheck:
       test: ["CMD-SHELL", "curl --silent --fail localhost:80/health-check || exit 1"]
-      interval: 10s
+      interval: 2s
       timeout: 10s
       retries: 3
-    command: /app/start.sh
   mixtapestudy:
     build: .
-    restart: always
     ports:
       - '8000:8000'
     environment:
       OAUTH_REDIRECT_BASE_URL: 'http://127.0.0.1'
+      # Set this in a .env file
+      SPOTIFY_CLIENT_SECRET: "${SPOTIFY_CLIENT_SECRET}"
     healthcheck:
       test: ["CMD-SHELL", "curl --silent --fail localhost:8000/flask-health-check || exit 1"]
-      interval: 10s
+      interval: 2s
       timeout: 10s
       retries: 3
-    command: gunicorn -w 3 -t 60 -b 0.0.0.0:8000 app:app

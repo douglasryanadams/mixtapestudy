@@ -13,11 +13,14 @@ clean:
 .PHONY: tidy
 tidy:
 	.venv/bin/ruff check --fix mixtapestudy
+	.venv/bin/ruff check --fix alembic
 	.venv/bin/ruff format mixtapestudy
+	.venv/bin/ruff format alembic
 
 .PHONY: lint
 lint:
 	.venv/bin/ruff check mixtapestudy
+	.venv/bin/ruff check alembic
 	@# Pyright's quirky about discovering the virtual environment for resolving dependencies
 	@# and activating the virtual environment was easier than understanding the config for now.
 	source .venv/bin/activate && .venv/bin/pyright
@@ -25,6 +28,14 @@ lint:
 .PHONY: test
 test:
 	.venv/bin/python -m pytest test
+
+.PHONY: revision
+revision:
+	 DATABASE_URL='sqlite:///dev.db' .venv/bin/alembic revision --autogenerate
+
+.PHONY: migrate
+migrate:
+	 DATABASE_URL='sqlite:///dev.db' .venv/bin/alembic upgrade head
 
 .PHONY: check
 check: .venv/bin/python tidy lint test

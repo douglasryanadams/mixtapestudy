@@ -1,5 +1,7 @@
+import os
 from collections.abc import Iterable
 
+from alembic import command, config
 from flask import Flask
 from flask.testing import FlaskClient
 from pytest import fixture, MonkeyPatch
@@ -12,11 +14,16 @@ def set_env(monkeypatch):
     monkeypatch.setenv("OAUTH_REDIRECT_BASE_URL", "http://fake-test-domain")
     monkeypatch.setenv("SPOTIFY_CLIENT_ID", "fake-spotify-client-id")
     monkeypatch.setenv("SPOTIFY_CLIENT_SECRET", "fake-spotify-client-secret")
-    monkeypatch.setenv("DATABASE_URL", "sqlite:///:memory:")
-
+    monkeypatch.setenv("DATABASE_URL", "sqlite:///test.db")
 
 @fixture
-def app(set_env) -> Iterable[Flask]:
+def migrate():
+    os.remove('test.db')
+    alembic_config = config.Config('alembic.ini')
+    command.upgrade(alembic_config, 'head')
+
+@fixture
+def app(set_env, migrate) -> Iterable[Flask]:
     app = create_app()
     app.config.update({"TESTING": True})
     yield app

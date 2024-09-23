@@ -14,14 +14,16 @@ services:
       interval: 2s
       timeout: 10s
       retries: 3
+  # TODO: Add Postgres
   mixtapestudy:
     build: .
     ports:
       - '8000:8000'
     environment:
       OAUTH_REDIRECT_BASE_URL: 'http://127.0.0.1'
-      # Set this in a .env file
+      # Set these in a .env file
       SPOTIFY_CLIENT_SECRET: "${SPOTIFY_CLIENT_SECRET}"
+      DATABASE_URL: "${DATABASE_URL}"
     healthcheck:
       test: ["CMD-SHELL", "curl --silent --fail localhost:8000/flask-health-check || exit 1"]
       interval: 2s

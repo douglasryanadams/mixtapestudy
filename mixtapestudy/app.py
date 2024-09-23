@@ -11,6 +11,11 @@ logging.basicConfig(
 requests_logger = logging.getLogger("requests.packages.urllib3")
 requests_logger.setLevel(logging.DEBUG)
 requests_logger.propagate = True
+
+sqlalchemy_logger = logging.getLogger("sqlalchemy.engine")
+sqlalchemy_logger.setLevel(logging.DEBUG)
+sqlalchemy_logger.propagate = True
+
 logger = logging.getLogger(__name__)
 
 

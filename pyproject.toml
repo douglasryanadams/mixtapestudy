@@ -1,4 +1,4 @@
 [tool.pyright]
 pythonVersion = '3.12'
-include = ['./mixtapestudy/**']
-strict = ['./mixtapestudy/**']
+include = ['./mixtapestudy/**', './alembic/**']
+strict = ['./mixtapestudy/**', './alembic/**']

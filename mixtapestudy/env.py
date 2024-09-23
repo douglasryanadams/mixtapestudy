@@ -1,31 +1,48 @@
 import logging
 import os
-from dataclasses import dataclass
 
 logger = logging.getLogger(__name__)
 
+SPOTIFY_BASE_URL = "https://api.spotify.com/v1"
 
-@dataclass(frozen=True)
+
 class Config:
-    oauth_redirect_base_url: str = os.environ.get(
-        "OAUTH_REDIRECT_BASE_URL", "https://mixtapestudy.com"
-    )
-    spotify_client_id: str = os.environ.get(
-        "SPOTIFY_CLIENT_ID", "24c831c158dc43b79f6eab9c65a38a6c"
-    )
-    spotify_client_secret: str = os.environ.get("SPOTIFY_CLIENT_SECRET", "")
+    def __init__(self):
+        self._oauth_redirect_base_url: str = os.environ.get(
+            "OAUTH_REDIRECT_BASE_URL", "https://mixtapestudy.com"
+        )
+        logger.debug(f"{self._oauth_redirect_base_url=}")
 
-    database_url: str = os.environ.get("DATABASE_URL", "")
+        self._spotify_client_id: str = os.environ.get(
+            "SPOTIFY_CLIENT_ID", "24c831c158dc43b79f6eab9c65a38a6c"
+        )
+        logger.debug(f"{self._spotify_client_id=}")
 
-    def __post_init__(self):
-        logger.debug(f"{self.oauth_redirect_base_url=}")
-        logger.debug(f"{self.spotify_client_id=}")
-        if not self.spotify_client_secret:
+        self._spotify_client_secret: str = os.environ.get("SPOTIFY_CLIENT_SECRET", "")
+        if not self._spotify_client_secret:
             raise Exception("No SPOTIFY_CLIENT_SECRET environment variable provided")
         logger.debug("SPOTIFY_CLIENT_SECRET defined (not shown)")
-        if not self.database_url:
+
+        self._database_url: str = os.environ.get("DATABASE_URL", "")
+        if not self._database_url:
             raise Exception("No DATABASE_URL environment variable provided")
         logger.debug("DATABASE_URL defined (not shown)")
+
+    @property
+    def oauth_redirect_base_url(self):
+        return self._oauth_redirect_base_url
+
+    @property
+    def spotify_client_id(self):
+        return self._spotify_client_id
+
+    @property
+    def spotify_client_secret(self):
+        return self._spotify_client_secret
+
+    @property
+    def database_url(self):
+        return self._database_url
 
 
 _config: Config | None = None

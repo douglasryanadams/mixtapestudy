@@ -7,7 +7,9 @@ import requests
 from flask import Blueprint, redirect, request
 from urllib.parse import ParseResult, urlencode
 
-from mixtapestudy.env import get_config
+
+from mixtapestudy.database import get_session, User
+from mixtapestudy.env import get_config, SPOTIFY_BASE_URL
 
 logger = logging.getLogger(__name__)
 
@@ -20,7 +22,7 @@ def login():
     params: dict[str, str] = {
         "response_type": "code",
         "client_id": config.spotify_client_id,
-        "scope": "playlist-modify-public playlist-modify-private user-read-recently-played user-read-currently-playing",
+        "scope": "playlist-modify-public playlist-modify-private user-read-recently-played user-read-currently-playing user-read-email",
         "redirect_uri": f"{config.oauth_redirect_base_url}/oauth-callback",
         "state": "".join(
             random.choice(string.ascii_letters + string.digits) for _ in range(16)
@@ -61,7 +63,7 @@ def oauth_callback():
     encoded_auth = b64encode(
         bytes(f"{config.spotify_client_id}:{config.spotify_client_secret}", "utf8")
     ).decode("utf8")
-    response = requests.post(
+    token_response = requests.post(
         url=token_url,
         data={
             "code": code,
@@ -73,12 +75,29 @@ def oauth_callback():
             "Authorization": f"Basic {encoded_auth}",
         },
     )
+    token_response.raise_for_status()
 
-    response.raise_for_status()
+    access_token = token_response.json().get("access_token")
+    scope = token_response.json().get("scope")
+    refresh_token = token_response.json().get("refresh_token")
 
-    # TODO: Write to database
-    # access_token = response.json().get("access_token")
-    # scope = response.json().get("scope")
-    # refresh_token = response.json().get("refresh_token")
-    # expires_in = response.json().get("expires_in")
+    me_response = requests.get(f"{SPOTIFY_BASE_URL}/me")
+    me_response.raise_for_status()
+
+    user_id = me_response.json().get("id")
+    display_name = me_response.json().get("display_name")
+    user_email = me_response.json().get("email")
+
+    with get_session() as session:
+        session.add(
+            User(
+                spotify_id=user_id,
+                display_name=display_name,
+                email=user_email,
+                access_token=access_token,
+                token_scope=scope,
+                refresh_token=refresh_token,
+            )
+        )
+
     return redirect("/search")

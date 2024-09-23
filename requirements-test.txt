@@ -2,3 +2,4 @@ pytest
 ruff
 pyright
 requests-mock
+freezegun

@@ -1,0 +1,58 @@
+{% extends "base.html.j2" %}
+{% block body %}
+    <main class="grid">
+        <div>
+            <h1>Selected Tracks</h1>
+            <table>
+                <tbody>
+                {% for track in selected_tracks %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ track.name }}</td>
+                        <td>{{ track.artist }}</td>
+                        <td>
+                            <button class="secondary">Remove Song</button>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <h1>Search for Tracks</h1>
+            <form>
+                <fieldset class="grid search-grid">
+                    <div class="search-form-left">
+                        <input name="search_input" placeholder="Artist or Song"/>
+                    </div>
+                    <div class="search-form-right">
+                        <input type="submit" value="Search"/>
+                    </div>
+                </fieldset>
+            </form>
+
+            <table>
+                <thead>
+                <tr>
+                    <th>Add</th>
+                    <th>Track Name</th>
+                    <th>Artist</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for track in search_results %}
+                    <tr>
+                        <td>
+                            <button>Add</button>
+                        </td>
+                        <td>{{ track.name }}</td>
+                        <td>{{ track.artist }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+
+        </div>
+    </main>
+{% endblock %}

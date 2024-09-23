@@ -76,9 +76,9 @@ def oauth_callback():
 
     response.raise_for_status()
 
-    access_token = response.json().get("access_token")
     # TODO: Write to database
+    # access_token = response.json().get("access_token")
     # scope = response.json().get("scope")
     # refresh_token = response.json().get("refresh_token")
     # expires_in = response.json().get("expires_in")
-    return access_token
+    return redirect("/search")

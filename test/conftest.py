@@ -12,6 +12,7 @@ def set_env(monkeypatch):
     monkeypatch.setenv("OAUTH_REDIRECT_BASE_URL", "http://fake-test-domain")
     monkeypatch.setenv("SPOTIFY_CLIENT_ID", "fake-spotify-client-id")
     monkeypatch.setenv("SPOTIFY_CLIENT_SECRET", "fake-spotify-client-secret")
+    monkeypatch.setenv("DATABASE_URL", "sqlite:///:memory:")
 
 
 @fixture

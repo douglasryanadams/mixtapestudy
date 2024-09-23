@@ -1,3 +1,29 @@
 .login-container {
     text-align: center;
 }
+
+.body-wrapper {
+    margin: 1em;
+}
+
+/**
+* picocss only implements the most basic "grid" support
+* this customizes the ratios of the grid with vanilla css.
+* Useful reference: https://css-tricks.com/snippets/css/complete-guide-grid/
+*/
+@media(min-width: 768px) {
+    .search-grid {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    .search-form-left {
+        grid-column-start: 1;
+        grid-column-end: span 2;
+
+    }
+
+    .search-form-right {
+        grid-column-start: 3;
+        grid-column-end: span 3;
+    }
+}

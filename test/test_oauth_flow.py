@@ -49,8 +49,8 @@ def test_oath_callback(client: FlaskClient):
             })
 
         r = client.get("/oauth-callback", query_string={'code': 'fake-code', 'state': 'abcdefghijklmnop'})
-        assert r.status_code == 200
-        assert r.text == 'fake-access-token'
+        assert r.status_code == 302
+        assert r.headers["Location"] == "/search"
 
         assert mock_requests.called_once
         assert parse_qs(mock_requests.last_request.text) == {

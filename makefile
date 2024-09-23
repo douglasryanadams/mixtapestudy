@@ -18,8 +18,8 @@ tidy:
 .PHONY: lint
 lint:
 	.venv/bin/ruff check mixtapestudy
-	# Pyright's quirky about discovering the virtual environment for resolving dependencies
-	# and activating the virtual environment was easier than understanding the config for now.
+	@# Pyright's quirky about discovering the virtual environment for resolving dependencies
+	@# and activating the virtual environment was easier than understanding the config for now.
 	source .venv/bin/activate && .venv/bin/pyright
 
 .PHONY: test
@@ -35,4 +35,5 @@ run:
 
 .PHONY: dev
 dev:
-	OAUTH_REDIRECT_BASE_URL='http://127.0.0.1:5000' .venv/bin/flask --app mixtapestudy.app run --debug
+	OAUTH_REDIRECT_BASE_URL='http://127.0.0.1:5000' DATABASE_URL='sqlite:///dev.db' \
+		.venv/bin/flask --app mixtapestudy.app run --debug

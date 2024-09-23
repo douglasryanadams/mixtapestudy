@@ -18,9 +18,11 @@ def create_app():
     app = Flask(__name__)
     from mixtapestudy.routes.auth import auth
     from mixtapestudy.routes.root import root
+    from mixtapestudy.routes.search import search
 
     app.register_blueprint(root)
     app.register_blueprint(auth)
+    app.register_blueprint(search)
     return app
 
 

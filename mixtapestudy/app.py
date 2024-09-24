@@ -3,6 +3,8 @@ import sys
 
 from flask import Flask
 
+from mixtapestudy.env import get_config
+
 logging.basicConfig(
     level=logging.DEBUG,
     stream=sys.stdout,
@@ -20,6 +22,7 @@ logger = logging.getLogger(__name__)
 
 
 def create_app():
+    get_config()  # Loads environment variables
     app = Flask(__name__)
     from mixtapestudy.routes.auth import auth
     from mixtapestudy.routes.root import root

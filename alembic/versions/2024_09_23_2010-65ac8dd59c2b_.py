@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 8d51d01b2927
+Revision ID: 65ac8dd59c2b
 Revises:
-Create Date: 2024-09-23 16:14:43.261027
+Create Date: 2024-09-23 20:10:11.222040
 
 """
 
@@ -13,7 +13,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = "8d51d01b2927"
+revision: str = "65ac8dd59c2b"
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -24,8 +24,8 @@ def upgrade() -> None:
     op.create_table(
         "user",
         sa.Column("spotify_id", sa.String(length=255), nullable=False),
-        sa.Column("display_name", sa.String(length=255), nullable=False),
         sa.Column("email", sa.String(length=255), nullable=False),
+        sa.Column("display_name", sa.String(length=255), nullable=False),
         sa.Column("access_token", sa.String(length=255), nullable=False),
         sa.Column("token_scope", sa.String(length=255), nullable=False),
         sa.Column("refresh_token", sa.String(length=255), nullable=False),
@@ -33,6 +33,8 @@ def upgrade() -> None:
         sa.Column("updated", sa.DateTime(), nullable=True),
         sa.Column("created", sa.DateTime(), nullable=True),
         sa.PrimaryKeyConstraint("id"),
+        sa.UniqueConstraint("email"),
+        sa.UniqueConstraint("spotify_id"),
     )
     # ### end Alembic commands ###
 

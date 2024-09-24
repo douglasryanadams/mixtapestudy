@@ -14,16 +14,47 @@ services:
       interval: 2s
       timeout: 10s
       retries: 3
-  # TODO: Add Postgres
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: admin
+      POSTGRES_USER: local
+      POSTGRES_DB: mixtapestudy
+    ports:
+      - "5432:5432"
+    healthcheck:
+      #test: [ "CMD-SHELL", "pg_isready --username=local --dbname=mixtapestudy" ]
+      test: [ "CMD-SHELL", "psql --username=local --dbname=mixtapestudy -c 'SELECT 1'" ]
+      interval: 2s
+      timeout: 10s
+      retries: 3
+  alembic:
+    build: .
+    command: ["alembic", "upgrade", "head"]
+    environment:
+      DATABASE_URL: "${DATABASE_URL}"
+    depends_on:
+      postgres:
+        condition: service_healthy
+  migration_done:
+    # Dummy image for commands to be sure migration is complete
+    image: alpine
+    command: ["date"]
+    depends_on:
+      alembic:
+        condition: service_completed_successfully
   mixtapestudy:
     build: .
     ports:
-      - '8000:8000'
+      - "8000:8000"
     environment:
-      OAUTH_REDIRECT_BASE_URL: 'http://127.0.0.1'
+      OAUTH_REDIRECT_BASE_URL: "http://127.0.0.1"
       # Set these in a .env file
       SPOTIFY_CLIENT_SECRET: "${SPOTIFY_CLIENT_SECRET}"
       DATABASE_URL: "${DATABASE_URL}"
+    depends_on:
+      migration_done:
+        condition: service_completed_successfully
     healthcheck:
       test: ["CMD-SHELL", "curl --silent --fail localhost:8000/flask-health-check || exit 1"]
       interval: 2s

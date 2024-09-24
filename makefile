@@ -31,11 +31,9 @@ test:
 
 .PHONY: revision
 revision:
-	 DATABASE_URL='sqlite:///dev.db' .venv/bin/alembic revision --autogenerate
+	trap 'docker-compose logs --no-color > docker.log && docker-compose down --volumes --remove-orphans' EXIT; \
+	bash -c "docker-compose up --build --detach migration_done && DATABASE_URL='postgresql://local:admin@localhost:5432/mixtapestudy' .venv/bin/alembic revision --autogenerate"
 
-.PHONY: migrate
-migrate:
-	 DATABASE_URL='sqlite:///dev.db' .venv/bin/alembic upgrade head
 
 .PHONY: check
 check: .venv/bin/python tidy lint test
@@ -46,5 +44,5 @@ run:
 
 .PHONY: dev
 dev:
-	OAUTH_REDIRECT_BASE_URL='http://127.0.0.1:5000' DATABASE_URL='sqlite:///dev.db' \
-		.venv/bin/flask --app mixtapestudy.app run --debug
+	trap 'docker-compose logs --no-color > docker.log && docker-compose down --volumes --remove-orphans' EXIT; \
+	bash -c "docker-compose up --build --detach migration_done && OAUTH_REDIRECT_BASE_URL='http://127.0.0.1:5000' DATABASE_URL='postgresql://local:admin@localhost:5432/mixtapestudy' .venv/bin/flask --app mixtapestudy.app run --debug"

@@ -57,9 +57,9 @@ class CommonColumns(Base):
 class User(CommonColumns):
     __tablename__ = "user"
 
-    spotify_id = mapped_column(String(255), nullable=False)
+    spotify_id = mapped_column(String(255), nullable=False, unique=True)
+    email = mapped_column(String(255), nullable=False, unique=True)
     display_name = mapped_column(String(255), nullable=False)
-    email = mapped_column(String(255), nullable=False)
     access_token = mapped_column(String(255), nullable=False)
     token_scope = mapped_column(String(255), nullable=False)
     refresh_token = mapped_column(String(255), nullable=False)

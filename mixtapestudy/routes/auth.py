@@ -7,6 +7,7 @@ import requests
 from flask import Blueprint, redirect, request
 from urllib.parse import ParseResult, urlencode
 
+from sqlalchemy import update, select
 
 from mixtapestudy.database import get_session, User
 from mixtapestudy.env import get_config, SPOTIFY_BASE_URL
@@ -89,15 +90,33 @@ def oauth_callback():
     user_email = me_response.json().get("email")
 
     with get_session() as session:
-        session.add(
-            User(
-                spotify_id=user_id,
-                display_name=display_name,
-                email=user_email,
-                access_token=access_token,
-                token_scope=scope,
-                refresh_token=refresh_token,
+        existing_user = session.scalars(
+            select(User).where(User.spotify_id == user_id)
+        ).one_or_none()
+        # There's a minor race condition here, fix it if necessary
+        if existing_user:
+            session.execute(
+                update(User)
+                .where(User.spotify_id == user_id)
+                .values(
+                    spotify_id=user_id,
+                    display_name=display_name,
+                    email=user_email,
+                    access_token=access_token,
+                    token_scope=scope,
+                    refresh_token=refresh_token,
+                )
             )
-        )
+        else:
+            session.add(
+                User(
+                    spotify_id=user_id,
+                    display_name=display_name,
+                    email=user_email,
+                    access_token=access_token,
+                    token_scope=scope,
+                    refresh_token=refresh_token,
+                )
+            )
 
     return redirect("/search")

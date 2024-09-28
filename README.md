@@ -13,6 +13,7 @@ The most important thing about this application is that it is fully tested, easy
 You can run the project locally using the commands in the `makefile`. For example, to run the stack "like production":
 
 ```bash
+# Note: Requires a .env file containing required environment variables
 make run
 ```
 
@@ -23,6 +24,8 @@ make check
 ```
 
 Please read the `makefile` to find other supported commands.
+
+
 
 ## Requirements
 

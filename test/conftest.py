@@ -24,19 +24,10 @@ def set_env(monkeypatch):
 
 @fixture(autouse=True, scope="session")
 def stack():
-    up = subprocess.run(["docker-compose up --detach"], check=True, shell=True)
-    print(up.args)
+    up = subprocess.run(["docker-compose up --build --detach migration_done"], check=True, shell=True)
     assert up.returncode == 0
-    healthcheck = False
-    count = 0
-    while not healthcheck and count < 60:
-        check_response = requests.get("http://localhost/flask-health-check")
-        healthcheck = check_response.status_code == 200
-        count += 1
-        time.sleep(1)
-
     yield
-    down = subprocess.run(["docker-compose down --volumes --remove-orphans migration_done"], check=True, shell=True)
+    down = subprocess.run(["docker-compose down --volumes --remove-orphans"], check=True, shell=True)
     assert down.returncode == 0
 
 

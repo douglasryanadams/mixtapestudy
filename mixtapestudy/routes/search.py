@@ -15,7 +15,7 @@ class Track:
 
 
 @search.route("/search")
-def search_page():
+def search_page() -> str:
     # TODO: Implement with Spotify API
     tracks = [
         Track("Track 1", "Artist 1"),
@@ -24,5 +24,7 @@ def search_page():
     ]
 
     return render_template(
-        "search.html.j2", selected_tracks=tracks, search_results=tracks
+        "search.html.j2",
+        selected_tracks=tracks,
+        search_results=tracks,
     )

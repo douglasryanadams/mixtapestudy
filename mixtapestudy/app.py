@@ -1,9 +1,10 @@
 import logging
 import sys
 
+import flask
 from flask import Flask
 
-from mixtapestudy.env import get_config
+from mixtapestudy.config import get_config
 
 logging.basicConfig(
     level=logging.DEBUG,
@@ -21,17 +22,17 @@ sqlalchemy_logger.propagate = True
 logger = logging.getLogger(__name__)
 
 
-def create_app():
+def create_app() -> Flask:
     get_config()  # Loads environment variables
-    app = Flask(__name__)
+    flask_app = flask.Flask(__name__)
     from mixtapestudy.routes.auth import auth
     from mixtapestudy.routes.root import root
     from mixtapestudy.routes.search import search
 
-    app.register_blueprint(root)
-    app.register_blueprint(auth)
-    app.register_blueprint(search)
-    return app
+    flask_app.register_blueprint(root)
+    flask_app.register_blueprint(auth)
+    flask_app.register_blueprint(search)
+    return flask_app
 
 
 if __name__ == "__main__":

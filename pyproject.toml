@@ -1,4 +1,38 @@
 [tool.pyright]
 pythonVersion = '3.12'
-include = ['./mixtapestudy/**', './alembic/**']
-strict = ['./mixtapestudy/**', './alembic/**']
+include = ['./mixtapestudy/**', './alembic/**', './test/**']
+# Omitting Alembic because it's more trouble than it's worth
+strict = ['./mixtapestudy/**', './test/**']
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+    # Young projects need cheap TODOs to track half-finished
+    # thoughts while iterating
+    "FIX002",
+    "TD002",
+    "TD003",
+    # Docstrings are less helpful in APIs than libraries
+    # Rely on descriptive names instead for most cases
+    "D100",
+    "D102",
+    "D101",
+    "D103",
+    "D104",
+    "D105",
+    "D107",
+    # Keeping code concise is more important than keeping tracebacks
+    # concise
+    "EM101",
+    # We don't need to support older Python versions
+    "FA100",
+    "FA102",
+    # Use assert responsibly
+    "S101",
+    # Deconflict docstring rules
+    "D211",
+    "D213",
+    "COM812",
+    "D203",
+    "ISC001",
+]

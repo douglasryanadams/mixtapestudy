@@ -1,4 +1,4 @@
-from flask import jsonify, request, render_template, Blueprint
+from flask import Blueprint, Response, jsonify, render_template, request
 
 root = Blueprint("root", __name__)
 
@@ -9,7 +9,7 @@ def home() -> str:
 
 
 @root.route("/info")
-def info():
+def info() -> Response:
     resp = {
         "connecting_ip": request.headers["X-Real-IP"],
         "proxy_ip": request.headers["X-Forwarded-For"],
@@ -21,5 +21,5 @@ def info():
 
 
 @root.route("/flask-health-check")
-def flask_health_check():
+def flask_health_check() -> str:
     return "success"

@@ -1,4 +1,5 @@
-"""empty message
+# pyright: reportAttributeAccessIssue=false
+"""Initializes the database with a user table for storing their OAuth tokens.
 
 Revision ID: 65ac8dd59c2b
 Revises:
@@ -8,9 +9,9 @@ Create Date: 2024-09-23 20:10:11.222040
 
 from typing import Sequence, Union
 
-from alembic import op
 import sqlalchemy as sa
 
+from alembic import op
 
 # revision identifiers, used by Alembic.
 revision: str = "65ac8dd59c2b"

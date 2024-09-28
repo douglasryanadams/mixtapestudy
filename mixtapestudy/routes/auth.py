@@ -1,32 +1,40 @@
 import logging
-import random
+import secrets
 import string
 from base64 import b64encode
+from urllib.parse import ParseResult, urlencode
 
 import requests
 from flask import Blueprint, redirect, request
-from urllib.parse import ParseResult, urlencode
+from sqlalchemy import select, update
+from werkzeug.wrappers.response import Response
 
-from sqlalchemy import update, select
-
-from mixtapestudy.database import get_session, User
-from mixtapestudy.env import get_config, SPOTIFY_BASE_URL
+from mixtapestudy.config import SPOTIFY_BASE_URL, get_config
+from mixtapestudy.database import User, get_session
 
 logger = logging.getLogger(__name__)
 
 auth = Blueprint("auth", __name__)
 
 
+class OAuthError(Exception):
+    pass
+
+
 @auth.route("/login")
-def login():
+def login() -> Response:
     config = get_config()
     params: dict[str, str] = {
         "response_type": "code",
         "client_id": config.spotify_client_id,
-        "scope": "playlist-modify-public playlist-modify-private user-read-recently-played user-read-currently-playing user-read-email",
+        "scope": "playlist-modify-public "
+        "playlist-modify-private "
+        "user-read-recently-played "
+        "user-read-currently-playing "
+        "user-read-email",
         "redirect_uri": f"{config.oauth_redirect_base_url}/oauth-callback",
         "state": "".join(
-            random.choice(string.ascii_letters + string.digits) for _ in range(16)
+            secrets.choice(string.ascii_letters + string.digits) for _ in range(16)
         ),
     }
     logger.debug("OAuth query params: %s", params)
@@ -43,14 +51,16 @@ def login():
 
 
 @auth.route("/oauth-callback")
-def oauth_callback():
+def oauth_callback() -> Response:
     config = get_config()
 
     code = request.args.get("code")
-    error = request.args.get("error")
-    # state = request.args.get("state")  # TODO: Validate the state
-    if error:
-        raise Exception(error)  # TODO: Replace with good error messaging
+    error_message = request.args.get("error")
+    # TODO: Validate the state; state = request.args.get("state")
+
+    if error_message:
+        logger.error(error_message)
+        raise OAuthError(error_message)  # TODO: Replace with good error messaging
 
     token_url = ParseResult(
         scheme="https",
@@ -62,7 +72,7 @@ def oauth_callback():
     ).geturl()
 
     encoded_auth = b64encode(
-        bytes(f"{config.spotify_client_id}:{config.spotify_client_secret}", "utf8")
+        bytes(f"{config.spotify_client_id}:{config.spotify_client_secret}", "utf8"),
     ).decode("utf8")
     token_response = requests.post(
         url=token_url,
@@ -75,6 +85,7 @@ def oauth_callback():
             "content-type": "application/x-www-form-urlencoded",
             "Authorization": f"Basic {encoded_auth}",
         },
+        timeout=30,
     )
     token_response.raise_for_status()
 
@@ -82,7 +93,7 @@ def oauth_callback():
     scope = token_response.json().get("scope")
     refresh_token = token_response.json().get("refresh_token")
 
-    me_response = requests.get(f"{SPOTIFY_BASE_URL}/me")
+    me_response = requests.get(f"{SPOTIFY_BASE_URL}/me", timeout=30)
     me_response.raise_for_status()
 
     user_id = me_response.json().get("id")
@@ -91,7 +102,7 @@ def oauth_callback():
 
     with get_session() as session:
         existing_user = session.scalars(
-            select(User).where(User.spotify_id == user_id)
+            select(User).where(User.spotify_id == user_id),
         ).one_or_none()
         # There's a minor race condition here, fix it if necessary
         if existing_user:
@@ -105,7 +116,7 @@ def oauth_callback():
                     access_token=access_token,
                     token_scope=scope,
                     refresh_token=refresh_token,
-                )
+                ),
             )
         else:
             session.add(
@@ -116,7 +127,7 @@ def oauth_callback():
                     access_token=access_token,
                     token_scope=scope,
                     refresh_token=refresh_token,
-                )
+                ),
             )
 
     return redirect("/search")

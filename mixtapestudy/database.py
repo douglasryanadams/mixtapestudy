@@ -2,20 +2,24 @@ import logging
 import uuid
 from collections.abc import Generator
 from contextlib import contextmanager
-from datetime import datetime, UTC
+from datetime import UTC, datetime
 
-from sqlalchemy import create_engine, Engine, String, DateTime, Uuid
-from sqlalchemy.orm import Session, DeclarativeBase, mapped_column
+from sqlalchemy import DateTime, Engine, String, Uuid, create_engine
+from sqlalchemy.orm import DeclarativeBase, Session, mapped_column
 
-from mixtapestudy.env import get_config
+from mixtapestudy.config import get_config
 
 logger = logging.getLogger(__name__)
 
 _database_engine = None
 
 
+class UnexpectedDatabaseError(Exception):
+    pass
+
+
 def get_engine() -> Engine:
-    global _database_engine
+    global _database_engine  # noqa: PLW0603
     if not _database_engine:
         config = get_config()
         _database_engine = create_engine(config.database_url)
@@ -29,7 +33,7 @@ def get_session() -> Generator[Session, None, None]:
             yield session
         except Exception as error:
             session.rollback()
-            raise error
+            raise UnexpectedDatabaseError from error
         else:
             session.commit()
 
@@ -49,7 +53,9 @@ class CommonColumns(Base):
         autoincrement=False,
     )
     updated = mapped_column(
-        DateTime(), default=datetime.now(tz=UTC), onupdate=datetime.now(tz=UTC)
+        DateTime(),
+        default=datetime.now(tz=UTC),
+        onupdate=datetime.now(tz=UTC),
     )
     created = mapped_column(DateTime(), default=datetime.now(tz=UTC))
 
@@ -64,5 +70,15 @@ class User(CommonColumns):
     token_scope = mapped_column(String(255), nullable=False)
     refresh_token = mapped_column(String(255), nullable=False)
 
-    def __repr__(self):
-        return f"User({self.id=}, {self.created=}, {self.updated=}, {self.spotify_id=}, {self.display_name=}, {self.email=}, {self.refresh_token=})"
+    def __repr__(self) -> str:
+        return (
+            f"User("
+            f"{self.id=}, "
+            f"{self.created=}, "
+            f"{self.updated=}, "
+            f"{self.spotify_id=}, "
+            f"{self.display_name=}, "
+            f"{self.email=}, "
+            f"{self.refresh_token=}"
+            f")"
+        )

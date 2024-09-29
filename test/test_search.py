@@ -1,10 +1,10 @@
 # pyright: reportPrivateUsage=false
-import json
 from http import HTTPStatus
 from urllib.parse import urlencode
 
 import pytest
 from bs4 import BeautifulSoup
+from flask import session
 from flask.testing import FlaskClient
 from requests_mock import Mocker, adapter
 
@@ -46,23 +46,30 @@ def mock_search_request(requests_mock: Mocker) -> adapter._Matcher:
     )
 
 
-def test_load_without_session(client_without_session: FlaskClient) -> None:
-    with pytest.raises(UserIDMissingError):
-        client_without_session.get("/search")
-
-
-def test_select_without_session(client_without_session: FlaskClient) -> None:
-    with pytest.raises(UserIDMissingError):
-        client_without_session.post("/search/select/test-track-id-1")
+@pytest.mark.parametrize(
+    ("method", "path"),
+    [("GET", "/search"), ("POST", "/search/select"), ("POST", "/search/remove")],
+)
+def test_load_without_session(
+    client_without_session: FlaskClient, method: str, path: str
+) -> None:
+    if method == "GET":
+        with pytest.raises(UserIDMissingError):
+            client_without_session.get(path)
+    elif method == "POST":
+        with pytest.raises(UserIDMissingError):
+            client_without_session.post(path)
+    else:
+        pytest.fail(f"Unexpected method type provided: {method}")
 
 
 def test_load_empty_search_page(client: FlaskClient) -> None:
     search_page_response = client.get("/search")
     assert search_page_response.status_code == HTTPStatus.OK
 
-    soup = BeautifulSoup(search_page_response.text)
+    soup = BeautifulSoup(search_page_response.text, features="html.parser")
     headings = soup.find_all("h1")
-    assert [h.string for h in headings] == ["Selected Tracks", "Search for Songs"]
+    assert [h.string for h in headings] == ["Selected Songs", "Search for Songs"]
 
     search_result_table = soup.find("table", {"id": "search-results"})
     search_result_rows = search_result_table.find_all("tr")
@@ -75,7 +82,7 @@ def test_load_search_results(client: FlaskClient, mock_search_request: None) -> 
     )
     assert search_page_response.status_code == HTTPStatus.OK
 
-    soup = BeautifulSoup(search_page_response.text)
+    soup = BeautifulSoup(search_page_response.text, features="html.parser")
 
     search_result_table = soup.find("table", {"id": "search-results"})
     search_result_rows = search_result_table.find_all("tr")
@@ -100,26 +107,105 @@ def test_load_search_results(client: FlaskClient, mock_search_request: None) -> 
 
 def test_load_search_with_selected_tracks(client: FlaskClient) -> None:
     with client.session_transaction() as tsession:
-        tsession["selected_tracks"] = json.dumps(
-            [
-                {
-                    "id": f"test-track-id-{i}",
-                    "name": f"test-track-name-{i}",
-                    "artist": f"test-track-artist-{i}",
-                }
-                for i in range(3)
-            ]
-        )
+        tsession["selected_tracks"] = [
+            {
+                "id": f"test-track-id-{i}",
+                "name": f"test-track-name-{i}",
+                "artist": f"test-track-artist-{i}",
+            }
+            for i in range(3)
+        ]
 
     search_page_response = client.get("/search")
     assert search_page_response.status_code == HTTPStatus.OK
 
-    # TODO: parse HTML for selected_tracks
+    soup = BeautifulSoup(search_page_response.text, features="html.parser")
+
+    selected_tracks_table = soup.find("table", {"id": "selected-tracks"})
+    selected_tracks_rows = selected_tracks_table.find_all("tr")
+    selected_track_limit = 3
+    assert len(selected_tracks_rows) == selected_track_limit, selected_tracks_rows
+
+    first_row = selected_tracks_rows[0]  # [0] is the header
+    first_row_cells = first_row.find_all("td")
+    assert [c.string for c in first_row_cells] == [
+        "1",
+        "test-track-name-0 (test-track-artist-0)",
+        None,
+    ]
+
+    last_row = selected_tracks_rows[-1]
+    last_row_cells = last_row.find_all("td")
+    assert [c.string for c in last_row_cells] == [
+        "3",
+        "test-track-name-2 (test-track-artist-2)",
+        None,
+    ]
 
 
 def test_select_track(client: FlaskClient) -> None:
     with client:
-        search_page_response = client.post("/search/select/test-track-id-1")
+        search_page_response = client.post(
+            "/search/select",
+            data={
+                "id": "test-track-id",
+                "name": "test-track-name",
+                "artist": "test-track-artist",
+            },
+        )
         assert search_page_response.status_code == HTTPStatus.FOUND
+        assert session["selected_tracks"] == [
+            {
+                "id": "test-track-id",
+                "name": "test-track-name",
+                "artist": "test-track-artist",
+            },
+            {"id": None},
+            {"id": None},
+        ]
 
-        # TODO: session is updated with selected track and data from Spotify API
+
+def test_select_track_in_middle(client: FlaskClient) -> None:
+    with client.session_transaction() as tsession:
+        tsession["selected_tracks"] = [
+            {
+                "id": f"test-track-id-{i}",
+                "name": f"test-track-name-{i}",
+                "artist": f"test-track-artist-{i}",
+            }
+            for i in range(3)
+        ]
+        tsession["selected_tracks"][1] = {"id": None}
+
+    with client:
+        search_page_response = client.post(
+            "/search/select",
+            data={
+                "id": "test-track-id",
+                "name": "test-track-name",
+                "artist": "test-track-artist",
+            },
+        )
+        assert search_page_response.status_code == HTTPStatus.FOUND
+        assert session["selected_tracks"][1] == {
+            "id": "test-track-id",
+            "name": "test-track-name",
+            "artist": "test-track-artist",
+        }
+
+
+def test_remove_track(client: FlaskClient) -> None:
+    with client.session_transaction() as tsession:
+        tsession["selected_tracks"] = [
+            {
+                "id": f"test-track-id-{i}",
+                "name": f"test-track-name-{i}",
+                "artist": f"test-track-artist-{i}",
+            }
+            for i in range(3)
+        ]
+
+    with client:
+        remove_response = client.post("/search/remove", data={"index": "2"})
+        assert remove_response.status_code == HTTPStatus.FOUND
+        assert session["selected_tracks"][1] == {"id": None}

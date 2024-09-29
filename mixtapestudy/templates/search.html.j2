@@ -2,17 +2,24 @@
 {% block body %}
     <main class="grid">
         <div>
-            <h1>Selected Tracks</h1>
+            <h1>Selected Songs</h1>
             <table id="selected-tracks">
                 <tbody>
                 {% for track in selected_tracks %}
                     <tr>
                         <td>{{ loop.index }}</td>
-                        <td>{{ track.name }}</td>
-                        <td>{{ track.artist }}</td>
-                        <td>
-                            <button class="secondary">Remove Song</button>
-                        </td>
+                        {% if track.id %}
+                            <td>{{ track.name | truncate(36, True) }} ({{ track.artist | truncate(40, True) }})</td>
+                            <td>
+                                <form action="/search/remove" method="POST">
+                                    <input name="index" type="hidden" value="{{ loop.index }}"/>
+                                    <input type="submit" class="secondary" value="X"/>
+                                </form>
+                            </td>
+                        {% else %}
+                            <td> ____________________________</td>
+                            <td></td>
+                        {% endif %}
                     </tr>
                 {% endfor %}
                 </tbody>
@@ -23,7 +30,8 @@
             <form action="/search">
                 <fieldset class="grid search-grid">
                     <div class="search-form-left">
-                        <input name="search_term" placeholder="Artist or Song"/>
+                        <input name="search_term" placeholder="Artist or Song" {% if search_term %}
+                               value="{{ search_term }}" {% endif %}/>
                     </div>
                     <div class="search-form-right">
                         <input type="submit" value="Search"/>
@@ -43,7 +51,13 @@
                 {% for track in search_results %}
                     <tr>
                         <td>
-                            <button>Add</button>
+                            <form action="/search/select" method="POST">
+                                <input name="id" type="hidden" value="{{ track.id }}"/>
+                                <input name="name" type="hidden" value="{{ track.name }}"/>
+                                <input name="artist" type="hidden" value="{{ track.artist }}"/>
+                                <input type="submit" value="Add" {% if not allow_selecting_tracks %}
+                                       disabled {% endif %}/>
+                            </form>
                         </td>
                         <td>{{ track.name | truncate(50, True) }}</td>
                         <td>{{ track.artist | truncate(20, True) }}</td>

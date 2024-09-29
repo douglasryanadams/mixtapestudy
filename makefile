@@ -24,9 +24,6 @@ lint:
 	.venv/bin/ruff check mixtapestudy
 	.venv/bin/ruff check alembic
 	.venv/bin/ruff check test
-	@# Pyright's quirky about discovering the virtual environment for resolving dependencies
-	@# and activating the virtual environment was easier than understanding the config for now.
-	source .venv/bin/activate && .venv/bin/pyright
 
 .PHONY: test
 test:

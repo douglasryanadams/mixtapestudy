@@ -28,10 +28,10 @@ def login() -> Response:
         "response_type": "code",
         "client_id": config.spotify_client_id,
         "scope": "playlist-modify-public "
-                 "playlist-modify-private "
-                 "user-read-recently-played "
-                 "user-read-currently-playing "
-                 "user-read-email",
+        "playlist-modify-private "
+        "user-read-recently-played "
+        "user-read-currently-playing "
+        "user-read-email",
         "redirect_uri": f"{config.oauth_redirect_base_url}/oauth-callback",
         "state": "".join(
             secrets.choice(string.ascii_letters + string.digits) for _ in range(16)
@@ -48,6 +48,12 @@ def login() -> Response:
     ).geturl()
 
     return redirect(return_url)
+
+
+@auth.route("/logout", methods=["POST"])
+def logout() -> Response:
+    session.clear()
+    return redirect("/login")
 
 
 @auth.route("/oauth-callback")

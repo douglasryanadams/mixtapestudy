@@ -103,8 +103,8 @@ def mock_me_request(requests_mock: Mocker) -> adapter._Matcher:
     )
 
 
-def test_login(client: FlaskClient, fake_random_choices: str) -> None:  # noqa: ARG001
-    r = client.get("/login")
+def test_login(client_without_session: FlaskClient, fake_random_choices: str) -> None:  # noqa: ARG001
+    r = client_without_session.get("/login")
     assert r.status_code == HTTPStatus.FOUND
     assert "https://accounts.spotify.com/authorize?" in r.headers["Location"]
 
@@ -128,13 +128,13 @@ def test_login(client: FlaskClient, fake_random_choices: str) -> None:  # noqa: 
 
 
 def test_oath_callback(
-    client: FlaskClient,
+    client_without_session: FlaskClient,
     db_session: Session,
     mock_token_request: Mocker,
     mock_me_request: Mocker,
 ) -> None:
-    with client:
-        r = client.get(
+    with client_without_session:
+        r = client_without_session.get(
             "/oauth-callback",
             query_string={"code": "fake-code", "state": "abcdefghijklmnop"},
         )
@@ -165,21 +165,21 @@ def test_oath_callback(
 
 
 def test_oauth_twice(
-    client: FlaskClient,
+    client_without_session: FlaskClient,
     db_session: Session,
     mock_token_request: Mocker,  # noqa: ARG001
     mock_me_request: Mocker,  # noqa: ARG001
 ) -> None:
-    with client:
-        r1 = client.get(
+    with client_without_session:
+        r1 = client_without_session.get(
             "/oauth-callback",
             query_string={"code": "fake-code", "state": "abcdefghijklmnop"},
         )
         assert r1.status_code == HTTPStatus.FOUND
         assert session["id"]
 
-    with client:
-        r2 = client.get(
+    with client_without_session:
+        r2 = client_without_session.get(
             "/oauth-callback",
             query_string={"code": "fake-code", "state": "abcdefghijklmnop"},
         )
@@ -189,8 +189,21 @@ def test_oauth_twice(
     assert db_session.execute(select(func.count()).select_from(User)).scalar() == 1
 
 
-def test_oath_callback_error(client: FlaskClient) -> None:
+def test_oath_callback_error(client_without_session: FlaskClient) -> None:
     with pytest.raises(OAuthError):
-        client.get(
+        client_without_session.get(
             "/oauth-callback", query_string={"code": "fake-code", "error": "fake error"}
         )
+
+
+def test_logout(client: FlaskClient) -> None:
+    with client.session_transaction() as tsession:
+        tsession["other"] = "other session data"
+
+    with client:
+        r = client.post("/logout")
+
+        assert r.status_code == HTTPStatus.FOUND
+        assert r.headers["Location"] == "/login"
+        assert not session.get("id")
+        assert not session.get("other")

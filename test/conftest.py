@@ -1,5 +1,6 @@
 import subprocess
 from collections.abc import Generator
+from uuid import UUID
 
 import pytest
 from flask import Flask
@@ -7,7 +8,9 @@ from flask.testing import FlaskClient
 from sqlalchemy.orm import Session
 
 from mixtapestudy.app import create_app
-from mixtapestudy.database import get_session
+from mixtapestudy.database import User, get_session
+
+FAKE_USER_ID = UUID("7061fb8a-5680-44b2-86c9-17a008df0be2")
 
 
 @pytest.fixture(autouse=True)
@@ -38,8 +41,8 @@ def stack() -> Generator[None, None, None]:
 
 @pytest.fixture
 def db_session() -> Generator[Session, None, None]:
-    with get_session() as s:
-        yield s
+    with get_session() as sesh, sesh.begin():
+        yield sesh
 
 
 @pytest.fixture
@@ -50,5 +53,26 @@ def app(stack: None, set_env: None) -> Flask:  # noqa: ARG001
 
 
 @pytest.fixture
-def client(app: Flask) -> FlaskClient:
+def client_without_session(app: Flask) -> FlaskClient:
     return app.test_client()
+
+
+@pytest.fixture
+def client(client_without_session: FlaskClient, db_session: Session) -> FlaskClient:
+    if not db_session.get(User, FAKE_USER_ID):
+        db_session.add(
+            User(
+                id=FAKE_USER_ID,
+                spotify_id="fake-spotify-id",
+                email="fake@email.com",
+                display_name="Fake Display Name",
+                access_token="fake-access-token",  # noqa: S106
+                token_scope="fake-scope fake-scope",  # noqa: S106
+                refresh_token="fake-refresh-token",  # noqa: S106
+            )
+        )
+        db_session.commit()
+    with client_without_session.session_transaction() as tsession:
+        tsession["id"] = FAKE_USER_ID
+
+    return client_without_session  # Actually has a session now

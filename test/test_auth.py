@@ -8,6 +8,7 @@ from unittest.mock import patch
 from urllib.parse import parse_qs, urlparse
 
 import pytest
+from flask import session
 from flask.testing import FlaskClient
 from requests_mock import Mocker, adapter
 from sqlalchemy import func, select
@@ -128,56 +129,64 @@ def test_login(client: FlaskClient, fake_random_choices: str) -> None:  # noqa: 
 
 def test_oath_callback(
     client: FlaskClient,
-    session: Session,
+    db_session: Session,
     mock_token_request: Mocker,
     mock_me_request: Mocker,
 ) -> None:
-    r = client.get(
-        "/oauth-callback",
-        query_string={"code": "fake-code", "state": "abcdefghijklmnop"},
-    )
+    with client:
+        r = client.get(
+            "/oauth-callback",
+            query_string={"code": "fake-code", "state": "abcdefghijklmnop"},
+        )
 
-    assert r.status_code == HTTPStatus.FOUND
-    assert r.headers["Location"] == "/search"
+        assert r.status_code == HTTPStatus.FOUND
+        assert r.headers["Location"] == "/search"
 
-    assert mock_token_request.called
-    assert mock_token_request.last_request
-    assert parse_qs(mock_token_request.last_request.text) == {
-        "code": ["fake-code"],
-        "redirect_uri": ["http://fake-test-domain/oauth-callback"],
-        "grant_type": ["authorization_code"],
-    }
+        assert mock_token_request.called
+        assert mock_token_request.last_request
+        assert parse_qs(mock_token_request.last_request.text) == {
+            "code": ["fake-code"],
+            "redirect_uri": ["http://fake-test-domain/oauth-callback"],
+            "grant_type": ["authorization_code"],
+        }
 
-    assert mock_me_request.called
+        assert mock_me_request.called
 
-    user = session.scalars(select(User)).one()
-    assert user.id
-    assert user.spotify_id == "testusername"
-    assert user.display_name == "Test Display Name"
-    assert user.email == "test@email.com"
-    assert user.access_token == FAKE_ACCESS_TOKEN
-    assert user.token_scope == "fake-scope fake-scope"  # noqa: S105
-    assert user.refresh_token == FAKE_REFRESH_TOKEN
+        user = db_session.scalars(select(User)).one()
+        assert user.id
+        assert user.spotify_id == "testusername"
+        assert user.display_name == "Test Display Name"
+        assert user.email == "test@email.com"
+        assert user.access_token == FAKE_ACCESS_TOKEN
+        assert user.token_scope == "fake-scope fake-scope"  # noqa: S105
+        assert user.refresh_token == FAKE_REFRESH_TOKEN
+
+        assert session["id"] == user.id
 
 
 def test_oauth_twice(
     client: FlaskClient,
-    session: Session,
+    db_session: Session,
     mock_token_request: Mocker,  # noqa: ARG001
     mock_me_request: Mocker,  # noqa: ARG001
 ) -> None:
-    r1 = client.get(
-        "/oauth-callback",
-        query_string={"code": "fake-code", "state": "abcdefghijklmnop"},
-    )
-    assert r1.status_code == HTTPStatus.FOUND
-    r2 = client.get(
-        "/oauth-callback",
-        query_string={"code": "fake-code", "state": "abcdefghijklmnop"},
-    )
-    assert r2.status_code == HTTPStatus.FOUND
+    with client:
+        r1 = client.get(
+            "/oauth-callback",
+            query_string={"code": "fake-code", "state": "abcdefghijklmnop"},
+        )
+        assert r1.status_code == HTTPStatus.FOUND
+        assert session["id"]
 
-    assert session.execute(select(func.count()).select_from(User)).scalar() == 1
+    with client:
+        r2 = client.get(
+            "/oauth-callback",
+            query_string={"code": "fake-code", "state": "abcdefghijklmnop"},
+        )
+        assert r2.status_code == HTTPStatus.FOUND
+        assert session["id"]
+
+    assert db_session.execute(select(func.count()).select_from(User)).scalar() == 1
 
 
 def test_oath_callback_error(client: FlaskClient) -> None:

@@ -35,6 +35,11 @@ class Config:
             raise MissingEnvironmentVariableError("DATABASE_URL")
         logger.debug("DATABASE_URL defined (not shown)")
 
+        self._session_secret: str = os.getenv("SESSION_SECRET", "")
+        if not self._session_secret:
+            raise MissingEnvironmentVariableError("SESSION_SECRET")
+        logger.debug("SESSION_SECRET defined (not shown)")
+
     @property
     def oauth_redirect_base_url(self) -> str:
         return self._oauth_redirect_base_url
@@ -50,6 +55,10 @@ class Config:
     @property
     def database_url(self) -> str:
         return self._database_url
+
+    @property
+    def session_secret(self) -> str:
+        return self._session_secret
 
 
 _config: Config | None = None

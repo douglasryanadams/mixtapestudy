@@ -5,7 +5,7 @@ from base64 import b64encode
 from urllib.parse import ParseResult, urlencode
 
 import requests
-from flask import Blueprint, redirect, request
+from flask import Blueprint, redirect, request, session
 from sqlalchemy import select, update
 from werkzeug.wrappers.response import Response
 
@@ -28,10 +28,10 @@ def login() -> Response:
         "response_type": "code",
         "client_id": config.spotify_client_id,
         "scope": "playlist-modify-public "
-        "playlist-modify-private "
-        "user-read-recently-played "
-        "user-read-currently-playing "
-        "user-read-email",
+                 "playlist-modify-private "
+                 "user-read-recently-played "
+                 "user-read-currently-playing "
+                 "user-read-email",
         "redirect_uri": f"{config.oauth_redirect_base_url}/oauth-callback",
         "state": "".join(
             secrets.choice(string.ascii_letters + string.digits) for _ in range(16)
@@ -106,13 +106,13 @@ def oauth_callback() -> Response:
     display_name = me_response.json().get("display_name")
     user_email = me_response.json().get("email")
 
-    with get_session() as session:
-        existing_user = session.scalars(
+    with get_session() as db_session:
+        existing_user = db_session.scalars(
             select(User).where(User.spotify_id == user_id),
         ).one_or_none()
         # There's a minor race condition here, fix it if necessary
         if existing_user:
-            session.execute(
+            db_session.execute(
                 update(User)
                 .where(User.spotify_id == user_id)
                 .values(
@@ -124,16 +124,18 @@ def oauth_callback() -> Response:
                     refresh_token=refresh_token,
                 ),
             )
+            session["id"] = existing_user.id
         else:
-            session.add(
-                User(
-                    spotify_id=user_id,
-                    display_name=display_name,
-                    email=user_email,
-                    access_token=access_token,
-                    token_scope=scope,
-                    refresh_token=refresh_token,
-                ),
+            new_user = User(
+                spotify_id=user_id,
+                display_name=display_name,
+                email=user_email,
+                access_token=access_token,
+                token_scope=scope,
+                refresh_token=refresh_token,
             )
+            db_session.add(new_user)
+            db_session.flush()
+            session["id"] = new_user.id
 
     return redirect("/search")

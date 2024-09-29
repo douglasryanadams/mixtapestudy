@@ -18,6 +18,7 @@ def set_env(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv(
         "DATABASE_URL", "postgresql://local:admin@localhost:5432/mixtapestudy"
     )
+    monkeypatch.setenv("SESSION_SECRET", "FvTmLMh7")
 
 
 @pytest.fixture(autouse=True, scope="session")
@@ -36,7 +37,7 @@ def stack() -> Generator[None, None, None]:
 
 
 @pytest.fixture
-def session() -> Generator[Session, None, None]:
+def db_session() -> Generator[Session, None, None]:
     with get_session() as s:
         yield s
 

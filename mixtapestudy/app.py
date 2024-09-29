@@ -29,6 +29,7 @@ def create_app() -> Flask:
     from mixtapestudy.routes.root import root
     from mixtapestudy.routes.search import search
 
+    flask_app.secret_key = get_config().session_secret
     flask_app.register_blueprint(root)
     flask_app.register_blueprint(auth)
     flask_app.register_blueprint(search)

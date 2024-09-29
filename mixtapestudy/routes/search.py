@@ -26,18 +26,21 @@ class UserIDMissingError(Exception):
     pass
 
 
-@search.post("/search")
-def post_search_page() -> str:
+@search.route("/search")
+def get_search_page() -> str:
     user_id = session.get("id")
-    if user_id is None:
+    if not user_id:
         raise UserIDMissingError
 
-    search_term = request.form.get("search_term")
+    logger.debug("User ID from session: %s", user_id)
+
+    search_term = request.args.get("search_term")
     search_results = []
 
     if search_term:
         with get_session() as db_session:
             user = db_session.get(User, user_id)
+            logger.debug("User from database: %s", user)
             access_token = user.access_token
 
         search_response = requests.get(
@@ -60,21 +63,6 @@ def post_search_page() -> str:
         "search.html.j2",
         selected_tracks=selected_tracks,
         search_results=search_results,
-    )
-
-
-@search.get("/search")
-def get_search_page() -> str:
-    user_id = session.get("id")
-    if not user_id:
-        raise UserIDMissingError
-
-    selected_tracks = session.get("selected_tracks", [])
-
-    return render_template(
-        "search.html.j2",
-        selected_tracks=selected_tracks,
-        search_results=[],
     )
 
 

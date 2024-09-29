@@ -63,7 +63,9 @@ def test_load_empty_search_page(client: FlaskClient) -> None:
 
 
 def test_load_search_result(client: FlaskClient, mock_search_request: None) -> None:  # noqa: ARG001
-    search_page_response = client.post("/search", data={"search_term": "test-term"})
+    search_page_response = client.get(
+        f"/search?{urlencode({"search_term": "test-term"})}"
+    )
     assert search_page_response.status_code == HTTPStatus.OK
 
     # TODO: parse HTML for search results

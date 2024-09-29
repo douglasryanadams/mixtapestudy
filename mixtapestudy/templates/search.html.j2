@@ -3,7 +3,7 @@
     <main class="grid">
         <div>
             <h1>Selected Tracks</h1>
-            <table>
+            <table id="selected-tracks">
                 <tbody>
                 {% for track in selected_tracks %}
                     <tr>
@@ -19,7 +19,7 @@
             </table>
         </div>
         <div>
-            <h1>Search for Tracks</h1>
+            <h1>Search for Songs</h1>
             <form action="/search">
                 <fieldset class="grid search-grid">
                     <div class="search-form-left">
@@ -31,12 +31,12 @@
                 </fieldset>
             </form>
 
-            <table>
+            <table id="search-results">
                 <thead>
                 <tr>
                     <th>Add</th>
-                    <th>Track Name</th>
-                    <th>Artist</th>
+                    <th>Song Name</th>
+                    <th>Artist(s)</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -45,8 +45,8 @@
                         <td>
                             <button>Add</button>
                         </td>
-                        <td>{{ track.name }}</td>
-                        <td>{{ track.artist }}</td>
+                        <td>{{ track.name | truncate(50, True) }}</td>
+                        <td>{{ track.artist | truncate(20, True) }}</td>
                     </tr>
                 {% endfor %}
                 </tbody>

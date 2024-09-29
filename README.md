@@ -8,6 +8,8 @@ This is a Python Flask Application. It doesn't do REST, and it doesn't do much (
 
 The most important thing about this application is that it is fully tested, easy to test, easy to debug, and easy to monitor. To achieve those goals, all logic must reside in the Python Flask application.
 
+Trello board for tracking progress and goals: https://trello.com/b/yGCs72Ff/mixtape-study
+
 ## How to Dev
 
 You can run the project locally using the commands in the `makefile`. For example, to run the stack "like production":

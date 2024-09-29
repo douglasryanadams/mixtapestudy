@@ -4,6 +4,7 @@ from http import HTTPStatus
 from urllib.parse import urlencode
 
 import pytest
+from bs4 import BeautifulSoup
 from flask.testing import FlaskClient
 from requests_mock import Mocker, adapter
 
@@ -59,19 +60,45 @@ def test_load_empty_search_page(client: FlaskClient) -> None:
     search_page_response = client.get("/search")
     assert search_page_response.status_code == HTTPStatus.OK
 
-    # TODO: parse html
+    soup = BeautifulSoup(search_page_response.text)
+    headings = soup.find_all("h1")
+    assert [h.string for h in headings] == ["Selected Tracks", "Search for Songs"]
+
+    search_result_table = soup.find("table", {"id": "search-results"})
+    search_result_rows = search_result_table.find_all("tr")
+    assert len(search_result_rows) == 1, search_result_rows
 
 
-def test_load_search_result(client: FlaskClient, mock_search_request: None) -> None:  # noqa: ARG001
+def test_load_search_results(client: FlaskClient, mock_search_request: None) -> None:  # noqa: ARG001
     search_page_response = client.get(
         f"/search?{urlencode({"search_term": "test-term"})}"
     )
     assert search_page_response.status_code == HTTPStatus.OK
 
-    # TODO: parse HTML for search results
+    soup = BeautifulSoup(search_page_response.text)
+
+    search_result_table = soup.find("table", {"id": "search-results"})
+    search_result_rows = search_result_table.find_all("tr")
+    search_page_length = 8
+    assert len(search_result_rows) == search_page_length + 1, search_result_rows
+
+    first_row = search_result_rows[1]  # [0] is the header
+    first_row_cells = first_row.find_all("td")
+    assert [c.string for c in first_row_cells] == [
+        None,
+        "test-track-0",
+        "test-term, other-artist",
+    ]
+    last_row = search_result_rows[-1]
+    last_row_cells = last_row.find_all("td")
+    assert [c.string for c in last_row_cells] == [
+        None,
+        "test-track-7",
+        "test-term, other-artist",
+    ]
 
 
-def test_load_search_with_terms(client: FlaskClient) -> None:
+def test_load_search_with_selected_tracks(client: FlaskClient) -> None:
     with client.session_transaction() as tsession:
         tsession["selected_tracks"] = json.dumps(
             [

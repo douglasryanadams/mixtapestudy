@@ -53,7 +53,11 @@ def get_search_page() -> str:
 
         rjson = search_response.json()
         search_results = [
-            Track(track["id"], track["name"], track["artists"][0]["name"])
+            Track(
+                track["id"],
+                track["name"],
+                ", ".join([artist["name"] for artist in track["artists"]]),
+            )
             for track in rjson["tracks"]["items"]
         ]
 

@@ -17,6 +17,18 @@ from mixtapestudy.config import SPOTIFY_BASE_URL
 from mixtapestudy.database import User
 from mixtapestudy.routes.auth import OAuthError
 
+# Need these to be longer than 255
+_STUB = (
+    "%s_"
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+)
+FAKE_ACCESS_TOKEN = _STUB.format("fake-access-token")
+FAKE_REFRESH_TOKEN = _STUB.format("fake-refresh-token")
+
 
 @pytest.fixture
 def fake_random_choices() -> Generator[str, None, None]:
@@ -34,14 +46,14 @@ def mock_token_request(
     ).decode("utf8")
     return requests_mock.post(
         "https://accounts.spotify.com/api/token",
-        headers={
+        request_headers={
             "content-type": "application/x-www-form-urlencoded",
             "Authorization": f"Basic {encoded_fake_auth}",
         },
         json={
-            "access_token": "fake-access-token",
+            "access_token": FAKE_ACCESS_TOKEN,
             "scope": "fake-scope fake-scope",
-            "refresh_token": "fake-refresh-token",
+            "refresh_token": FAKE_REFRESH_TOKEN,
             "expires_in": 60,
         },
     )
@@ -51,8 +63,8 @@ def mock_token_request(
 def mock_me_request(requests_mock: Mocker) -> adapter._Matcher:
     return requests_mock.get(
         f"{SPOTIFY_BASE_URL}/me",
-        headers={
-            "Authorization": "Bearer fake-access-token",
+        request_headers={
+            "authorization": f"Bearer {FAKE_ACCESS_TOKEN}",
         },
         json={
             "country": "US",
@@ -143,9 +155,9 @@ def test_oath_callback(
     assert user.spotify_id == "testusername"
     assert user.display_name == "Test Display Name"
     assert user.email == "test@email.com"
-    assert user.access_token == "fake-access-token"  # noqa: S105
+    assert user.access_token == FAKE_ACCESS_TOKEN
     assert user.token_scope == "fake-scope fake-scope"  # noqa: S105
-    assert user.refresh_token == "fake-refresh-token"  # noqa: S105
+    assert user.refresh_token == FAKE_REFRESH_TOKEN
 
 
 def test_oauth_twice(

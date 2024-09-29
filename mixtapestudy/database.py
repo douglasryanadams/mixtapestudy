@@ -4,7 +4,7 @@ from collections.abc import Generator
 from contextlib import contextmanager
 from datetime import UTC, datetime
 
-from sqlalchemy import DateTime, Engine, String, Uuid, create_engine
+from sqlalchemy import DateTime, Engine, String, Text, Uuid, create_engine
 from sqlalchemy.orm import DeclarativeBase, Session, mapped_column
 
 from mixtapestudy.config import get_config
@@ -66,9 +66,9 @@ class User(CommonColumns):
     spotify_id = mapped_column(String(255), nullable=False, unique=True)
     email = mapped_column(String(255), nullable=False, unique=True)
     display_name = mapped_column(String(255), nullable=False)
-    access_token = mapped_column(String(255), nullable=False)
+    access_token = mapped_column(Text(), nullable=False)
     token_scope = mapped_column(String(255), nullable=False)
-    refresh_token = mapped_column(String(255), nullable=False)
+    refresh_token = mapped_column(Text(), nullable=False)
 
     def __repr__(self) -> str:
         return (

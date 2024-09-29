@@ -93,7 +93,13 @@ def oauth_callback() -> Response:
     scope = token_response.json().get("scope")
     refresh_token = token_response.json().get("refresh_token")
 
-    me_response = requests.get(f"{SPOTIFY_BASE_URL}/me", timeout=30)
+    me_response = requests.get(
+        url=f"{SPOTIFY_BASE_URL}/me",
+        headers={
+            "Authorization": f"Bearer {access_token}",
+        },
+        timeout=30,
+    )
     me_response.raise_for_status()
 
     user_id = me_response.json().get("id")

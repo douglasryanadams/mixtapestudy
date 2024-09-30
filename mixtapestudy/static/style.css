@@ -6,24 +6,49 @@
     margin: 1em;
 }
 
+.tooltip-only {
+    text-decoration: none;
+}
+
 /**
 * picocss only implements the most basic "grid" support
 * this customizes the ratios of the grid with vanilla css.
 * Useful reference: https://css-tricks.com/snippets/css/complete-guide-grid/
 */
-@media(min-width: 768px) {
+@media (min-width: 768px) {
     .search-grid {
         grid-template-columns: 1fr 1fr 1fr;
     }
 
-    .search-form-left {
+    .horizontal-input-left {
         grid-column-start: 1;
         grid-column-end: span 2;
 
     }
 
-    .search-form-right {
+    .horizontal-input-right {
         grid-column-start: 3;
         grid-column-end: span 3;
     }
+}
+
+tr.fix-alignment > td {
+    vertical-align: center;
+}
+
+input.fix-alignment {
+    margin-top: 0.75em;
+}
+
+
+tr.no-row-dividers > td{
+    border: none;
+}
+
+
+
+
+:root {
+    --pico-form-element-spacing-vertical: 0.2em;
+    --pico-form-element-spacing-horizontal: 0.6em;
 }

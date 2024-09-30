@@ -3,22 +3,29 @@
     <main class="grid">
         <div>
             <h1>Selected Songs</h1>
+            <form action="/playlist/preview" method="POST">
+                <input type="hidden" name="selected_tracks" value="{{ selected_tracks }}"/>
+                <input type="submit" value="Generate Playlist"/>
+            </form>
             <table id="selected-tracks">
                 <tbody>
                 {% for track in selected_tracks %}
-                    <tr>
+                    <tr class="no-row-dividers fix-alignment">
                         <td>{{ loop.index }}</td>
                         {% if track.id %}
                             <td>{{ track.name | truncate(36, True) }} ({{ track.artist | truncate(40, True) }})</td>
                             <td>
                                 <form action="/search/remove" method="POST">
                                     <input name="index" type="hidden" value="{{ loop.index }}"/>
-                                    <input type="submit" class="secondary" value="X"/>
+                                    <input type="submit" class="secondary fix-alignment" value="X"/>
                                 </form>
                             </td>
                         {% else %}
-                            <td> ____________________________</td>
-                            <td></td>
+                            <td>____________________________</td>
+                            <td>
+                                <!-- Preserving Line Height -->
+                                <button class="fix-alignment hidden">&nbsp;</button>
+                            </td>
                         {% endif %}
                     </tr>
                 {% endfor %}
@@ -29,16 +36,15 @@
             <h1>Search for Songs</h1>
             <form action="/search">
                 <fieldset class="grid search-grid">
-                    <div class="search-form-left">
+                    <div class="horizontal-input-left">
                         <input name="search_term" placeholder="Artist or Song" {% if search_term %}
                                value="{{ search_term }}" {% endif %}/>
                     </div>
-                    <div class="search-form-right">
+                    <div class="horizontal-input-right">
                         <input type="submit" value="Search"/>
                     </div>
                 </fieldset>
             </form>
-
             <table id="search-results">
                 <thead>
                 <tr>
@@ -49,14 +55,19 @@
                 </thead>
                 <tbody>
                 {% for track in search_results %}
-                    <tr>
+                    <tr class="fix-alignment">
                         <td>
-                            <form action="/search/select" method="POST">
+                            <form action="/search/select" method="POST" class="small-buttons">
                                 <input name="id" type="hidden" value="{{ track.id }}"/>
                                 <input name="name" type="hidden" value="{{ track.name }}"/>
                                 <input name="artist" type="hidden" value="{{ track.artist }}"/>
-                                <input type="submit" value="Add" {% if not allow_selecting_tracks %}
-                                       disabled {% endif %}/>
+                                {% if not allow_selecting_tracks %}
+                                    <a data-tooltip="You may only select 3 songs.">
+                                        <button class="fix-alignment" disabled>Add</button>
+                                    </a>
+                                {% else %}
+                                    <input type="submit" value="Add" class="fix-alignment"/>
+                                {% endif %}
                             </form>
                         </td>
                         <td>{{ track.name | truncate(50, True) }}</td>
@@ -65,8 +76,6 @@
                 {% endfor %}
                 </tbody>
             </table>
-
-
         </div>
     </main>
 {% endblock %}

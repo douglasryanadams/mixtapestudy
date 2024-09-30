@@ -12,6 +12,7 @@ from mixtapestudy.config import SPOTIFY_BASE_URL
 from mixtapestudy.routes.search import UserIDMissingError
 
 # TODO: Write tests to handle edge cases and errors
+# TODO: Test clicking all the buttons
 
 
 @pytest.fixture

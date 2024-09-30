@@ -1,0 +1,34 @@
+{% extends "base.html.j2" %}
+{% block body %}
+    <main>
+        <form>
+            <fieldset class="grid search-grid">
+                <div class="horizontal-input-left">
+                    <input name="playlist_name" placeholder="Playlist Name"/>
+                </div>
+                <div class="horizontal-input-right">
+                    <input type="submit" value="Save"/>
+                </div>
+            </fieldset>
+        </form>
+        <h2>Playlist Preview</h2>
+        <table id="playlist-preview">
+            <thead>
+                <tr>
+                    <th>Song Name</th>
+                    <th>Artist</th>
+                </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th>Placeholder</th>
+                <th>Placeholder</th>
+            </tr>
+            <tr>
+                <th>Placeholder</th>
+                <th>Placeholder</th>
+            </tr>
+            </tbody>
+        </table>
+    </main>
+{% endblock %}

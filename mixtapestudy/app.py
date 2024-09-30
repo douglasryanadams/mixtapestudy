@@ -26,6 +26,7 @@ def create_app() -> Flask:
     get_config()  # Loads environment variables
     flask_app = flask.Flask(__name__)
     from mixtapestudy.routes.auth import auth
+    from mixtapestudy.routes.playlist import playlist
     from mixtapestudy.routes.root import root
     from mixtapestudy.routes.search import search
 
@@ -33,6 +34,7 @@ def create_app() -> Flask:
     flask_app.register_blueprint(root)
     flask_app.register_blueprint(auth)
     flask_app.register_blueprint(search)
+    flask_app.register_blueprint(playlist)
     return flask_app
 
 

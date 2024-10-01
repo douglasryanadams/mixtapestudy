@@ -6,6 +6,10 @@
     margin: 1em;
 }
 
+.hidden {
+    visibility: hidden;
+}
+
 .tooltip-only {
     text-decoration: none;
 }

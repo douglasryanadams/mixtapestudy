@@ -20,14 +20,12 @@
                 </tr>
             </thead>
             <tbody>
+            {% for song in playlist_songs %}
             <tr>
-                <th>Placeholder</th>
-                <th>Placeholder</th>
+                <th>{{ song.name }}</th>
+                <th>{{ song.artist }}</th>
             </tr>
-            <tr>
-                <th>Placeholder</th>
-                <th>Placeholder</th>
-            </tr>
+            {% endfor %}
             </tbody>
         </table>
     </main>

@@ -31,6 +31,9 @@ FAKE_ACCESS_TOKEN = _STUB.format("fake-access-token")
 FAKE_REFRESH_TOKEN = _STUB.format("fake-refresh-token")
 
 
+# TODO: Write test to verify the session data's reset on new logins
+
+
 @pytest.fixture
 def fake_random_choices() -> Generator[str, None, None]:
     with patch("mixtapestudy.routes.auth.secrets.choice") as mock_choice:

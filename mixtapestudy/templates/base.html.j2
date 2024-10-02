@@ -18,9 +18,19 @@
 <body>
 
 <div class="body-wrapper">
-<header>
-    <h1>Playlist Generator</h1>
-</header>
+    <header>
+        <nav>
+            <ul>
+                <li>
+                    <h1>Playlist Generator</h1>
+                </li>
+            </ul>
+            <ul>
+                <li id="display-name">{{ session["display_name"] }}</li>
+                <li><a id="logout-button" href="/logout" role="button">Log out</a></li>
+            </ul>
+        </nav>
+    </header>
     {% block body %}
     {% endblock %}
 </div>

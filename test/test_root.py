@@ -18,4 +18,5 @@ def test_render_login_without_active_session(
     assert r.status_code == HTTPStatus.OK
 
     soup = BeautifulSoup(r.text, "html.parser")
-    assert soup.find("a").string == "Log in with Spotify"
+    login_button = soup.find(id="login-button")
+    assert login_button.string == "Log in with Spotify"

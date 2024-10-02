@@ -165,6 +165,7 @@ def test_oath_callback(
         assert user.refresh_token == FAKE_REFRESH_TOKEN
 
         assert session["id"] == user.id
+        assert session["display_name"] == "Test Display Name"
 
 
 def test_oauth_twice(
@@ -218,9 +219,9 @@ def test_logout(client: FlaskClient) -> None:
         tsession["other"] = "other session data"
 
     with client:
-        r = client.post("/logout")
+        r = client.get("/logout")
 
         assert r.status_code == HTTPStatus.FOUND
-        assert r.headers["Location"] == "/login"
+        assert r.headers["Location"] == "/"
         assert not session.get("id")
         assert not session.get("other")

@@ -51,10 +51,10 @@ def login() -> Response:
     return redirect(return_url)
 
 
-@auth.route("/logout", methods=["POST"])
+@auth.route("/logout")
 def logout() -> Response:
     session.clear()
-    return redirect("/login")
+    return redirect("/")
 
 
 @auth.route("/oauth-callback")
@@ -144,5 +144,7 @@ def oauth_callback() -> Response:
             db_session.add(new_user)
             db_session.flush()
             session["id"] = new_user.id
+
+    session["display_name"] = display_name
 
     return redirect("/search")

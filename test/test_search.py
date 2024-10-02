@@ -65,6 +65,10 @@ def test_load_without_session(
 
 
 def test_load_empty_search_page(client: FlaskClient) -> None:
+    with client.session_transaction() as tsession:
+        tsession["id"] = "test-id"
+        tsession["display_name"] = "Test Name"
+
     search_page_response = client.get("/search")
     assert search_page_response.status_code == HTTPStatus.OK
 
@@ -75,6 +79,9 @@ def test_load_empty_search_page(client: FlaskClient) -> None:
     search_result_table = soup.find("table", {"id": "search-results"})
     search_result_rows = search_result_table.find_all("tr")
     assert len(search_result_rows) == 1, search_result_rows
+
+    # Couldn't think of a better place for this
+    assert soup.find(id="display-name").string == "Test Name"
 
 
 def test_load_search_results(client: FlaskClient, mock_search_request: None) -> None:  # noqa: ARG001

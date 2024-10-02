@@ -1,10 +1,20 @@
-from flask import Blueprint, Response, jsonify, render_template, request
+from flask import (
+    Blueprint,
+    Response,
+    jsonify,
+    redirect,
+    render_template,
+    request,
+    session,
+)
 
 root = Blueprint("root", __name__)
 
 
 @root.route("/")
-def home() -> str:
+def home() -> str | Response:
+    if session.get("id"):
+        return redirect("/search")
     return render_template("login.html.j2")
 
 

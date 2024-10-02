@@ -31,7 +31,7 @@ FAKE_ACCESS_TOKEN = _STUB.format("fake-access-token")
 FAKE_REFRESH_TOKEN = _STUB.format("fake-refresh-token")
 
 
-# TODO: Write test to verify the session data's reset on new logins
+# TODO: Write tests for handling expired auth tokens
 
 
 @pytest.fixture
@@ -170,8 +170,8 @@ def test_oath_callback(
 def test_oauth_twice(
     client_without_session: FlaskClient,
     db_session: Session,
-    mock_token_request: Mocker,  # noqa: ARG001
-    mock_me_request: Mocker,  # noqa: ARG001
+    mock_token_request: adapter._Matcher,  # noqa: ARG001
+    mock_me_request: adapter._Matcher,  # noqa: ARG001
 ) -> None:
     with client_without_session:
         r1 = client_without_session.get(
@@ -190,6 +190,20 @@ def test_oauth_twice(
         assert session["id"]
 
     assert db_session.execute(select(func.count()).select_from(User)).scalar() == 1
+
+
+def test_login_again_with_existing_session(
+    client_without_session: FlaskClient,
+    fake_random_choices: str,  # noqa: ARG001
+) -> None:
+    with client_without_session.session_transaction() as tsession:
+        tsession["test-session-data"] = "test-value"
+
+    with client_without_session:
+        r = client_without_session.get("/login")
+        assert r.status_code == HTTPStatus.FOUND
+        # Confirms that session was reset on re-auth
+        assert not session.get("test-session-data")
 
 
 def test_oath_callback_error(client_without_session: FlaskClient) -> None:

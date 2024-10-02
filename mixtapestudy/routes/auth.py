@@ -23,6 +23,7 @@ class OAuthError(Exception):
 
 @auth.route("/login")
 def login() -> Response:
+    session.clear()
     config = get_config()
     params: dict[str, str] = {
         "response_type": "code",

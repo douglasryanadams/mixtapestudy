@@ -53,7 +53,7 @@ def get_search_page() -> str:
         "selected_songs", [{"id": None}, {"id": None}, {"id": None}]
     )
     logger.debug("  selected_songs=%s", selected_songs)
-    allow_selected_songs = (
+    selected_songs_full = (
         selected_songs[0]["id"] is None
         or selected_songs[1]["id"] is None
         or selected_songs[2]["id"] is None
@@ -64,7 +64,7 @@ def get_search_page() -> str:
         search_term=search_term,
         selected_songs=selected_songs,
         search_results=search_results,
-        allow_selecting_songs=allow_selected_songs,
+        selected_songs_full=selected_songs_full,
     )
 
 

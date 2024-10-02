@@ -5,7 +5,10 @@
             <h2>Selected Songs</h2>
             <form action="/playlist/preview" method="POST">
                 <!-- Playlist retrieves selected songs from session -->
-                <input type="submit" value="Generate Playlist"/>
+                <input
+                        id="generate-playlist" type="submit" value="Generate Playlist"
+                        {% if selected_songs_full %} disabled {% endif %}
+                />
             </form>
             <table id="selected-songs">
                 <tbody>
@@ -61,7 +64,7 @@
                                 <input name="id" type="hidden" value="{{ song.id }}"/>
                                 <input name="name" type="hidden" value="{{ song.name }}"/>
                                 <input name="artist" type="hidden" value="{{ song.artist }}"/>
-                                {% if not allow_selecting_songs %}
+                                {% if selected_songs_full %}
                                     <a data-tooltip="You may only select 3 songs.">
                                         <button class="fix-alignment" disabled>Add</button>
                                     </a>

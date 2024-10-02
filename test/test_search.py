@@ -83,6 +83,10 @@ def test_load_empty_search_page(client: FlaskClient) -> None:
     # Couldn't think of a better place for this
     assert soup.find(id="display-name").string == "Test Name"
 
+    generate_playlist_button = soup.find(id="generate-playlist")
+    assert generate_playlist_button
+    assert "disabled" in generate_playlist_button.attrs
+
 
 def test_load_search_results(client: FlaskClient, mock_search_request: None) -> None:  # noqa: ARG001
     search_page_response = client.get(
@@ -149,6 +153,10 @@ def test_load_search_with_selected_songs(client: FlaskClient) -> None:
         "test-song-name-2 (test-song-artist-2)",
         None,
     ]
+
+    generate_playlist_button = soup.find(id="generate-playlist")
+    assert generate_playlist_button
+    assert "disabled" not in generate_playlist_button.attrs
 
 
 def test_select_song(client: FlaskClient) -> None:
@@ -217,3 +225,25 @@ def test_remove_song(client: FlaskClient) -> None:
         remove_response = client.post("/search/remove", data={"index": "2"})
         assert remove_response.status_code == HTTPStatus.FOUND
         assert session["selected_songs"][1] == {"id": None}
+
+
+def test_generate_playlist_button_disabled_until_three_songs_selected(
+    client: FlaskClient,
+) -> None:
+    with client.session_transaction() as tsession:
+        tsession["selected_songs"] = [
+            {
+                "id": f"test-song-id-{i}",
+                "name": f"test-song-name-{i}",
+                "artist": f"test-song-artist-{i}",
+            }
+            for i in range(3)
+        ]
+        tsession["selected_songs"][2] = {"id": None}
+
+    search_page_response = client.get("/search")
+    assert search_page_response.status_code == HTTPStatus.OK
+
+    soup = BeautifulSoup(search_page_response.text, features="html.parser")
+    generate_playlist_button = soup.find(id="generate-playlist")
+    assert "disabled" in generate_playlist_button.attrs

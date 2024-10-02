@@ -42,9 +42,10 @@ def get_search_page() -> str:
         rjson = search_response.json()
         search_results = [
             Song(
-                song["id"],
-                song["name"],
-                ", ".join([artist["name"] for artist in song["artists"]]),
+                uri=song["uri"],
+                id=song["id"],
+                name=song["name"],
+                artist=", ".join([artist["name"] for artist in song["artists"]]),
             )
             for song in rjson["tracks"]["items"]
         ]

@@ -5,12 +5,19 @@ from uuid import UUID
 import pytest
 from flask import Flask
 from flask.testing import FlaskClient
+from freezegun import freeze_time
 from sqlalchemy.orm import Session
 
 from mixtapestudy.app import create_app
 from mixtapestudy.database import User, get_session
 
 FAKE_USER_ID = UUID("7061fb8a-5680-44b2-86c9-17a008df0be2")
+
+
+@pytest.fixture(autouse=True)
+def set_time() -> None:
+    with freeze_time("2020-01-01"):
+        yield
 
 
 @pytest.fixture(autouse=True)
@@ -72,6 +79,7 @@ def client(client_without_session: FlaskClient, db_session: Session) -> FlaskCli
             )
         )
         db_session.commit()
+
     with client_without_session.session_transaction() as tsession:
         tsession["id"] = FAKE_USER_ID
 

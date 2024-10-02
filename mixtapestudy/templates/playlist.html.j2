@@ -1,8 +1,9 @@
 {% extends "base.html.j2" %}
 {% block body %}
     <main>
-        <form>
+        <form action="/playlist/save" method="POST">
             <fieldset class="grid search-grid">
+                <input name="playlist_songs" type="hidden" value='{{ playlist_songs | tojson }}'/>
                 <div class="horizontal-input-left">
                     <input name="playlist_name" placeholder="Playlist Name"/>
                 </div>

@@ -26,8 +26,10 @@
                 </li>
             </ul>
             <ul>
-                <li id="display-name">{{ session["display_name"] }}</li>
-                <li><a id="logout-button" href="/logout" role="button">Log out</a></li>
+                {% if session['id'] %}
+                    <li id="display-name"><em>{{ session["display_name"] }}</em></li>
+                    <li><a id="logout-button" href="/logout" role="button">Log out</a></li>
+                {% endif %}
             </ul>
         </nav>
     </header>

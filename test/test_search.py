@@ -151,7 +151,7 @@ def test_load_search_with_selected_songs(
 
     first_row = selected_songs_rows[0]  # [0] is the header
     first_row_cells = first_row.find_all("td")
-    assert [c.string for c in first_row_cells] == [
+    assert [c.string.strip() if c.string else None for c in first_row_cells] == [
         "1",
         "test-song-name-0 (test-song-artist-0)",
         None,
@@ -159,7 +159,7 @@ def test_load_search_with_selected_songs(
 
     last_row = selected_songs_rows[-1]
     last_row_cells = last_row.find_all("td")
-    assert [c.string for c in last_row_cells] == [
+    assert [c.string.strip() if c.string else None for c in last_row_cells] == [
         "3",
         "test-song-name-2 (test-song-artist-2)",
         None,

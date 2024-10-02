@@ -12,21 +12,23 @@
             </fieldset>
         </form>
         <h2>Playlist Preview</h2>
-        <table id="playlist-preview">
-            <thead>
+        <article>
+            <table id="playlist-preview">
+                <thead>
                 <tr>
                     <th>Song Name</th>
                     <th>Artist</th>
                 </tr>
-            </thead>
-            <tbody>
-            {% for song in playlist_songs %}
-            <tr>
-                <td>{{ song.name }}</td>
-                <td>{{ song.artist }}</td>
-            </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                {% for song in playlist_songs %}
+                    <tr>
+                        <td>{{ song.name }}</td>
+                        <td>{{ song.artist }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </article>
     </main>
 {% endblock %}

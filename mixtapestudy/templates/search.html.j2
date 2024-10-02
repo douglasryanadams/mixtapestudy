@@ -1,87 +1,101 @@
 {% extends "base.html.j2" %}
 {% block body %}
-    <main class="grid">
-        <div>
-            <h2>Selected Songs</h2>
-            <form action="/playlist/preview" method="POST">
-                <!-- Playlist retrieves selected songs from session -->
-                {% if selected_songs_full %}
-                    <input id="generate-playlist" type="submit" value="Generate Playlist"/>
-                {% else %}
-                    <a data-tooltip="You must select 3 songs.">
-                        <input id="generate-playlist" type="submit" value="Generate Playlist" disabled/>
-                    </a>
-                {% endif %}
-            </form>
-            <table id="selected-songs">
-                <tbody>
-                {% for song in selected_songs %}
-                    <tr class="no-row-dividers fix-alignment">
-                        <td>{{ loop.index }}</td>
-                        {% if song.id %}
-                            <td>{{ song.name | truncate(36, True) }} ({{ song.artist | truncate(40, True) }})</td>
-                            <td>
-                                <form action="/search/remove" method="POST">
-                                    <input name="index" type="hidden" value="{{ loop.index }}"/>
-                                    <input type="submit" class="secondary fix-alignment" value="X"/>
-                                </form>
-                            </td>
-                        {% else %}
-                            <td>____________________________</td>
-                            <td>
-                                <!-- Preserving Line Height -->
-                                <button class="fix-alignment hidden">&nbsp;</button>
-                            </td>
-                        {% endif %}
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+    <main>
+        <div class="grid">
+            <div>
+                <h2>Selected Songs</h2>
+                <form action="/playlist/preview" method="POST">
+                    <!-- Playlist retrieves selected songs from session -->
+                    {% if selected_songs_full %}
+                        <input id="generate-playlist" type="submit" value="Generate Playlist"/>
+                    {% else %}
+                        <a data-tooltip="You must select 3 songs.">
+                            <input id="generate-playlist" type="submit" value="Generate Playlist" disabled/>
+                        </a>
+                    {% endif %}
+                </form>
+            </div>
+            <div>
+                <h2>Search for Songs</h2>
+                <form action="/search">
+                    <fieldset class="grid search-grid">
+                        <div class="horizontal-input-left">
+                            <input name="search_term" placeholder="Artist or Song" {% if search_term %}
+                                   value="{{ search_term }}" {% endif %}/>
+                        </div>
+                        <div class="horizontal-input-right">
+                            <input type="submit" value="Search"/>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
         </div>
-        <div>
-            <h2>Search for Songs</h2>
-            <form action="/search">
-                <fieldset class="grid search-grid">
-                    <div class="horizontal-input-left">
-                        <input name="search_term" placeholder="Artist or Song" {% if search_term %}
-                               value="{{ search_term }}" {% endif %}/>
-                    </div>
-                    <div class="horizontal-input-right">
-                        <input type="submit" value="Search"/>
-                    </div>
-                </fieldset>
-            </form>
-            <table id="search-results">
-                <thead>
-                <tr>
-                    <th>Add</th>
-                    <th>Song Name</th>
-                    <th>Artist(s)</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for song in search_results %}
-                    <tr class="fix-alignment">
-                        <td>
-                            <form action="/search/select" method="POST" class="small-buttons">
-                                <input name="id" type="hidden" value="{{ song.id }}"/>
-                                <input name="name" type="hidden" value="{{ song.name }}"/>
-                                <input name="artist" type="hidden" value="{{ song.artist }}"/>
-                                {% if selected_songs_full %}
-                                    <a data-tooltip="You may only select 3 songs.">
-                                        <input type="submit" value="Add" class="fix-alignment" disabled/>
-                                    </a>
+        <div class="grid">
+            <div>
+                <article>
+                    <table id="selected-songs">
+                        <tbody>
+                        {% for song in selected_songs %}
+                            <tr class="no-row-dividers fix-alignment">
+                                <td>{{ loop.index }}</td>
+                                {% if song.id %}
+                                    <td>
+                                        {{ song.name | truncate(36, True) }} ({{ song.artist | truncate(40, True) }})
+                                    </td>
+                                    <td>
+                                        <form action="/search/remove" method="POST">
+                                            <input name="index" type="hidden" value="{{ loop.index }}"/>
+                                            <input type="submit" class="secondary fix-alignment" value="X"/>
+                                        </form>
+                                    </td>
                                 {% else %}
-                                    <input type="submit" value="Add" class="fix-alignment"/>
+                                    <td>____________________________</td>
+                                    <td>
+                                        <!-- Preserving Line Height -->
+                                        <button class="fix-alignment hidden">&nbsp;</button>
+                                    </td>
                                 {% endif %}
-                            </form>
-                        </td>
-                        <td>{{ song.name | truncate(50, True) }}</td>
-                        <td>{{ song.artist | truncate(20, True) }}</td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </article>
+            </div>
+            <div>
+                <article>
+                    <table id="search-results">
+                        <thead>
+                        <tr>
+                            <th>Add</th>
+                            <th>Song Name</th>
+                            <th>Artist(s)</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for song in search_results %}
+                            <tr class="fix-alignment">
+                                <td>
+                                    <form action="/search/select" method="POST" class="small-buttons">
+                                        <input name="id" type="hidden" value="{{ song.id }}"/>
+                                        <input name="name" type="hidden" value="{{ song.name }}"/>
+                                        <input name="artist" type="hidden" value="{{ song.artist }}"/>
+                                        {% if selected_songs_full %}
+                                            <a data-tooltip="You may only select 3 songs.">
+                                                <input type="submit" value="Add" class="fix-alignment" disabled/>
+                                            </a>
+                                        {% else %}
+                                            <input type="submit" value="Add" class="fix-alignment"/>
+                                        {% endif %}
+                                    </form>
+                                </td>
+                                <td>{{ song.name | truncate(50, True) }}</td>
+                                <td>{{ song.artist | truncate(20, True) }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </article>
+            </div>
         </div>
     </main>
 {% endblock %}

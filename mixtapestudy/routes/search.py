@@ -54,9 +54,9 @@ def get_search_page() -> str:
     )
     logger.debug("  selected_songs=%s", selected_songs)
     selected_songs_full = (
-        selected_songs[0]["id"] is None
-        or selected_songs[1]["id"] is None
-        or selected_songs[2]["id"] is None
+        selected_songs[0]["id"] is not None
+        and selected_songs[1]["id"] is not None
+        and selected_songs[2]["id"] is not None
     )
 
     return render_template(

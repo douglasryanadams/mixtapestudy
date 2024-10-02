@@ -116,8 +116,16 @@ def test_load_search_results(client: FlaskClient, mock_search_request: None) -> 
         "test-term, other-artist",
     ]
 
+    select_song_form_inputs = first_row.find_all("input")
+    add_button = select_song_form_inputs[-1]
+    assert "disabled" not in add_button.attrs
 
-def test_load_search_with_selected_songs(client: FlaskClient) -> None:
+
+def test_load_search_with_selected_songs(
+    client: FlaskClient,
+    mock_search_request: None,  # noqa: ARG001
+) -> None:
+    # TODO: break these assertions up into multiple tests
     with client.session_transaction() as tsession:
         tsession["selected_songs"] = [
             {
@@ -128,7 +136,10 @@ def test_load_search_with_selected_songs(client: FlaskClient) -> None:
             for i in range(3)
         ]
 
-    search_page_response = client.get("/search")
+    search_page_response = client.get(
+        f"/search?{urlencode({"search_term": "test-term"})}"
+    )
+
     assert search_page_response.status_code == HTTPStatus.OK
 
     soup = BeautifulSoup(search_page_response.text, features="html.parser")
@@ -157,6 +168,14 @@ def test_load_search_with_selected_songs(client: FlaskClient) -> None:
     generate_playlist_button = soup.find(id="generate-playlist")
     assert generate_playlist_button
     assert "disabled" not in generate_playlist_button.attrs
+
+    search_result_table = soup.find("table", {"id": "search-results"})
+    search_result_rows = search_result_table.find_all("tr")
+
+    first_search_result_row = search_result_rows[1]
+    select_song_form_inputs = first_search_result_row.find_all("input")
+    add_button = select_song_form_inputs[-1]
+    assert "disabled" in add_button.attrs
 
 
 def test_select_song(client: FlaskClient) -> None:

@@ -17,7 +17,10 @@ from mixtapestudy.errors import UserIDMissingError
 def mock_recommendation_request(requests_mock: Mocker) -> adapter._Matcher:
     return requests_mock.get(
         f"{SPOTIFY_BASE_URL}/recommendations?{urlencode(
-            {"seed_tracks": ",".join([f"song-{i}" for i in range(3)]), "limit": 72}
+            {
+                "seed_tracks": ",".join([f"selected-song-{i}" for i in range(3)]),
+                "limit": 72
+            }
         )}",
         request_headers={"Authorization": "Bearer fake-access-token"},
         json={
@@ -26,7 +29,7 @@ def mock_recommendation_request(requests_mock: Mocker) -> adapter._Matcher:
             #   https://developer.spotify.com/documentation/web-api/reference/get-recommendations
             "tracks": [
                 {
-                    "uri": f"spotify:song;song-{i}",
+                    "uri": f"spotify:song-{i}",
                     "id": f"song-{i}",
                     "name": f"name-{i}",
                     "artists": [{"name": f"artist-{i}-{k}"} for k in range(3)],
@@ -64,7 +67,12 @@ def test_load_page(
 ) -> None:
     with client.session_transaction() as tsession:
         tsession["selected_songs"] = [
-            {"id": f"song-{i}", "name": f"name-{i}", "artist": f"artist-{i}"}
+            {
+                "uri": f"spotify:track:selected-song-{i}",
+                "id": f"selected-song-{i}",
+                "name": f"selected-name-{i}",
+                "artist": f"selected-artist-{i}",
+            }
             for i in range(3)
         ]
 
@@ -74,11 +82,17 @@ def test_load_page(
 
     soup = BeautifulSoup(playlist_page_response.text, "html.parser")
     table_rows = soup.find_all("tr")
-    number_of_songs = 72
+    number_of_songs = 75
     assert len(table_rows) == number_of_songs + 1  # Extra row for header
 
     first_row = table_rows[1].find_all("td")
     assert [c.string for c in first_row] == [
+        "selected-name-0",
+        "selected-artist-0",
+    ]
+
+    fourth_row = table_rows[4].find_all("td")
+    assert [c.string for c in fourth_row] == [
         "name-0",
         "artist-0-0, artist-0-1, artist-0-2",
     ]
@@ -105,7 +119,7 @@ def test_save_playlist(
             "name": f"name-{i}",
             "artist": f"artist-{i}",
         }
-        for i in range(72)
+        for i in range(75)
     ]
     r = client.post(
         "/playlist/save",

@@ -76,6 +76,7 @@
                             <tr class="fix-alignment">
                                 <td>
                                     <form action="/search/select" method="POST" class="small-buttons">
+                                        <input name="uri" type="hidden" value="{{ song.uri }}"/>
                                         <input name="id" type="hidden" value="{{ song.id }}"/>
                                         <input name="name" type="hidden" value="{{ song.name }}"/>
                                         <input name="artist" type="hidden" value="{{ song.artist }}"/>

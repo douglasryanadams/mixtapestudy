@@ -51,6 +51,7 @@ services:
       OAUTH_REDIRECT_BASE_URL: "http://127.0.0.1"
       # Set these in a .env file
       SPOTIFY_CLIENT_SECRET: "${SPOTIFY_CLIENT_SECRET}"
+      SPOTIFY_CLIENT_ID: "${SPOTIFY_CLIENT_ID}"
       SESSION_SECRET: "${SESSION_SECRET}"
       DATABASE_URL: "${DATABASE_URL}"
     depends_on:

@@ -53,6 +53,15 @@ def generate_playlist() -> str:
             uri=song["uri"],
             id=song["id"],
             name=song["name"],
+            artist=song["artist"],
+        )
+        for song in selected_songs
+    ]
+    playlist_songs += [
+        Song(
+            uri=song["uri"],
+            id=song["id"],
+            name=song["name"],
             artist=", ".join([artist["name"] for artist in song["artists"]]),
         )
         for song in playlist_response.json()["tracks"]

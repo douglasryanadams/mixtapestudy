@@ -80,6 +80,7 @@ def select_song() -> Response:
     )
     for song in selected_songs:
         if not song["id"]:
+            song["uri"] = request.form.get("uri")
             song["id"] = request.form.get("id")
             song["name"] = request.form.get("name")
             song["artist"] = request.form.get("artist")

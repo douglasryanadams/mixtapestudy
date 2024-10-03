@@ -129,6 +129,7 @@ def test_load_search_with_selected_songs(
     with client.session_transaction() as tsession:
         tsession["selected_songs"] = [
             {
+                "uri": f"spotify:track:test-song-id-{i}",
                 "id": f"test-song-id-{i}",
                 "name": f"test-song-name-{i}",
                 "artist": f"test-song-artist-{i}",
@@ -183,6 +184,7 @@ def test_select_song(client: FlaskClient) -> None:
         search_page_response = client.post(
             "/search/select",
             data={
+                "uri": "spotify:track:test-song-id",
                 "id": "test-song-id",
                 "name": "test-song-name",
                 "artist": "test-song-artist",
@@ -191,6 +193,7 @@ def test_select_song(client: FlaskClient) -> None:
         assert search_page_response.status_code == HTTPStatus.FOUND
         assert session["selected_songs"] == [
             {
+                "uri": "spotify:track:test-song-id",
                 "id": "test-song-id",
                 "name": "test-song-name",
                 "artist": "test-song-artist",
@@ -204,6 +207,7 @@ def test_select_song_in_middle(client: FlaskClient) -> None:
     with client.session_transaction() as tsession:
         tsession["selected_songs"] = [
             {
+                "uri": f"spotify:track:test-song-id-{i}",
                 "id": f"test-song-id-{i}",
                 "name": f"test-song-name-{i}",
                 "artist": f"test-song-artist-{i}",
@@ -216,6 +220,7 @@ def test_select_song_in_middle(client: FlaskClient) -> None:
         search_page_response = client.post(
             "/search/select",
             data={
+                "uri": "spotify:track:test-song-id",
                 "id": "test-song-id",
                 "name": "test-song-name",
                 "artist": "test-song-artist",
@@ -223,6 +228,7 @@ def test_select_song_in_middle(client: FlaskClient) -> None:
         )
         assert search_page_response.status_code == HTTPStatus.FOUND
         assert session["selected_songs"][1] == {
+            "uri": "spotify:track:test-song-id",
             "id": "test-song-id",
             "name": "test-song-name",
             "artist": "test-song-artist",
@@ -233,6 +239,7 @@ def test_remove_song(client: FlaskClient) -> None:
     with client.session_transaction() as tsession:
         tsession["selected_songs"] = [
             {
+                "uri": "spotify:track:test-song-id",
                 "id": f"test-song-id-{i}",
                 "name": f"test-song-name-{i}",
                 "artist": f"test-song-artist-{i}",
@@ -252,6 +259,7 @@ def test_generate_playlist_button_disabled_until_three_songs_selected(
     with client.session_transaction() as tsession:
         tsession["selected_songs"] = [
             {
+                "uri": f"spotify:track:test-song-id-{i}",
                 "id": f"test-song-id-{i}",
                 "name": f"test-song-name-{i}",
                 "artist": f"test-song-artist-{i}",

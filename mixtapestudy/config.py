@@ -19,10 +19,9 @@ class Config:
         )
         logger.debug("oauth_redirect_base_url=%s", self._oauth_redirect_base_url)
 
-        self._spotify_client_id: str = os.environ.get(
-            "SPOTIFY_CLIENT_ID",
-            "24c831c158dc43b79f6eab9c65a38a6c",
-        )
+        self._spotify_client_id: str = os.environ.get("SPOTIFY_CLIENT_ID")
+        if not self._spotify_client_id:
+            raise MissingEnvironmentVariableError("SPOTIFY_CLIENT_ID")
         logger.debug("spotify_client_id=%s", self._spotify_client_id)
 
         self._spotify_client_secret: str = os.environ.get("SPOTIFY_CLIENT_SECRET", "")

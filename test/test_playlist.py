@@ -15,13 +15,11 @@ from mixtapestudy.errors import UserIDMissingError
 
 @pytest.fixture
 def mock_recommendation_request(requests_mock: Mocker) -> adapter._Matcher:
+    params = urlencode(
+        {"seed_tracks": ",".join([f"selected-song-{i}" for i in range(3)]), "limit": 72}
+    )
     return requests_mock.get(
-        f"{SPOTIFY_BASE_URL}/recommendations?{urlencode(
-            {
-                "seed_tracks": ",".join([f"selected-song-{i}" for i in range(3)]),
-                "limit": 72
-            }
-        )}",
+        f"{SPOTIFY_BASE_URL}/recommendations?{params}",
         request_headers={"Authorization": "Bearer fake-access-token"},
         json={
             # This is a dramatically simplified version of this response

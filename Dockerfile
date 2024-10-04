@@ -1,4 +1,4 @@
-FROM python:3.12.6-alpine
+FROM python:3.11.10-alpine
 
 ENV VIRTUAL_ENV=/home/app/venv
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"

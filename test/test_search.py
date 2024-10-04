@@ -17,10 +17,9 @@ from mixtapestudy.errors import UserIDMissingError
 
 @pytest.fixture
 def mock_search_request(requests_mock: Mocker) -> adapter._Matcher:
+    params = urlencode({"q": "test-term", "type": "track", "limit": 8})
     return requests_mock.get(
-        f"{SPOTIFY_BASE_URL}/search?{urlencode(
-            {"q": "test-term", "type": "track", "limit": 8}
-        )}",
+        f"{SPOTIFY_BASE_URL}/search?{params}",
         request_headers={"authorization": "Bearer fake-access-token"},
         # This is a dramatically truncated version of this response
         # For full example see:
@@ -90,7 +89,7 @@ def test_load_empty_search_page(client: FlaskClient) -> None:
 
 def test_load_search_results(client: FlaskClient, mock_search_request: None) -> None:  # noqa: ARG001
     search_page_response = client.get(
-        f"/search?{urlencode({"search_term": "test-term"})}"
+        f'/search?{urlencode({"search_term": "test-term"})}'
     )
     assert search_page_response.status_code == HTTPStatus.OK
 
@@ -138,7 +137,7 @@ def test_load_search_with_selected_songs(
         ]
 
     search_page_response = client.get(
-        f"/search?{urlencode({"search_term": "test-term"})}"
+        f'/search?{urlencode({"search_term": "test-term"})}'
     )
 
     assert search_page_response.status_code == HTTPStatus.OK

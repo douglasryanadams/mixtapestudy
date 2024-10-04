@@ -2,6 +2,6 @@ Flask
 gunicorn
 requests
 sqlalchemy
-psycopg2[binary]
+psycopg2-binary
 alembic
 beautifulsoup4

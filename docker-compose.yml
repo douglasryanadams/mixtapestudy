@@ -1,8 +1,6 @@
 services:
   nginx-proxy:
     build: nginx
-    volumes:
-      - ./nginx/default.conf:/tmp/default.conf
     environment:
       - FLASK_SERVER_ADDR=mixtapestudy:8000
     ports:

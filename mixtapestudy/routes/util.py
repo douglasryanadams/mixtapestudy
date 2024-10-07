@@ -3,6 +3,8 @@ from datetime import UTC, datetime, timedelta
 
 import requests
 from flask import session
+from requests import HTTPError
+from requests.auth import HTTPBasicAuth
 from sqlalchemy.orm import Session
 
 from mixtapestudy.config import get_config
@@ -14,22 +16,37 @@ logger = logging.getLogger(__name__)
 
 
 def _refresh_token(user: User, session: Session) -> None:
-    r = requests.post(
+    config = get_config()
+    refresh_response = requests.post(
         "https://accounts.spotify.com/api/token",
+        auth=HTTPBasicAuth(config.spotify_client_id, config.spotify_client_secret),
+        headers={
+            "Content-Type": "application/x-www-form-urlencoded",
+        },
         data={
             "grant_type": "refresh_token",
             "refresh_token": user.refresh_token,
-            "client_id": get_config().spotify_client_id,
         },
         timeout=30,
     )
-    r.raise_for_status()
+    try:
+        refresh_response.raise_for_status()
+    except HTTPError as error:
+        logger.warning(
+            "HTTP Request Failed!\n%s\n%s\n%s",
+            error,
+            error.response.headers,
+            error.response.text,
+        )
+        raise
 
-    user.access_token = r.json()["access_token"]
-    user.refresh_token = r.json()["refresh_token"]
-    expires_in = int(r.json()["expires_in"])
+    logger.debug("  Refresh token response: %s", refresh_response.json())
+    user.access_token = refresh_response.json()["access_token"]
+    if "refresh_token" in refresh_response.json():
+        user.refresh_token = refresh_response.json()["refresh_token"]
+    expires_in = int(refresh_response.json()["expires_in"])
     user.token_expires = datetime.now(tz=UTC) + timedelta(seconds=expires_in)
-    user.scope = r.json()["scope"]
+    user.scope = refresh_response.json()["scope"]
     session.merge(user)
 
 
@@ -44,15 +61,21 @@ def get_user() -> UserData:
     2. Make sure the Spotify token for this user os up to date
     """
     user_id = session.get("id")
-    logger.info("Handling request for: %s", user_id)
+    logger.info("Handling request for user: %s", user_id)
     if not user_id:
         raise UserIDMissingError
 
     with get_session() as db_session:
         user = db_session.get(User, user_id)
-        logger.debug("User from database: %s", user)
 
-        if user.token_expires < datetime.now(tz=UTC) - timedelta(minutes=5):
+        five_minutes_from_now = datetime.now(tz=UTC) + timedelta(minutes=5)
+        logger.debug("  token_expires: %s", user.token_expires)
+        logger.debug("  five_minutes_from_now: %s", five_minutes_from_now)
+        logger.debug(
+            "  token_expires - five_minutes_from_now = %s",
+            user.token_expires - five_minutes_from_now,
+        )
+        if user.token_expires < five_minutes_from_now:
             _refresh_token(user, db_session)
 
         user_dict = {

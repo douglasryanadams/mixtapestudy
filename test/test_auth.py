@@ -50,7 +50,7 @@ def mock_token_request(
             "access_token": FAKE_ACCESS_TOKEN,
             "scope": "fake-scope fake-scope",
             "refresh_token": FAKE_REFRESH_TOKEN,
-            "expires_in": 60,
+            "expires_in": 3600,
         },
     )
 

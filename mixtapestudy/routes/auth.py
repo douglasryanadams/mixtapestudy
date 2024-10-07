@@ -1,12 +1,13 @@
 import logging
 import secrets
 import string
-from base64 import b64encode
 from datetime import UTC, datetime, timedelta
 from urllib.parse import ParseResult, urlencode
 
 import requests
 from flask import Blueprint, redirect, request, session
+from requests import HTTPError
+from requests.auth import HTTPBasicAuth
 from sqlalchemy import select, update
 from werkzeug.wrappers.response import Response
 
@@ -49,6 +50,7 @@ def login() -> Response:
         fragment="",
     ).geturl()
 
+    logger.debug("  login redirect = %s", return_url)
     return redirect(return_url)
 
 
@@ -79,11 +81,9 @@ def oauth_callback() -> Response:
         fragment="",
     ).geturl()
 
-    encoded_auth = b64encode(
-        bytes(f"{config.spotify_client_id}:{config.spotify_client_secret}", "utf8"),
-    ).decode("utf8")
     token_response = requests.post(
         url=token_url,
+        auth=HTTPBasicAuth(config.spotify_client_id, config.spotify_client_secret),
         data={
             "code": code,
             "redirect_uri": f"{config.oauth_redirect_base_url}/oauth-callback",
@@ -91,12 +91,21 @@ def oauth_callback() -> Response:
         },
         headers={
             "content-type": "application/x-www-form-urlencoded",
-            "Authorization": f"Basic {encoded_auth}",
         },
         timeout=30,
     )
-    token_response.raise_for_status()
+    try:
+        token_response.raise_for_status()
+    except HTTPError as error:
+        logger.warning(
+            "HTTP Request Failed!\n%s\n%s\n%s",
+            error,
+            error.response.headers,
+            error.response.text,
+        )
+        raise
 
+    logger.debug("  Access token response: %s", token_response.json())
     access_token = token_response.json().get("access_token")
     scope = token_response.json().get("scope")
     expires_in = int(token_response.json().get("expires_in"))
@@ -129,7 +138,7 @@ def oauth_callback() -> Response:
                     display_name=display_name,
                     email=user_email,
                     access_token=access_token,
-                    token_expires=datetime.now(tz=UTC) + timedelta(minutes=expires_in),
+                    token_expires=datetime.now(tz=UTC) + timedelta(seconds=expires_in),
                     token_scope=scope,
                     refresh_token=refresh_token,
                 ),
@@ -141,7 +150,7 @@ def oauth_callback() -> Response:
                 display_name=display_name,
                 email=user_email,
                 access_token=access_token,
-                token_expires=datetime.now(tz=UTC) + timedelta(minutes=expires_in),
+                token_expires=datetime.now(tz=UTC) + timedelta(seconds=expires_in),
                 token_scope=scope,
                 refresh_token=refresh_token,
             )

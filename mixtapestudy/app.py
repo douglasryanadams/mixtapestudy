@@ -35,6 +35,7 @@ def create_app() -> Flask:
     flask_app.register_blueprint(auth)
     flask_app.register_blueprint(search)
     flask_app.register_blueprint(playlist)
+
     return flask_app
 
 

@@ -1,4 +1,5 @@
 import subprocess
+from base64 import b64encode
 from collections.abc import Generator
 from datetime import datetime, timezone
 from uuid import UUID
@@ -116,9 +117,15 @@ def client(client_without_session: FlaskClient) -> FlaskClient:
 
 @pytest.fixture
 def mock_token_refresh(requests_mock: Mocker) -> adapter._Matcher:
+    encoded_fake_auth = b64encode(
+        b"fake-spotify-client-id:fake-spotify-client-secret"
+    ).decode("utf8")
     return requests_mock.post(
         "https://accounts.spotify.com/api/token",
-        request_headers={"Content-Type": "application/x-www-form-urlencoded"},
+        request_headers={
+            "content-type": "application/x-www-form-urlencoded",
+            "Authorization": f"Basic {encoded_fake_auth}",
+        },
         json={
             "access_token": f"{FAKE_ACCESS_TOKEN}_new",
             "token_type": "Bearer",

@@ -44,11 +44,7 @@ def test_get_user_expired_token(
     assert user.id == FAKE_USER_ID
     assert mock_token_refresh.called
     assert mock_token_refresh.last_request.text == urlencode(
-        {
-            "grant_type": "refresh_token",
-            "refresh_token": FAKE_REFRESH_TOKEN,
-            "client_id": "fake-spotify-client-id",
-        }
+        {"grant_type": "refresh_token", "refresh_token": FAKE_REFRESH_TOKEN}
     )
 
     db_user = db_session.get(User, FAKE_USER_ID)

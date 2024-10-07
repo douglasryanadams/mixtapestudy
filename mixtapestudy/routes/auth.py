@@ -2,6 +2,7 @@ import logging
 import secrets
 import string
 from base64 import b64encode
+from datetime import UTC, datetime, timedelta
 from urllib.parse import ParseResult, urlencode
 
 import requests
@@ -98,6 +99,7 @@ def oauth_callback() -> Response:
 
     access_token = token_response.json().get("access_token")
     scope = token_response.json().get("scope")
+    expires_in = int(token_response.json().get("expires_in"))
     refresh_token = token_response.json().get("refresh_token")
 
     me_response = requests.get(
@@ -127,6 +129,7 @@ def oauth_callback() -> Response:
                     display_name=display_name,
                     email=user_email,
                     access_token=access_token,
+                    token_expires=datetime.now(tz=UTC) + timedelta(minutes=expires_in),
                     token_scope=scope,
                     refresh_token=refresh_token,
                 ),
@@ -138,6 +141,7 @@ def oauth_callback() -> Response:
                 display_name=display_name,
                 email=user_email,
                 access_token=access_token,
+                token_expires=datetime.now(tz=UTC) + timedelta(minutes=expires_in),
                 token_scope=scope,
                 refresh_token=refresh_token,
             )

@@ -1,4 +1,5 @@
 pytest
+pytest-socket
 ruff
 requests-mock
 freezegun

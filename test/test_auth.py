@@ -3,33 +3,25 @@
 import string
 from base64 import b64encode
 from collections.abc import Generator
-from http import HTTPStatus
+from datetime import datetime, timezone
+from http import HTTPMethod, HTTPStatus
 from unittest.mock import patch
 from urllib.parse import parse_qs, urlparse
 
 import pytest
 from flask import session
 from flask.testing import FlaskClient
+from freezegun import freeze_time
+from pytest_socket import SocketBlockedError
 from requests_mock import Mocker, adapter
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
 from mixtapestudy.config import SPOTIFY_BASE_URL
 from mixtapestudy.database import User
+from mixtapestudy.errors import UserIDMissingError
 from mixtapestudy.routes.auth import OAuthError
-
-# Need these to be longer than 255
-_STUB = (
-    "%s_"
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
-)
-FAKE_ACCESS_TOKEN = _STUB.format("fake-access-token")
-FAKE_REFRESH_TOKEN = _STUB.format("fake-refresh-token")
-
+from test.conftest import FAKE_ACCESS_TOKEN, FAKE_REFRESH_TOKEN, FAKE_USER_ID
 
 # TODO: Write tests for handling expired auth tokens
 
@@ -162,6 +154,7 @@ def test_oath_callback(
         assert user.email == "test@email.com"
         assert user.access_token == FAKE_ACCESS_TOKEN
         assert user.token_scope == "fake-scope fake-scope"  # noqa: S105
+        assert user.token_expires == datetime(2020, 1, 1, 1, 0, 0, tzinfo=timezone.utc)
         assert user.refresh_token == FAKE_REFRESH_TOKEN
 
         assert session["id"] == user.id
@@ -225,3 +218,53 @@ def test_logout(client: FlaskClient) -> None:
         assert r.headers["Location"] == "/"
         assert not session.get("id")
         assert not session.get("other")
+
+
+@pytest.mark.parametrize(
+    ("method", "url", "expected_exception"),
+    [
+        (HTTPMethod.GET, "/", None),
+        (HTTPMethod.GET, "/info", KeyError),
+        (HTTPMethod.GET, "/flask-health-check", None),
+        (HTTPMethod.GET, "/login", None),
+        (HTTPMethod.GET, "/logout", None),
+        (HTTPMethod.GET, "/oauth-callback", SocketBlockedError),
+        (HTTPMethod.GET, "/search", UserIDMissingError),
+        (HTTPMethod.POST, "/search/select", UserIDMissingError),
+        (HTTPMethod.POST, "/search/remove", UserIDMissingError),
+        (HTTPMethod.POST, "/playlist/preview", UserIDMissingError),
+        (HTTPMethod.POST, "/playlist/save", UserIDMissingError),
+    ],
+)
+def test_authorization(
+    method: HTTPMethod,
+    url: str,
+    expected_exception: type[Exception],
+    client_without_session: FlaskClient,
+) -> None:
+    func = lambda _: pytest.fail(f"Unexpected method: {method}")  # noqa: E731
+    match method:
+        case HTTPMethod.GET:
+            func = client_without_session.get
+        case HTTPMethod.POST:
+            func = client_without_session.post
+
+    if expected_exception:
+        with pytest.raises(expected_exception):
+            func(url)
+    else:
+        func(url)
+
+
+def test_token_refresh(
+    client: FlaskClient, mock_token_refresh: adapter._Matcher
+) -> None:
+    """Test of integration with get_user and one method."""
+    with client.session_transaction() as tsession:
+        tsession["id"] = FAKE_USER_ID
+        tsession["display_name"] = "Test Name"
+
+    with freeze_time("2020-01-01 02:00:00"):
+        client.get("/search")
+
+    assert mock_token_refresh.called

@@ -10,6 +10,7 @@ from requests_mock import Mocker, adapter
 
 from mixtapestudy.config import SPOTIFY_BASE_URL
 from mixtapestudy.errors import UserIDMissingError
+from test.conftest import FAKE_ACCESS_TOKEN, FAKE_USER_ID
 
 # TODO: Write tests to handle edge cases and errors
 # TODO: Test clicking all the buttons
@@ -20,7 +21,7 @@ def mock_search_request(requests_mock: Mocker) -> adapter._Matcher:
     params = urlencode({"q": "test-term", "type": "track", "limit": 8})
     return requests_mock.get(
         f"{SPOTIFY_BASE_URL}/search?{params}",
-        request_headers={"authorization": "Bearer fake-access-token"},
+        request_headers={"authorization": f"Bearer {FAKE_ACCESS_TOKEN}"},
         # This is a dramatically truncated version of this response
         # For full example see:
         #   https://developer.spotify.com/documentation/web-api/reference/search
@@ -65,7 +66,7 @@ def test_load_without_session(
 
 def test_load_empty_search_page(client: FlaskClient) -> None:
     with client.session_transaction() as tsession:
-        tsession["id"] = "test-id"
+        tsession["id"] = FAKE_USER_ID
         tsession["display_name"] = "Test Name"
 
     search_page_response = client.get("/search")

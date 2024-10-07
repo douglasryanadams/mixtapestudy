@@ -53,11 +53,11 @@ class CommonColumns(Base):
         autoincrement=False,
     )
     updated = mapped_column(
-        DateTime(),
+        DateTime(timezone=True),
         default=datetime.now(tz=UTC),
         onupdate=datetime.now(tz=UTC),
     )
-    created = mapped_column(DateTime(), default=datetime.now(tz=UTC))
+    created = mapped_column(DateTime(timezone=True), default=datetime.now(tz=UTC))
 
 
 class User(CommonColumns):
@@ -68,6 +68,7 @@ class User(CommonColumns):
     display_name = mapped_column(String(255), nullable=False)
     access_token = mapped_column(Text(), nullable=False)
     token_scope = mapped_column(String(255), nullable=False)
+    token_expires = mapped_column(DateTime(timezone=True), nullable=False)
     refresh_token = mapped_column(Text(), nullable=False)
 
     def __repr__(self) -> str:
@@ -79,6 +80,7 @@ class User(CommonColumns):
             f"{self.spotify_id=}, "
             f"{self.display_name=}, "
             f"{self.email=}, "
+            f"{self.token_expires=}, "
             f"{self.refresh_token=}"
             f")"
         )

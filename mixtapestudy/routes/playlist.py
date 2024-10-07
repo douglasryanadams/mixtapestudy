@@ -9,8 +9,9 @@ from requests import HTTPError
 
 from mixtapestudy.config import SPOTIFY_BASE_URL
 from mixtapestudy.database import User, get_session
-from mixtapestudy.errors import MixtapeHTTPError, UserIDMissingError
+from mixtapestudy.errors import MixtapeHTTPError
 from mixtapestudy.models import Song
+from mixtapestudy.routes.util import get_user
 
 logger = logging.getLogger(__name__)
 
@@ -19,14 +20,9 @@ playlist = Blueprint("playlist", __name__)
 
 @playlist.route("/playlist/preview", methods=["POST"])
 def generate_playlist() -> str:
-    user_id = session.get("id")
-    if not user_id:
-        raise UserIDMissingError
+    user = get_user()
 
-    with get_session() as db_session:
-        user = db_session.get(User, user_id)
-        logger.debug("User from database: %s", user)
-        access_token = user.access_token
+    access_token = user.access_token
 
     selected_songs = session.get("selected_songs")
     logger.debug("  selected_songs=%s", selected_songs)
@@ -72,9 +68,7 @@ def generate_playlist() -> str:
 
 @playlist.route("/playlist/save", methods=["POST"])
 def save_playlist() -> str | Response:
-    user_id = session.get("id")
-    if not user_id:
-        raise UserIDMissingError
+    user = get_user()
 
     playlist_songs_raw = request.form.get("playlist_songs")
     logger.debug("  playlist_songs_raw=%s", playlist_songs_raw)
@@ -84,7 +78,7 @@ def save_playlist() -> str | Response:
     playlist_uris = [song["uri"] for song in playlist_songs]
 
     with get_session() as db_session:
-        user = db_session.get(User, user_id)
+        user = db_session.get(User, user.id)
         logger.debug("User from database: %s", user)
         spotify_id = user.spotify_id
         access_token = user.access_token

@@ -9,6 +9,7 @@ from requests_mock import Mocker, adapter
 
 from mixtapestudy.config import SPOTIFY_BASE_URL
 from mixtapestudy.errors import UserIDMissingError
+from test.conftest import FAKE_ACCESS_TOKEN
 
 # TODO: Tests for edge cases
 
@@ -20,7 +21,7 @@ def mock_recommendation_request(requests_mock: Mocker) -> adapter._Matcher:
     )
     return requests_mock.get(
         f"{SPOTIFY_BASE_URL}/recommendations?{params}",
-        request_headers={"Authorization": "Bearer fake-access-token"},
+        request_headers={"Authorization": f"Bearer {FAKE_ACCESS_TOKEN}"},
         json={
             # This is a dramatically simplified version of this response
             # For full example see:
@@ -42,7 +43,7 @@ def mock_recommendation_request(requests_mock: Mocker) -> adapter._Matcher:
 def mock_create_playlist(requests_mock: Mocker) -> adapter._Matcher:
     return requests_mock.post(
         f"{SPOTIFY_BASE_URL}/users/fake-spotify-id/playlists",
-        request_headers={"Authorization": "Bearer fake-access-token"},
+        request_headers={"Authorization": f"Bearer {FAKE_ACCESS_TOKEN}"},
         json={"id": "fake-playlist-id"},
     )
 
@@ -51,7 +52,7 @@ def mock_create_playlist(requests_mock: Mocker) -> adapter._Matcher:
 def mock_add_songs_to_playlist(requests_mock: Mocker) -> adapter._Matcher:
     return requests_mock.post(
         f"{SPOTIFY_BASE_URL}/playlists/fake-playlist-id/tracks",
-        request_headers={"Authorization": "Bearer fake-access-token"},
+        request_headers={"Authorization": f"Bearer {FAKE_ACCESS_TOKEN}"},
     )
 
 

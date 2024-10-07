@@ -1,17 +1,36 @@
 import subprocess
 from collections.abc import Generator
+from datetime import datetime, timezone
 from uuid import UUID
 
 import pytest
 from flask import Flask
 from flask.testing import FlaskClient
 from freezegun import freeze_time
+from pytest_socket import disable_socket
+from requests_mock import Mocker, adapter
+from sqlalchemy import delete
 from sqlalchemy.orm import Session
 
 from mixtapestudy.app import create_app
 from mixtapestudy.database import User, get_session
 
 FAKE_USER_ID = UUID("7061fb8a-5680-44b2-86c9-17a008df0be2")
+# Need these to be longer than 255
+_STUB = (
+    "%s_"
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+)
+FAKE_ACCESS_TOKEN = _STUB.format("fake-access-token")
+FAKE_REFRESH_TOKEN = _STUB.format("fake-refresh-token")
+
+
+def pytest_runtest_setup() -> None:
+    disable_socket()
 
 
 @pytest.fixture(autouse=True)
@@ -46,6 +65,13 @@ def stack() -> Generator[None, None, None]:
     assert down.returncode == 0
 
 
+@pytest.fixture(autouse=True)
+def reset_database() -> None:
+    yield
+    with get_session() as db_session:
+        db_session.execute(delete(User))
+
+
 @pytest.fixture
 def db_session() -> Generator[Session, None, None]:
     with get_session() as sesh, sesh.begin():
@@ -65,22 +91,39 @@ def client_without_session(app: Flask) -> FlaskClient:
 
 
 @pytest.fixture
-def client(client_without_session: FlaskClient, db_session: Session) -> FlaskClient:
-    if not db_session.get(User, FAKE_USER_ID):
-        db_session.add(
-            User(
-                id=FAKE_USER_ID,
-                spotify_id="fake-spotify-id",
-                email="fake@email.com",
-                display_name="Fake Display Name",
-                access_token="fake-access-token",  # noqa: S106
-                token_scope="fake-scope fake-scope",  # noqa: S106
-                refresh_token="fake-refresh-token",  # noqa: S106
+def client(client_without_session: FlaskClient) -> FlaskClient:
+    with get_session() as db_session:
+        if not db_session.get(User, FAKE_USER_ID):
+            db_session.add(
+                User(
+                    id=FAKE_USER_ID,
+                    spotify_id="fake-spotify-id",
+                    email="fake@email.com",
+                    display_name="Fake Display Name",
+                    access_token=FAKE_ACCESS_TOKEN,
+                    token_expires=datetime(2020, 1, 1, 1, 0, 0, tzinfo=timezone.utc),
+                    token_scope="fake-scope fake-scope",  # noqa: S106
+                    refresh_token=FAKE_REFRESH_TOKEN,
+                )
             )
-        )
-        db_session.commit()
+            db_session.commit()
 
     with client_without_session.session_transaction() as tsession:
         tsession["id"] = FAKE_USER_ID
 
     return client_without_session  # Actually has a session now
+
+
+@pytest.fixture
+def mock_token_refresh(requests_mock: Mocker) -> adapter._Matcher:
+    return requests_mock.post(
+        "https://accounts.spotify.com/api/token",
+        request_headers={"Content-Type": "application/x-www-form-urlencoded"},
+        json={
+            "access_token": f"{FAKE_ACCESS_TOKEN}_new",
+            "token_type": "Bearer",
+            "expires_in": 3600,
+            "refresh_token": f"{FAKE_REFRESH_TOKEN}_new",
+            "scope": "fake-scope fake-scope",
+        },
+    )

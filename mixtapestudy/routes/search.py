@@ -6,8 +6,8 @@ from werkzeug.wrappers.response import Response
 
 from mixtapestudy.config import SPOTIFY_BASE_URL
 from mixtapestudy.database import User, get_session
-from mixtapestudy.errors import UserIDMissingError
 from mixtapestudy.models import Song
+from mixtapestudy.routes.util import get_user
 
 logger = logging.getLogger(__name__)
 
@@ -16,18 +16,16 @@ search = Blueprint("search", __name__)
 
 @search.route("/search")
 def get_search_page() -> str:
-    user_id = session.get("id")
-    if not user_id:
-        raise UserIDMissingError
+    user = get_user()
 
-    logger.debug("User ID from session: %s", user_id)
+    logger.debug("User ID from session: %s", user.id)
 
     search_term = request.args.get("search_term")
     search_results = []
 
     if search_term:
         with get_session() as db_session:
-            user = db_session.get(User, user_id)
+            user = db_session.get(User, user.id)
             logger.debug("User from database: %s", user)
             access_token = user.access_token
 
@@ -71,9 +69,7 @@ def get_search_page() -> str:
 
 @search.route("/search/select", methods=["POST"])
 def select_song() -> Response:
-    user_id = session.get("id")
-    if not user_id:
-        raise UserIDMissingError
+    get_user()
 
     selected_songs = session.get(
         "selected_songs", [{"id": None}, {"id": None}, {"id": None}]
@@ -93,9 +89,7 @@ def select_song() -> Response:
 
 @search.route("/search/remove", methods=["POST"])
 def remove_song() -> Response:
-    user_id = session.get("id")
-    if not user_id:
-        raise UserIDMissingError
+    get_user()
 
     selected_songs = session.get("selected_songs", [])
     item_index = request.form.get("index")

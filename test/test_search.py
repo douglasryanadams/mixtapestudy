@@ -9,7 +9,6 @@ from flask.testing import FlaskClient
 from requests_mock import Mocker, adapter
 
 from mixtapestudy.config import SPOTIFY_BASE_URL
-from mixtapestudy.errors import UserIDMissingError
 from test.conftest import FAKE_ACCESS_TOKEN, FAKE_USER_ID
 
 # TODO: Write tests to handle edge cases and errors
@@ -45,23 +44,6 @@ def mock_search_request(requests_mock: Mocker) -> adapter._Matcher:
             }
         },
     )
-
-
-@pytest.mark.parametrize(
-    ("method", "path"),
-    [("GET", "/search"), ("POST", "/search/select"), ("POST", "/search/remove")],
-)
-def test_load_without_session(
-    client_without_session: FlaskClient, method: str, path: str
-) -> None:
-    if method == "GET":
-        with pytest.raises(UserIDMissingError):
-            client_without_session.get(path)
-    elif method == "POST":
-        with pytest.raises(UserIDMissingError):
-            client_without_session.post(path)
-    else:
-        pytest.fail(f"Unexpected method type provided: {method}")
 
 
 def test_load_empty_search_page(client: FlaskClient) -> None:

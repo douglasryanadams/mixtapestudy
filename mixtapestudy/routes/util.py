@@ -9,8 +9,8 @@ from sqlalchemy.orm import Session
 
 from mixtapestudy.config import get_config
 from mixtapestudy.data import UserData
-from mixtapestudy.database import User, get_session
-from mixtapestudy.errors import UserIDMissingError
+from mixtapestudy.database import UnexpectedDatabaseError, User, get_session
+from mixtapestudy.errors import UserDatabaseRowMissingError, UserIDMissingError
 
 logger = logging.getLogger(__name__)
 
@@ -65,20 +65,27 @@ def get_user() -> UserData:
     if not user_id:
         raise UserIDMissingError
 
-    with get_session() as db_session:
-        user = db_session.get(User, user_id)
+    try:
+        with get_session() as db_session:
+            user = db_session.get(User, user_id)
+            if not user:
+                session.clear()
+                raise UserDatabaseRowMissingError
 
-        five_minutes_from_now = datetime.now(tz=UTC) + timedelta(minutes=5)
-        logger.debug("  token_expires: %s", user.token_expires)
-        logger.debug("  five_minutes_from_now: %s", five_minutes_from_now)
-        logger.debug(
-            "  token_expires - five_minutes_from_now = %s",
-            user.token_expires - five_minutes_from_now,
-        )
-        if user.token_expires < five_minutes_from_now:
-            _refresh_token(user, db_session)
+            five_minutes_from_now = datetime.now(tz=UTC) + timedelta(minutes=5)
+            logger.debug("  token_expires: %s", user.token_expires)
+            logger.debug("  five_minutes_from_now: %s", five_minutes_from_now)
+            logger.debug(
+                "  token_expires - five_minutes_from_now = %s",
+                user.token_expires - five_minutes_from_now,
+            )
+            if user.token_expires < five_minutes_from_now:
+                _refresh_token(user, db_session)
 
-        user_dict = {
-            column.name: getattr(user, column.name) for column in User.__mapper__.c
-        }
-        return UserData(**user_dict)
+            user_dict = {
+                column.name: getattr(user, column.name) for column in User.__mapper__.c
+            }
+            return UserData(**user_dict)
+    except UnexpectedDatabaseError as error:
+        session.clear()
+        raise UserDatabaseRowMissingError from error

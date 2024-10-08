@@ -4,10 +4,11 @@ from urllib.parse import urlencode
 import pytest
 from flask.testing import FlaskClient
 from requests_mock import adapter
+from sqlalchemy import delete
 from sqlalchemy.orm import Session
 
 from mixtapestudy.database import User, get_session
-from mixtapestudy.errors import UserIDMissingError
+from mixtapestudy.errors import UserDatabaseRowMissingError, UserIDMissingError
 from mixtapestudy.routes.util import get_user
 from test.conftest import FAKE_ACCESS_TOKEN, FAKE_REFRESH_TOKEN, FAKE_USER_ID
 
@@ -18,6 +19,17 @@ def test_get_user_no_session(client_without_session: FlaskClient) -> None:
         pytest.raises(UserIDMissingError),
     ):
         get_user()
+
+
+def test_get_user_no_user_in_database(client: FlaskClient) -> None:
+    with get_session() as db_session:
+        db_session.execute(delete(User))
+
+    with client.application.test_request_context() as context:
+        context.session["id"] = FAKE_USER_ID
+        with pytest.raises(UserDatabaseRowMissingError):
+            get_user()
+        assert "id" not in context.session
 
 
 def test_get_user_valid_session(client: FlaskClient) -> None:

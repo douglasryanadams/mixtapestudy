@@ -5,11 +5,9 @@ from urllib.parse import ParseResult
 
 import requests
 from flask import Blueprint, Response, redirect, render_template, request, session
-from requests import HTTPError
 
 from mixtapestudy.config import SPOTIFY_BASE_URL
 from mixtapestudy.database import User, get_session
-from mixtapestudy.errors import MixtapeHTTPError
 from mixtapestudy.models import Song
 from mixtapestudy.routes.util import get_user
 
@@ -36,13 +34,7 @@ def generate_playlist() -> str:
         headers={"Authorization": f"Bearer {access_token}"},
         timeout=30,
     )
-    try:
-        playlist_response.raise_for_status()
-    except HTTPError as error:
-        error.add_note("Failed to fetch song recommendations")
-        error.add_note(error.response.text)
-        error.add_note(error.request)
-        raise MixtapeHTTPError(error) from error
+    playlist_response.raise_for_status()
 
     playlist_songs = [
         Song(

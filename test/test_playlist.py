@@ -8,7 +8,6 @@ from flask.testing import FlaskClient
 from requests_mock import Mocker, adapter
 
 from mixtapestudy.config import SPOTIFY_BASE_URL
-from mixtapestudy.errors import UserIDMissingError
 from test.conftest import FAKE_ACCESS_TOKEN
 
 # TODO: Tests for edge cases
@@ -57,8 +56,9 @@ def mock_add_songs_to_playlist(requests_mock: Mocker) -> adapter._Matcher:
 
 
 def test_load_without_session(client_without_session: FlaskClient) -> None:
-    with pytest.raises(UserIDMissingError):
-        client_without_session.post("/playlist/preview")
+    r = client_without_session.post("/playlist/preview")
+    assert r.status_code == HTTPStatus.FOUND
+    assert r.location == "/"
 
 
 def test_load_page(

@@ -12,15 +12,12 @@ import pytest
 from flask import session
 from flask.testing import FlaskClient
 from freezegun import freeze_time
-from pytest_socket import SocketBlockedError
 from requests_mock import Mocker, adapter
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
 from mixtapestudy.config import SPOTIFY_BASE_URL
 from mixtapestudy.database import User
-from mixtapestudy.errors import UserIDMissingError
-from mixtapestudy.routes.auth import OAuthError
 from test.conftest import FAKE_ACCESS_TOKEN, FAKE_REFRESH_TOKEN, FAKE_USER_ID
 
 # TODO: Write tests for handling expired auth tokens
@@ -122,7 +119,7 @@ def test_login(client_without_session: FlaskClient, fake_random_choices: str) ->
     }
 
 
-def test_oath_callback(
+def test_oauth_callback(
     client_without_session: FlaskClient,
     db_session: Session,
     mock_token_request: Mocker,
@@ -200,11 +197,11 @@ def test_login_again_with_existing_session(
         assert not session.get("test-session-data")
 
 
-def test_oath_callback_error(client_without_session: FlaskClient) -> None:
-    with pytest.raises(OAuthError):
-        client_without_session.get(
-            "/oauth-callback", query_string={"code": "fake-code", "error": "fake error"}
-        )
+def test_oauth_callback_error(client_without_session: FlaskClient) -> None:
+    r = client_without_session.get(
+        "/oauth-callback", query_string={"code": "fake-code", "error": "fake error"}
+    )
+    assert r.status_code == HTTPStatus.INTERNAL_SERVER_ERROR
 
 
 def test_logout(client: FlaskClient) -> None:
@@ -221,25 +218,25 @@ def test_logout(client: FlaskClient) -> None:
 
 
 @pytest.mark.parametrize(
-    ("method", "url", "expected_exception"),
+    ("method", "url", "http_code"),
     [
-        (HTTPMethod.GET, "/", None),
-        (HTTPMethod.GET, "/info", KeyError),
-        (HTTPMethod.GET, "/flask-health-check", None),
-        (HTTPMethod.GET, "/login", None),
-        (HTTPMethod.GET, "/logout", None),
-        (HTTPMethod.GET, "/oauth-callback", SocketBlockedError),
-        (HTTPMethod.GET, "/search", UserIDMissingError),
-        (HTTPMethod.POST, "/search/select", UserIDMissingError),
-        (HTTPMethod.POST, "/search/remove", UserIDMissingError),
-        (HTTPMethod.POST, "/playlist/preview", UserIDMissingError),
-        (HTTPMethod.POST, "/playlist/save", UserIDMissingError),
+        (HTTPMethod.GET, "/", 200),
+        (HTTPMethod.GET, "/info", 500),
+        (HTTPMethod.GET, "/flask-health-check", 200),
+        (HTTPMethod.GET, "/login", 302),
+        (HTTPMethod.GET, "/logout", 302),
+        (HTTPMethod.GET, "/oauth-callback", 500),
+        (HTTPMethod.GET, "/search", 302),
+        (HTTPMethod.POST, "/search/select", 302),
+        (HTTPMethod.POST, "/search/remove", 302),
+        (HTTPMethod.POST, "/playlist/preview", 302),
+        (HTTPMethod.POST, "/playlist/save", 302),
     ],
 )
 def test_authorization(
     method: HTTPMethod,
     url: str,
-    expected_exception: type[Exception],
+    http_code: int,
     client_without_session: FlaskClient,
 ) -> None:
     func = lambda _: pytest.fail(f"Unexpected method: {method}")  # noqa: E731
@@ -248,12 +245,8 @@ def test_authorization(
             func = client_without_session.get
         case HTTPMethod.POST:
             func = client_without_session.post
-
-    if expected_exception:
-        with pytest.raises(expected_exception):
-            func(url)
-    else:
-        func(url)
+    r = func(url)
+    assert r.status_code == http_code
 
 
 def test_token_refresh(

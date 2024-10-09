@@ -38,11 +38,14 @@ class InterceptHandler(logging.Handler):
 
 # https://loguru.readthedocs.io/en/stable/api/logger.html#record
 logger.remove()
+logger.configure(extra={"spotify_id": "-", "user": "-"})
 logging.basicConfig(handlers=[InterceptHandler()], level=0, force=True)
 logger.add(
     sys.stdout,
     colorize=True,
     format="<level>{level: <8}</level> "
+    "| <light-blue>{extra[spotify_id]}</light-blue>"
+    ":<light-green>{extra[user]}</light-green> "
     "| <yellow>{name}:{line}</yellow> "
     "| <level>{message}</level>",
 )
@@ -62,7 +65,9 @@ def create_app() -> Flask:
         config.log_file,
         level=logging.INFO,
         colorize=False,
-        format="{time} | {level: <8} | {name}:{line} | {message}",
+        format="{time:YYYY-MM-DD HH:mm:ss.SSS} "
+        "| {extra[spotify_id]}:{extra[user]} "
+        "| {level: <8} | {name}:{line} | {message}",
     )
     flask_app = flask.Flask(__name__)
     from mixtapestudy.routes.auth import auth

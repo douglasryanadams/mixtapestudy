@@ -55,6 +55,7 @@ def login() -> Response:
 @auth.route("/logout")
 def logout() -> Response:
     session.clear()
+    logger.configure(extra={"spotify_id": "-", "user": "-"})
     return redirect("/")
 
 
@@ -155,6 +156,8 @@ def oauth_callback() -> Response:
             db_session.add(new_user)
             db_session.flush()
             session["id"] = new_user.id
+
+    logger.configure(extra={"spotify_id": user_id, "user": str(session["id"])[24:]})
 
     session["display_name"] = display_name
 

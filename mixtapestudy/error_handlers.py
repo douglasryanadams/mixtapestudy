@@ -27,10 +27,13 @@ def handle_generic_errors(error: Exception) -> (str, int):
         error.add_note(f"Error code: {error_code}")
         error.add_note(f"User ID: {user_id}")
         logger.exception(error)
-    except Exception as error_handling_error:  # noqa: BLE001
-        logger.exception(error_handling_error)
+    except Exception:  # noqa: BLE001
+        logger.exception("Unexpected exception while handling generic error")
     finally:
-        return render_template("500_error.html.j2", error_code=error_code), 500  # noqa: B012
+        return (  # noqa: B012
+            render_template("500_error.html.j2", error_code=str(error_code)[24:]),
+            500,
+        )
 
 
 def handle_http_request_error(error: HTTPError) -> (str, int):

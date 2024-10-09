@@ -1,8 +1,8 @@
-import logging
 from datetime import UTC, datetime, timedelta
 
 import requests
 from flask import session
+from loguru import logger
 from requests import HTTPError
 from requests.auth import HTTPBasicAuth
 from sqlalchemy.orm import Session
@@ -11,8 +11,6 @@ from mixtapestudy.config import get_config
 from mixtapestudy.data import UserData
 from mixtapestudy.database import UnexpectedDatabaseError, User, get_session
 from mixtapestudy.errors import UserDatabaseRowMissingError, UserIDMissingError
-
-logger = logging.getLogger(__name__)
 
 
 def _refresh_token(user: User, session: Session) -> None:
@@ -33,14 +31,14 @@ def _refresh_token(user: User, session: Session) -> None:
         refresh_response.raise_for_status()
     except HTTPError as error:
         logger.warning(
-            "HTTP Request Failed!\n%s\n%s\n%s",
+            "HTTP Request Failed!\n{}\n{}\n{}",
             error,
             error.response.headers,
             error.response.text,
         )
         raise
 
-    logger.debug("  Refresh token response: %s", refresh_response.json())
+    logger.debug("  Refresh token response: {}", refresh_response.json())
     user.access_token = refresh_response.json()["access_token"]
     if "refresh_token" in refresh_response.json():
         user.refresh_token = refresh_response.json()["refresh_token"]
@@ -61,7 +59,7 @@ def get_user() -> UserData:
     2. Make sure the Spotify token for this user os up to date
     """
     user_id = session.get("id")
-    logger.info("Handling request for user: %s", user_id)
+    logger.info("Handling request for user: {}", user_id)
     if not user_id:
         raise UserIDMissingError
 
@@ -73,10 +71,10 @@ def get_user() -> UserData:
                 raise UserDatabaseRowMissingError
 
             five_minutes_from_now = datetime.now(tz=UTC) + timedelta(minutes=5)
-            logger.debug("  token_expires: %s", user.token_expires)
-            logger.debug("  five_minutes_from_now: %s", five_minutes_from_now)
+            logger.debug("  token_expires: {}", user.token_expires)
+            logger.debug("  five_minutes_from_now: {}", five_minutes_from_now)
             logger.debug(
-                "  token_expires - five_minutes_from_now = %s",
+                "  token_expires - five_minutes_from_now = {}",
                 user.token_expires - five_minutes_from_now,
             )
             if user.token_expires < five_minutes_from_now:

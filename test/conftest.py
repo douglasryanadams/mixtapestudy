@@ -42,6 +42,7 @@ def set_time() -> None:
 
 @pytest.fixture(autouse=True)
 def set_env(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("LOG_FILE", "/dev/null")  # DEBUG logs still written to stdout
     monkeypatch.setenv("OAUTH_REDIRECT_BASE_URL", "http://fake-test-domain")
     monkeypatch.setenv("SPOTIFY_CLIENT_ID", "fake-spotify-client-id")
     monkeypatch.setenv("SPOTIFY_CLIENT_SECRET", "fake-spotify-client-secret")

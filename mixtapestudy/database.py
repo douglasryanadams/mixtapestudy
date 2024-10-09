@@ -1,4 +1,3 @@
-import logging
 import uuid
 from collections.abc import Generator
 from contextlib import contextmanager
@@ -8,8 +7,6 @@ from sqlalchemy import DateTime, Engine, String, Text, Uuid, create_engine
 from sqlalchemy.orm import DeclarativeBase, Session, mapped_column
 
 from mixtapestudy.config import get_config
-
-logger = logging.getLogger(__name__)
 
 _database_engine = None
 

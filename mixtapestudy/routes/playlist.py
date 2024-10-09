@@ -1,17 +1,15 @@
 import json
-import logging
 from datetime import datetime, timezone
 from urllib.parse import ParseResult
 
 import requests
 from flask import Blueprint, Response, redirect, render_template, request, session
+from loguru import logger
 
 from mixtapestudy.config import SPOTIFY_BASE_URL
 from mixtapestudy.database import User, get_session
 from mixtapestudy.models import Song
 from mixtapestudy.routes.util import get_user
-
-logger = logging.getLogger(__name__)
 
 playlist = Blueprint("playlist", __name__)
 
@@ -23,7 +21,7 @@ def generate_playlist() -> str:
     access_token = user.access_token
 
     selected_songs = session.get("selected_songs")
-    logger.debug("  selected_songs=%s", selected_songs)
+    logger.debug("  selected_songs={}", selected_songs)
 
     playlist_response = requests.get(
         url=f"{SPOTIFY_BASE_URL}/recommendations",
@@ -63,7 +61,7 @@ def save_playlist() -> str | Response:
     user = get_user()
 
     playlist_songs_raw = request.form.get("playlist_songs")
-    logger.debug("  playlist_songs_raw=%s", playlist_songs_raw)
+    logger.debug("  playlist_songs_raw={}", playlist_songs_raw)
 
     playlist_songs = json.loads(playlist_songs_raw)
     playlist_name = request.form.get("playlist_name")
@@ -71,7 +69,7 @@ def save_playlist() -> str | Response:
 
     with get_session() as db_session:
         user = db_session.get(User, user.id)
-        logger.debug("User from database: %s", user)
+        logger.debug("User from database: {}", user)
         spotify_id = user.spotify_id
         access_token = user.access_token
 

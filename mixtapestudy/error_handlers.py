@@ -1,12 +1,10 @@
-import logging
 from uuid import uuid4
 
 from flask import Response, redirect, render_template, session
+from loguru import logger
 from requests import HTTPError
 
 from mixtapestudy.errors import UserDatabaseRowMissingError, UserIDMissingError
-
-logger = logging.getLogger(__name__)
 
 
 def handle_user_id_missing(_: UserIDMissingError) -> Response:
@@ -29,8 +27,8 @@ def handle_generic_errors(error: Exception) -> (str, int):
         error.add_note(f"Error code: {error_code}")
         error.add_note(f"User ID: {user_id}")
         logger.exception(error)
-    except Exception as error_handling_error:
-        logger.exception(error_handling_error)  # noqa: TRY401
+    except Exception as error_handling_error:  # noqa: BLE001
+        logger.exception(error_handling_error)
     finally:
         return render_template("500_error.html.j2", error_code=error_code), 500  # noqa: B012
 
@@ -43,7 +41,7 @@ def handle_http_request_error(error: HTTPError) -> (str, int):
         error.add_note(f"Response: {error.response}")
         error.add_note(f"Response headers: {error.response.headers}")
         error.add_note(f"Response body: {error.response.text}")
-    except Exception as error_handling_error:
-        logger.exception(error_handling_error)  # noqa: TRY401
+    except Exception as error_handling_error:  # noqa: BLE001
+        logger.exception(error_handling_error)
     finally:
         return handle_generic_errors(error)  # noqa: B012

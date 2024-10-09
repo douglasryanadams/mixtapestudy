@@ -1,8 +1,10 @@
+import inspect
 import logging
 import sys
 
 import flask
 from flask import Flask
+from loguru import logger
 from requests import HTTPError
 
 from mixtapestudy.config import get_config
@@ -14,11 +16,37 @@ from mixtapestudy.error_handlers import (
 )
 from mixtapestudy.errors import UserDatabaseRowMissingError, UserIDMissingError
 
-logging.basicConfig(
-    level=logging.DEBUG,
-    stream=sys.stdout,
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+
+class InterceptHandler(logging.Handler):
+    def emit(self, record: logging.LogRecord) -> None:
+        # Get corresponding Loguru level if it exists.
+        try:
+            level = logger.level(record.levelname).name
+        except ValueError:
+            level = record.levelno
+
+        # Find caller from where originated the logged message.
+        frame, depth = inspect.currentframe(), 0
+        while frame and (depth == 0 or frame.f_code.co_filename == logging.__file__):
+            frame = frame.f_back
+            depth += 1
+
+        logger.opt(depth=depth, exception=record.exc_info).log(
+            level, record.getMessage()
+        )
+
+
+# https://loguru.readthedocs.io/en/stable/api/logger.html#record
+logger.remove()
+logging.basicConfig(handlers=[InterceptHandler()], level=0, force=True)
+logger.add(
+    sys.stdout,
+    colorize=True,
+    format="<level>{level: <8}</level> "
+    "| <yellow>{name}:{line}</yellow> "
+    "| <level>{message}</level>",
 )
+
 requests_logger = logging.getLogger("requests.packages.urllib3")
 requests_logger.setLevel(logging.DEBUG)
 requests_logger.propagate = True
@@ -27,11 +55,15 @@ sqlalchemy_logger = logging.getLogger("sqlalchemy.engine")
 sqlalchemy_logger.setLevel(logging.DEBUG)
 sqlalchemy_logger.propagate = True
 
-logger = logging.getLogger(__name__)
-
 
 def create_app() -> Flask:
-    get_config()  # Loads environment variables
+    config = get_config()  # Loads environment variables
+    logger.add(
+        config.log_file,
+        level=logging.INFO,
+        colorize=False,
+        format="{time} | {level: <8} | {name}:{line} | {message}",
+    )
     flask_app = flask.Flask(__name__)
     from mixtapestudy.routes.auth import auth
     from mixtapestudy.routes.playlist import playlist

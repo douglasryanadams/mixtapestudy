@@ -1,7 +1,6 @@
-import logging
 import os
 
-logger = logging.getLogger(__name__)
+from loguru import logger
 
 SPOTIFY_BASE_URL = "https://api.spotify.com/v1"
 
@@ -13,16 +12,21 @@ class MissingEnvironmentVariableError(Exception):
 
 class Config:
     def __init__(self) -> None:
+        self._log_file: str = os.environ.get(
+            "LOG_FILE", "/opt/mixtapestudy/mixtapestudy.log"
+        )
+        logger.debug("logfile={}", self._log_file)  # Ironically
+
         self._oauth_redirect_base_url: str = os.environ.get(
             "OAUTH_REDIRECT_BASE_URL",
             "https://mixtapestudy.com",
         )
-        logger.debug("oauth_redirect_base_url=%s", self._oauth_redirect_base_url)
+        logger.debug("oauth_redirect_base_url={}", self._oauth_redirect_base_url)
 
         self._spotify_client_id: str = os.environ.get("SPOTIFY_CLIENT_ID")
         if not self._spotify_client_id:
             raise MissingEnvironmentVariableError("SPOTIFY_CLIENT_ID")
-        logger.debug("spotify_client_id=%s", self._spotify_client_id)
+        logger.debug("spotify_client_id={}", self._spotify_client_id)
 
         self._spotify_client_secret: str = os.environ.get("SPOTIFY_CLIENT_SECRET", "")
         if not self._spotify_client_secret:
@@ -38,6 +42,10 @@ class Config:
         if not self._session_secret:
             raise MissingEnvironmentVariableError("SESSION_SECRET")
         logger.debug("SESSION_SECRET defined (not shown)")
+
+    @property
+    def log_file(self) -> str:
+        return self._log_file
 
     @property
     def oauth_redirect_base_url(self) -> str:

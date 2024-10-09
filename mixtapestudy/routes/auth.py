@@ -1,4 +1,3 @@
-import logging
 import secrets
 import string
 from datetime import UTC, datetime, timedelta
@@ -6,6 +5,7 @@ from urllib.parse import ParseResult, urlencode
 
 import requests
 from flask import Blueprint, redirect, request, session
+from loguru import logger
 from requests import HTTPError
 from requests.auth import HTTPBasicAuth
 from sqlalchemy import select, update
@@ -13,8 +13,6 @@ from werkzeug.wrappers.response import Response
 
 from mixtapestudy.config import SPOTIFY_BASE_URL, get_config
 from mixtapestudy.database import User, get_session
-
-logger = logging.getLogger(__name__)
 
 auth = Blueprint("auth", __name__)
 
@@ -40,7 +38,7 @@ def login() -> Response:
             secrets.choice(string.ascii_letters + string.digits) for _ in range(16)
         ),
     }
-    logger.debug("OAuth query params: %s", params)
+    logger.debug("OAuth query params: {}", params)
     return_url = ParseResult(
         scheme="https",
         netloc="accounts.spotify.com",
@@ -50,7 +48,7 @@ def login() -> Response:
         fragment="",
     ).geturl()
 
-    logger.debug("  login redirect = %s", return_url)
+    logger.debug("  login redirect = {}", return_url)
     return redirect(return_url)
 
 
@@ -98,14 +96,14 @@ def oauth_callback() -> Response:
         token_response.raise_for_status()
     except HTTPError as error:
         logger.warning(
-            "HTTP Request Failed!\n%s\n%s\n%s",
+            "HTTP Request Failed!\n{}\n{}\n{}",
             error,
             error.response.headers,
             error.response.text,
         )
         raise
 
-    logger.debug("  Access token response: %s", token_response.json())
+    logger.debug("  Access token response: {}", token_response.json())
     access_token = token_response.json().get("access_token")
     scope = token_response.json().get("scope")
     expires_in = int(token_response.json().get("expires_in"))

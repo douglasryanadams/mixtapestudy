@@ -13,7 +13,7 @@ class MissingEnvironmentVariableError(Exception):
 class Config:
     def __init__(self) -> None:
         self._log_file: str = os.environ.get(
-            "LOG_FILE", "/opt/mixtapestudy/mixtapestudy.log"
+            "LOG_FILE", "/home/app/log/mixtapestudy.log"
         )
         logger.debug("logfile={}", self._log_file)  # Ironically
 

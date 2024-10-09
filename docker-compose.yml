@@ -52,6 +52,8 @@ services:
       SPOTIFY_CLIENT_ID: "${SPOTIFY_CLIENT_ID}"
       SESSION_SECRET: "${SESSION_SECRET}"
       DATABASE_URL: "${DATABASE_URL}"
+    volumes:
+      - ./build/log:/home/app/log
     depends_on:
       migration_done:
         condition: service_completed_successfully

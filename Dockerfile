@@ -8,6 +8,7 @@ RUN apk add curl build-base libpq libpq-dev
 
 RUN adduser -D nonroot
 RUN mkdir /home/app/ && chown -R nonroot:nonroot /home/app
+RUN mkdir /home/app/log
 WORKDIR /home/app
 USER nonroot
 

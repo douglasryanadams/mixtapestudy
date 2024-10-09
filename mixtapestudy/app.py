@@ -65,6 +65,8 @@ def create_app() -> Flask:
         config.log_file,
         level=logging.INFO,
         colorize=False,
+        rotation="500 MB",
+        retention=10,
         format="{time:YYYY-MM-DD HH:mm:ss.SSS} "
         "| {extra[spotify_id]}:{extra[user]} "
         "| {level: <8} | {name}:{line} | {message}",

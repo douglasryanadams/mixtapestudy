@@ -6,9 +6,11 @@ import flask
 from flask import Flask
 from loguru import logger
 from requests import HTTPError
+from werkzeug.exceptions import NotFound
 
 from mixtapestudy.config import get_config
 from mixtapestudy.error_handlers import (
+    handle_404_not_found,
     handle_generic_errors,
     handle_http_request_error,
     handle_user_id_missing,
@@ -85,6 +87,7 @@ def create_app() -> Flask:
 
     flask_app.register_error_handler(UserIDMissingError, handle_user_id_missing)
     flask_app.register_error_handler(UserDatabaseRowMissingError, handle_user_missing)
+    flask_app.register_error_handler(NotFound, handle_404_not_found)
     flask_app.register_error_handler(HTTPError, handle_http_request_error)
     flask_app.register_error_handler(Exception, handle_generic_errors)
 

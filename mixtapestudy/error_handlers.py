@@ -1,8 +1,9 @@
 from uuid import uuid4
 
-from flask import Response, redirect, render_template, session
+from flask import Response, redirect, render_template
 from loguru import logger
 from requests import HTTPError
+from werkzeug.exceptions import NotFound
 
 from mixtapestudy.errors import UserDatabaseRowMissingError, UserIDMissingError
 
@@ -23,9 +24,7 @@ def handle_user_missing(_: UserDatabaseRowMissingError) -> Response:
 def handle_generic_errors(error: Exception) -> (str, int):
     error_code = uuid4()
     try:
-        user_id = session.get("id")
         error.add_note(f"Error code: {error_code}")
-        error.add_note(f"User ID: {user_id}")
         logger.exception(error)
     except Exception:  # noqa: BLE001
         logger.exception("Unexpected exception while handling generic error")
@@ -48,3 +47,17 @@ def handle_http_request_error(error: HTTPError) -> (str, int):
         logger.exception(error_handling_error)
     finally:
         return handle_generic_errors(error)  # noqa: B012
+
+
+def handle_404_not_found(error: NotFound) -> (str, int):
+    error_code = uuid4()
+    try:
+        error.add_note(f"Error code: {error_code}")
+        logger.exception(error)
+    except Exception:  # noqa: BLE001
+        logger.exception("Unexpected exception while handling Not Found error")
+    finally:
+        return (  # noqa: B012
+            render_template("404_error.html.j2", error_code=str(error_code)[24:]),
+            404,
+        )

@@ -1,6 +1,6 @@
 from uuid import uuid4
 
-from flask import Response, redirect, render_template
+from flask import Response, redirect, render_template, request
 from loguru import logger
 from requests import HTTPError
 from werkzeug.exceptions import NotFound
@@ -53,7 +53,7 @@ def handle_404_not_found(error: NotFound) -> (str, int):
     error_code = uuid4()
     try:
         error.add_note(f"Error code: {error_code}")
-        logger.exception(error)
+        logger.debug("Unknown page requested: {}", request.path)
     except Exception:  # noqa: BLE001
         logger.exception("Unexpected exception while handling Not Found error")
     finally:

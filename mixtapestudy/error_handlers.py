@@ -3,7 +3,7 @@ from uuid import uuid4
 from flask import Response, redirect, render_template, request
 from loguru import logger
 from requests import HTTPError
-from werkzeug.exceptions import NotFound
+from werkzeug.exceptions import HTTPException, NotFound
 
 from mixtapestudy.errors import UserDatabaseRowMissingError, UserIDMissingError
 
@@ -61,3 +61,7 @@ def handle_404_not_found(error: NotFound) -> (str, int):
             render_template("404_error.html.j2", error_code=str(error_code)[24:]),
             404,
         )
+
+
+def handle_dev_null_bots(_: HTTPException) -> (str, int):
+    return "Bad Gateway", 502

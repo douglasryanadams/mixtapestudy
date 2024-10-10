@@ -222,6 +222,7 @@ def test_logout(client: FlaskClient) -> None:
     [
         (HTTPMethod.GET, "/", 200),
         (HTTPMethod.GET, "/doesntexist", 404),
+        (HTTPMethod.POST, "/", 502),
         (HTTPMethod.GET, "/info", 500),
         (HTTPMethod.GET, "/flask-health-check", 200),
         (HTTPMethod.GET, "/login", 302),

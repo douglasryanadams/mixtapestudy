@@ -3,6 +3,7 @@ import logging
 import sys
 
 import flask
+import sentry_sdk
 from flask import Flask
 from loguru import logger
 from requests import HTTPError
@@ -74,6 +75,9 @@ def create_app() -> Flask:
         "| {extra[spotify_id]}:{extra[user]} "
         "| {level: <8} | {name}:{line} | {message}",
     )
+
+    sentry_sdk.init(sample_rate=0.5, traces_sample_rate=0.1, profiles_sample_rate=0.1)
+
     flask_app = flask.Flask(__name__)
     from mixtapestudy.routes.auth import auth
     from mixtapestudy.routes.playlist import playlist

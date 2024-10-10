@@ -1,5 +1,5 @@
 
-.venv/bin/python:
+.venv/bin/python: requirements.txt requirements-test.txt
 	python3.11 -m venv .venv
 	.venv/bin/python -m pip install -r requirements.txt -r requirements-test.txt
 

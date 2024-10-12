@@ -4,8 +4,7 @@ from datetime import UTC, datetime, timedelta
 from urllib.parse import ParseResult, urlencode
 
 import requests
-from flask import Blueprint, redirect, request, session
-from loguru import logger
+from flask import Blueprint, g, redirect, request, session
 from requests import HTTPError
 from requests.auth import HTTPBasicAuth
 from sqlalchemy import select, update
@@ -38,7 +37,7 @@ def login() -> Response:
             secrets.choice(string.ascii_letters + string.digits) for _ in range(16)
         ),
     }
-    logger.debug("OAuth query params: {}", params)
+    g.logger.debug("OAuth query params: {}", params)
     return_url = ParseResult(
         scheme="https",
         netloc="accounts.spotify.com",
@@ -48,14 +47,13 @@ def login() -> Response:
         fragment="",
     ).geturl()
 
-    logger.debug("  login redirect = {}", return_url)
+    g.logger.debug("  login redirect = {}", return_url)
     return redirect(return_url)
 
 
 @auth.route("/logout")
 def logout() -> Response:
     session.clear()
-    logger.configure(extra={"spotify_id": "-", "user": "-"})
     return redirect("/")
 
 
@@ -68,7 +66,7 @@ def oauth_callback() -> Response:
     # TODO: Validate the state; state = request.args.get("state")
 
     if error_message:
-        logger.error(error_message)
+        g.logger.error(error_message)
         raise OAuthError(error_message)  # TODO: Replace with good error messaging
 
     token_url = ParseResult(
@@ -96,7 +94,7 @@ def oauth_callback() -> Response:
     try:
         token_response.raise_for_status()
     except HTTPError as error:
-        logger.warning(
+        g.logger.warning(
             "HTTP Request Failed!\n{}\n{}\n{}",
             error,
             error.response.headers,
@@ -104,7 +102,7 @@ def oauth_callback() -> Response:
         )
         raise
 
-    logger.debug("  Access token response: {}", token_response.json())
+    g.logger.debug("  Access token response: {}", token_response.json())
     access_token = token_response.json().get("access_token")
     scope = token_response.json().get("scope")
     expires_in = int(token_response.json().get("expires_in"))
@@ -157,8 +155,7 @@ def oauth_callback() -> Response:
             db_session.flush()
             session["id"] = new_user.id
 
-    logger.configure(extra={"spotify_id": user_id, "user": str(session["id"])[24:]})
-
+    session["spotify_id"] = user_id
     session["display_name"] = display_name
 
     return redirect("/search")

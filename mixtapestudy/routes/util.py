@@ -1,8 +1,7 @@
 from datetime import UTC, datetime, timedelta
 
 import requests
-from flask import session
-from loguru import logger
+from flask import g, session
 from requests import HTTPError
 from requests.auth import HTTPBasicAuth
 from sqlalchemy.orm import Session
@@ -30,7 +29,7 @@ def _refresh_token(user: User, session: Session) -> None:
     try:
         refresh_response.raise_for_status()
     except HTTPError as error:
-        logger.warning(
+        g.logger.warning(
             "HTTP Request Failed!\n{}\n{}\n{}",
             error,
             error.response.headers,
@@ -38,7 +37,7 @@ def _refresh_token(user: User, session: Session) -> None:
         )
         raise
 
-    logger.debug("  Refresh token response: {}", refresh_response.json())
+    g.logger.debug("  Refresh token response: {}", refresh_response.json())
     user.access_token = refresh_response.json()["access_token"]
     if "refresh_token" in refresh_response.json():
         user.refresh_token = refresh_response.json()["refresh_token"]
@@ -59,7 +58,7 @@ def get_user() -> UserData:
     2. Make sure the Spotify token for this user os up to date
     """
     user_id = session.get("id")
-    logger.info("Handling request for user: {}", user_id)
+    g.logger.info("Handling request for user: {}", user_id)
     if not user_id:
         raise UserIDMissingError
 
@@ -71,9 +70,9 @@ def get_user() -> UserData:
                 raise UserDatabaseRowMissingError
 
             five_minutes_from_now = datetime.now(tz=UTC) + timedelta(minutes=5)
-            logger.debug("  token_expires: {}", user.token_expires)
-            logger.debug("  five_minutes_from_now: {}", five_minutes_from_now)
-            logger.debug(
+            g.logger.debug("  token_expires: {}", user.token_expires)
+            g.logger.debug("  five_minutes_from_now: {}", five_minutes_from_now)
+            g.logger.debug(
                 "  token_expires - five_minutes_from_now = {}",
                 user.token_expires - five_minutes_from_now,
             )

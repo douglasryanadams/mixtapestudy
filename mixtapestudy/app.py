@@ -4,7 +4,7 @@ import sys
 
 import flask
 import sentry_sdk
-from flask import Flask
+from flask import Flask, g, session
 from loguru import logger
 from requests import HTTPError
 from werkzeug.exceptions import MethodNotAllowed, NotFound
@@ -79,6 +79,16 @@ def create_app() -> Flask:
     sentry_sdk.init(sample_rate=0.5, traces_sample_rate=0.1, profiles_sample_rate=0.1)
 
     flask_app = flask.Flask(__name__)
+
+    @flask_app.before_request
+    def before_request() -> None:
+        if "id" in session and "spotify_id" in session:
+            user_id = str(session["id"])[24:]
+            spotify_id = session["spotify_id"][:8]
+            g.logger = logger.bind(spotify_id=spotify_id, user=user_id)
+        else:
+            g.logger = logger.bind()
+
     from mixtapestudy.routes.auth import auth
     from mixtapestudy.routes.playlist import playlist
     from mixtapestudy.routes.root import root

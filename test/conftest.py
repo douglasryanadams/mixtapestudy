@@ -5,9 +5,10 @@ from datetime import datetime, timezone
 from uuid import UUID
 
 import pytest
-from flask import Flask
+from flask import Flask, g
 from flask.testing import FlaskClient
 from freezegun import freeze_time
+from loguru import logger
 from pytest_socket import disable_socket
 from requests_mock import Mocker, adapter
 from sqlalchemy import delete
@@ -89,7 +90,10 @@ def app(stack: None, set_env: None) -> Flask:  # noqa: ARG001
 
 @pytest.fixture
 def client_without_session(app: Flask) -> FlaskClient:
-    return app.test_client()
+    with app.app_context():
+        # before_request() not called on tests
+        g.logger = logger.bind()
+        yield app.test_client()
 
 
 @pytest.fixture
@@ -112,6 +116,7 @@ def client(client_without_session: FlaskClient) -> FlaskClient:
 
     with client_without_session.session_transaction() as tsession:
         tsession["id"] = FAKE_USER_ID
+        tsession["spotify_id"] = "fake-spotify-id"
 
     return client_without_session  # Actually has a session now
 

@@ -1,6 +1,5 @@
 import requests
-from flask import Blueprint, redirect, render_template, request, session
-from loguru import logger
+from flask import Blueprint, g, redirect, render_template, request, session
 from werkzeug.wrappers.response import Response
 
 from mixtapestudy.config import SPOTIFY_BASE_URL
@@ -15,7 +14,7 @@ search = Blueprint("search", __name__)
 def get_search_page() -> str:
     user = get_user()
 
-    logger.debug("User ID from session: {}", user.id)
+    g.logger.debug("User ID from session: {}", user.id)
 
     search_term = request.args.get("search_term")
     search_results = []
@@ -23,7 +22,7 @@ def get_search_page() -> str:
     if search_term:
         with get_session() as db_session:
             user = db_session.get(User, user.id)
-            logger.debug("User from database: {}", user)
+            g.logger.debug("User from database: {}", user)
             access_token = user.access_token
 
         search_response = requests.get(
@@ -48,7 +47,7 @@ def get_search_page() -> str:
     selected_songs = session.get(
         "selected_songs", [{"id": None}, {"id": None}, {"id": None}]
     )
-    logger.debug("  selected_songs={}", selected_songs)
+    g.logger.debug("  selected_songs={}", selected_songs)
     selected_songs_full = (
         selected_songs[0]["id"] is not None
         and selected_songs[1]["id"] is not None

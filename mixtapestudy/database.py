@@ -45,7 +45,7 @@ class CommonColumns(Base):
     id = mapped_column(
         Uuid(),
         primary_key=True,
-        default=uuid.uuid4(),
+        default=uuid.uuid4,
         nullable=False,
         autoincrement=False,
     )

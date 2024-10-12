@@ -21,6 +21,7 @@ from mixtapestudy.database import User
 from test.conftest import FAKE_ACCESS_TOKEN, FAKE_REFRESH_TOKEN, FAKE_USER_ID
 
 # TODO: Write tests for handling expired auth tokens
+# TODO: Write tests for different users logging in
 
 
 @pytest.fixture
@@ -45,6 +46,28 @@ def mock_token_request(
         },
         json={
             "access_token": FAKE_ACCESS_TOKEN,
+            "scope": "fake-scope fake-scope",
+            "refresh_token": FAKE_REFRESH_TOKEN,
+            "expires_in": 3600,
+        },
+    )
+
+
+@pytest.fixture
+def mock_token_request_2(
+    requests_mock: Mocker,
+) -> adapter._Matcher:
+    encoded_fake_auth = b64encode(
+        b"fake-spotify-client-id-2:fake-spotify-client-secret-2"
+    ).decode("utf8")
+    return requests_mock.post(
+        "https://accounts.spotify.com/api/token",
+        request_headers={
+            "content-type": "application/x-www-form-urlencoded",
+            "Authorization": f"Basic {encoded_fake_auth}",
+        },
+        json={
+            "access_token": f"{FAKE_ACCESS_TOKEN}_2",
             "scope": "fake-scope fake-scope",
             "refresh_token": FAKE_REFRESH_TOKEN,
             "expires_in": 3600,
@@ -91,6 +114,49 @@ def mock_me_request(requests_mock: Mocker) -> adapter._Matcher:
             "product": "premium",
             "type": "user",
             "uri": "spotify:user:testusername",
+        },
+    )
+
+
+@pytest.fixture
+def mock_me_request_2(requests_mock: Mocker) -> adapter._Matcher:
+    return requests_mock.get(
+        f"{SPOTIFY_BASE_URL}/me",
+        request_headers={
+            "authorization": f"Bearer {FAKE_ACCESS_TOKEN}_2",
+        },
+        json={
+            "country": "US",
+            "display_name": "Test Display Name 2",
+            "email": "test_2@email.com",
+            "explicit_content": {
+                "filter_enabled": False,
+                "filter_locked": False,
+            },
+            "external_urls": {
+                "spotify": "https://open.spotify.com/user/testusername",
+            },
+            "followers": {
+                "href": None,
+                "total": 4,
+            },
+            "href": "https://api.spotify.com/v1/users/testusername",
+            "id": "testusername-2",
+            "images": [
+                {
+                    "url": "https://scontent-atl3-2.xx.fbcdn.net/v/t39.30808-1/438204840_3812596065627877_5829513670243189444_n.jpg?stp=cp0_dst-jpg_s50x50&_nc_cat=105&ccb=1-7&_nc_sid=6738e8&_nc_ohc=gwWQdmt98PgQ7kNvgH4qeqx&_nc_ht=scontent-atl3-2.xx&edm=AP4hL3IEAAAA&oh=00_AYAmPyw01cZLO3X4BqWaBspuzfJAUcZBWUGoV0p9JU1WGQ&oe=66F72715",
+                    "height": 64,
+                    "width": 64,
+                },
+                {
+                    "url": "https://scontent-atl3-2.xx.fbcdn.net/v/t39.30808-1/438204840_3812596065627877_5829513670243189444_n.jpg?stp=dst-jpg_s320x320&_nc_cat=105&ccb=1-7&_nc_sid=3e9727&_nc_ohc=gwWQdmt98PgQ7kNvgH4qeqx&_nc_ht=scontent-atl3-2.xx&edm=AP4hL3IEAAAA&oh=00_AYDhoFRkUWcWVmAvt6QY7sWRalTHdNg7tetFJIToksfjPg&oe=66F72715",
+                    "height": 300,
+                    "width": 300,
+                },
+            ],
+            "product": "premium",
+            "type": "user-2",
+            "uri": "spotify:user:testusername-2",
         },
     )
 

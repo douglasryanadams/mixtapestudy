@@ -4,6 +4,7 @@
 .idea
 __pycache__/
 .env
+.env.sh
 *.db
 *.log
 build/

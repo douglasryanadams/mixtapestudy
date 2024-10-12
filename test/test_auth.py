@@ -182,7 +182,40 @@ def test_login(client_without_session: FlaskClient, fake_random_choices: str) ->
         ],
         "redirect_uri": ["http://fake-test-domain/oauth-callback"],
         "state": ["abcdefghijklmnop"],
+        "show_dialog": ["False"],
     }
+
+
+def test_login_again_after_logout(
+    client_without_session: FlaskClient,
+    fake_random_choices: str,  # noqa: ARG001
+) -> None:
+    with client_without_session.session_transaction() as tsession:
+        tsession["logged_out"] = True
+
+    with client_without_session:
+        r = client_without_session.get("/login")
+        assert r.status_code == HTTPStatus.FOUND
+
+        location = r.headers["Location"]
+        parse_url = urlparse(location)
+        params = parse_qs(parse_url.query)
+
+        assert params["show_dialog"] == ["True"]
+
+
+def test_login_again_with_existing_session(
+    client_without_session: FlaskClient,
+    fake_random_choices: str,  # noqa: ARG001
+) -> None:
+    with client_without_session.session_transaction() as tsession:
+        tsession["test-session-data"] = "test-value"
+
+    with client_without_session:
+        r = client_without_session.get("/login")
+        assert r.status_code == HTTPStatus.FOUND
+        # Confirms that session was reset on re-auth
+        assert not session.get("test-session-data")
 
 
 def test_oauth_callback(
@@ -249,25 +282,15 @@ def test_oauth_twice(
     assert db_session.execute(select(func.count()).select_from(User)).scalar() == 1
 
 
-def test_login_again_with_existing_session(
-    client_without_session: FlaskClient,
-    fake_random_choices: str,  # noqa: ARG001
-) -> None:
-    with client_without_session.session_transaction() as tsession:
-        tsession["test-session-data"] = "test-value"
-
-    with client_without_session:
-        r = client_without_session.get("/login")
-        assert r.status_code == HTTPStatus.FOUND
-        # Confirms that session was reset on re-auth
-        assert not session.get("test-session-data")
-
-
 def test_oauth_callback_error(client_without_session: FlaskClient) -> None:
-    r = client_without_session.get(
-        "/oauth-callback", query_string={"code": "fake-code", "error": "fake error"}
-    )
-    assert r.status_code == HTTPStatus.INTERNAL_SERVER_ERROR
+    with client_without_session:
+        r = client_without_session.get(
+            "/oauth-callback", query_string={"code": "fake-code", "error": "fake error"}
+        )
+        assert r.status_code == HTTPStatus.FOUND
+        assert r.headers["Location"] == "/"
+        assert session["logged_out"]
+        assert session["login_helper"]
 
 
 def test_logout(client: FlaskClient) -> None:
@@ -280,7 +303,9 @@ def test_logout(client: FlaskClient) -> None:
         assert r.status_code == HTTPStatus.FOUND
         assert r.headers["Location"] == "/"
         assert not session.get("id")
+        assert not session.get("spotify_id")
         assert not session.get("other")
+        assert session.get("logged_out")
 
 
 @pytest.mark.parametrize(

@@ -3,5 +3,9 @@
     <main class="container login-container">
         <h5>Please sign in to generate a playlist.</h5>
         <a id="login-button" href="/login" role="button">Log in with Spotify</a>
+        {% if session['login_helper'] %}
+            <hr/>
+            <p>If you'd like to use a different account, click "Not You?" after clicking "Log in with Spotify" above.</p>
+        {% endif %}
     </main>
 {% endblock %}

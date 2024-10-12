@@ -16,13 +16,8 @@ from mixtapestudy.database import User, get_session
 auth = Blueprint("auth", __name__)
 
 
-class OAuthError(Exception):
-    pass
-
-
 @auth.route("/login")
 def login() -> Response:
-    session.clear()
     config = get_config()
     params: dict[str, str] = {
         "response_type": "code",
@@ -36,7 +31,9 @@ def login() -> Response:
         "state": "".join(
             secrets.choice(string.ascii_letters + string.digits) for _ in range(16)
         ),
+        "show_dialog": "logged_out" in session and session["logged_out"],
     }
+    session.clear()
     g.logger.debug("OAuth query params: {}", params)
     return_url = ParseResult(
         scheme="https",
@@ -54,12 +51,14 @@ def login() -> Response:
 @auth.route("/logout")
 def logout() -> Response:
     session.clear()
+    session["logged_out"] = True
     return redirect("/")
 
 
 @auth.route("/oauth-callback")
 def oauth_callback() -> Response:
     config = get_config()
+    session.clear()
 
     code = request.args.get("code")
     error_message = request.args.get("error")
@@ -67,7 +66,9 @@ def oauth_callback() -> Response:
 
     if error_message:
         g.logger.error(error_message)
-        raise OAuthError(error_message)  # TODO: Replace with good error messaging
+        session["login_helper"] = True
+        session["logged_out"] = True
+        return redirect("/")
 
     token_url = ParseResult(
         scheme="https",

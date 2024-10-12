@@ -56,13 +56,13 @@ def set_env(monkeypatch: pytest.MonkeyPatch) -> None:
 @pytest.fixture(autouse=True, scope="session")
 def stack() -> Generator[None, None, None]:
     up = subprocess.run(  # noqa: S603
-        ["docker-compose", "up", "--build", "--detach", "migration_done"],  # noqa: S607
+        ["docker", "compose", "up", "--build", "--detach", "migration_done"],  # noqa: S607
         check=True,
     )
     assert up.returncode == 0
     yield
     down = subprocess.run(  # noqa: S603
-        ["docker-compose", "down", "--volumes", "--remove-orphans"],  # noqa: S607
+        ["docker", "compose", "down", "--volumes", "--remove-orphans"],  # noqa: S607
         check=True,
     )
     assert down.returncode == 0

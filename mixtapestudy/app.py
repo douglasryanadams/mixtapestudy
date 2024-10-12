@@ -1,12 +1,14 @@
 import inspect
 import logging
 import sys
+from urllib.parse import urlparse
 
 import flask
 import sentry_sdk
 from flask import Flask, g, session
 from loguru import logger
 from requests import HTTPError
+from sentry_sdk.types import Event, Hint
 from werkzeug.exceptions import MethodNotAllowed, NotFound
 
 from mixtapestudy.config import get_config
@@ -63,6 +65,19 @@ sqlalchemy_logger.setLevel(logging.DEBUG)
 sqlalchemy_logger.propagate = True
 
 
+def filter_healthchecks(event: Event, _: Hint) -> Event:
+    url_string = event["request"]["url"]
+    parsed_url = urlparse(url_string)
+
+    if parsed_url.path == "/health-check":
+        return None
+
+    if parsed_url.path == "/flask-health-check":
+        return None
+
+    return event
+
+
 def create_app() -> Flask:
     config = get_config()  # Loads environment variables
     logger.add(
@@ -76,7 +91,12 @@ def create_app() -> Flask:
         "| {level: <8} | {name}:{line} | {message}",
     )
 
-    sentry_sdk.init(sample_rate=0.5, traces_sample_rate=0.1, profiles_sample_rate=0.1)
+    sentry_sdk.init(
+        sample_rate=0.5,
+        traces_sample_rate=0.1,
+        profiles_sample_rate=0.1,
+        before_send_transaction=filter_healthchecks,
+    )
 
     flask_app = flask.Flask(__name__)
 

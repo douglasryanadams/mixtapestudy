@@ -45,4 +45,10 @@ run:
 .PHONY: dev
 dev:
 	trap 'docker compose logs --timestamps --no-color > docker.log && docker compose down --volumes --remove-orphans' EXIT; \
-	bash -c "docker compose up --build --detach migration_done && SESSION_SECRET='WP9zwHnJ' OAUTH_REDIRECT_BASE_URL='http://127.0.0.1:5000' DATABASE_URL='postgresql://local:admin@localhost:5432/mixtapestudy' LOG_FILE='./dev_mixtapestudy.log' .venv/bin/flask --app mixtapestudy.app run --debug"
+	bash -c "docker compose up --build --detach migration_done && \
+		SESSION_SECRET='WP9zwHnJ' \
+		OAUTH_REDIRECT_BASE_URL='http://127.0.0.1:5000' \
+		DATABASE_URL='postgresql://local:admin@localhost:5432/mixtapestudy' \
+		LOG_FILE='./dev_mixtapestudy.log' \
+		RECOMMENDATION_SERVICE='listenbrainz' \
+		.venv/bin/flask --app mixtapestudy.app run --debug"

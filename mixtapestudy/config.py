@@ -1,4 +1,6 @@
 import os
+import sys
+from enum import StrEnum
 
 from loguru import logger
 
@@ -8,6 +10,11 @@ SPOTIFY_BASE_URL = "https://api.spotify.com/v1"
 class MissingEnvironmentVariableError(Exception):
     def __init__(self, variable_name: str) -> None:
         super().__init__(f"No {variable_name} environment variable provided")
+
+
+class RecommendationService(StrEnum):
+    LISTENBRAINZ = "listenbrainz"
+    SPOTIFY = "spotify"
 
 
 class Config:
@@ -43,6 +50,19 @@ class Config:
             raise MissingEnvironmentVariableError("SESSION_SECRET")
         logger.debug("SESSION_SECRET defined (not shown)")
 
+        recommendation_service_str: str = os.getenv("RECOMMENDATION_SERVICE", "spotify")
+        try:
+            self._recommendation_service = RecommendationService(
+                recommendation_service_str
+            )
+        except ValueError:
+            logger.error(
+                "Invalid RECOMMENDATION_SERVICE, valid values: {}",
+                [rs.value for rs in RecommendationService],
+            )
+            sys.exit(1)
+        logger.debug("recommendation_service={}", self._recommendation_service)
+
     @property
     def log_file(self) -> str:
         return self._log_file
@@ -66,6 +86,10 @@ class Config:
     @property
     def session_secret(self) -> str:
         return self._session_secret
+
+    @property
+    def recommendation_service(self) -> RecommendationService:
+        return self._recommendation_service
 
 
 _config: Config | None = None

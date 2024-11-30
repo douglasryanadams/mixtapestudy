@@ -1,5 +1,6 @@
 import json
 from http import HTTPStatus
+from unittest.mock import patch
 from urllib.parse import urlencode
 
 import pytest
@@ -7,7 +8,7 @@ from bs4 import BeautifulSoup
 from flask.testing import FlaskClient
 from requests_mock import Mocker, adapter
 
-from mixtapestudy.config import SPOTIFY_BASE_URL
+from mixtapestudy.config import SPOTIFY_BASE_URL, RecommendationService
 from test.conftest import FAKE_ACCESS_TOKEN
 
 # TODO: Tests for edge cases
@@ -39,6 +40,36 @@ def mock_recommendation_request(requests_mock: Mocker) -> adapter._Matcher:
 
 
 @pytest.fixture
+def mock_listenbrainz_radio_request(requests_mock: Mocker) -> adapter._Matcher:
+    params = urlencode(
+        {"mode": "easy", "query": " ".join([f"selected-artist-{i}" for i in range(3)])}
+    )
+    return requests_mock.get(
+        url="https://api.listenbrainz.org/1/explore/lb-radio",
+        # TODO: Token Header
+        json={
+            # This is a dramatically simplified version of this response
+            # For full example see:
+            #   curl 'https://api.listenbrainz.org/1/explore/lb-radio?prompt=artist%3A(noah%20gundersen)&mode=easy' | jq
+            "payload": {
+                "jspf": {
+                    "playlist": {
+                        "track": [
+                            {
+                                "title": f"name-{i}",
+                                "identifier": f"https://musicbrainz.org/recording/fake-uuid-{i}",
+                                "creator": f"artist-{i}",
+                            }
+                            for i in range(35)
+                        ]
+                    }
+                }
+            }
+        },
+    )
+
+
+@pytest.fixture
 def mock_create_playlist(requests_mock: Mocker) -> adapter._Matcher:
     return requests_mock.post(
         f"{SPOTIFY_BASE_URL}/users/fake-spotify-id/playlists",
@@ -61,8 +92,9 @@ def test_load_without_session(client_without_session: FlaskClient) -> None:
     assert r.location == "/"
 
 
-def test_load_page(
-    client: FlaskClient, mock_recommendation_request: adapter._Matcher
+def test_load_page_recommendation_service_spotify(
+    client: FlaskClient,
+    mock_recommendation_request: adapter._Matcher,
 ) -> None:
     with client.session_transaction() as tsession:
         tsession["selected_songs"] = [
@@ -71,6 +103,7 @@ def test_load_page(
                 "id": f"selected-song-{i}",
                 "name": f"selected-name-{i}",
                 "artist": f"selected-artist-{i}",
+                "artist_raw": f'["selected-artist-{i}"]',
             }
             for i in range(3)
         ]
@@ -100,6 +133,57 @@ def test_load_page(
     assert [c.string for c in last_row] == [
         "name-71",
         "artist-71-0, artist-71-1, artist-71-2",
+    ]
+
+    assert not soup.find(id="success-header")
+    assert not soup.find(id="error-header")
+
+
+def test_load_page_recommendation_service_listenbrainz(
+    client: FlaskClient,
+    mock_listenbrainz_radio_request: adapter._Matcher,
+) -> None:
+    with client.session_transaction() as tsession:
+        tsession["selected_songs"] = [
+            {
+                "uri": f"spotify:track:selected-song-{i}",
+                "id": f"selected-song-{i}",
+                "name": f"selected-name-{i}",
+                "artist": f"selected-artist-{i}",
+                "artist_raw": f'["selected-artist-{i}"]',
+            }
+            for i in range(3)
+        ]
+
+    with patch("mixtapestudy.routes.playlist.get_config") as fake_get_config:
+        fake_get_config.return_value.recommendation_service = (
+            RecommendationService.LISTENBRAINZ
+        )
+        playlist_page_response = client.post("/playlist/preview")
+
+    assert mock_listenbrainz_radio_request.called
+
+    soup = BeautifulSoup(playlist_page_response.text, "html.parser")
+    table_rows = soup.find_all("tr")
+    number_of_songs = 35
+    assert len(table_rows) == number_of_songs + 1  # Extra row for header
+
+    first_row = table_rows[1].find_all("td")
+    assert [c.string for c in first_row] == [
+        "selected-name-0",
+        "selected-artist-0",
+    ]
+
+    fourth_row = table_rows[4].find_all("td")
+    assert [c.string for c in fourth_row] == [
+        "name-0",
+        "artist-0",
+    ]
+
+    last_row = table_rows[-1].find_all("td")
+    assert [c.string for c in last_row] == [
+        "name-35",
+        "artist-35",
     ]
 
     assert not soup.find(id="success-header")

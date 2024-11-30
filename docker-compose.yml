@@ -52,6 +52,7 @@ services:
       SPOTIFY_CLIENT_ID: "${SPOTIFY_CLIENT_ID}"
       SESSION_SECRET: "${SESSION_SECRET}"
       DATABASE_URL: "${DATABASE_URL}"
+      RECOMMENDATION_SERVICE: "listenbrainz"  # listenbrainz | spotify
     volumes:
       - ./build/log:/home/app/log
     depends_on:

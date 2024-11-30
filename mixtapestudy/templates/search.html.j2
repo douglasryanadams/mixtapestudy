@@ -80,7 +80,7 @@
                                         <input name="id" type="hidden" value="{{ song.id }}"/>
                                         <input name="name" type="hidden" value="{{ song.name }}"/>
                                         <input name="artist" type="hidden" value="{{ song.artist }}"/>
-                                        <input name="artist_raw" type="hidden" value="{{ song.artist_raw }}"/>
+                                        <input name="artist_raw" type="hidden" value='{{ song.artist_raw|tojson }}'/>
                                         {% if selected_songs_full %}
                                             <a data-tooltip="You may only select 3 songs.">
                                                 <input type="submit" value="Add" class="fix-alignment" disabled/>

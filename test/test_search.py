@@ -115,6 +115,7 @@ def test_load_search_with_selected_songs(
                 "id": f"test-song-id-{i}",
                 "name": f"test-song-name-{i}",
                 "artist": f"test-song-artist-{i}",
+                "artist_raw": f'["test-song-artist-{i}"]',
             }
             for i in range(3)
         ]
@@ -170,6 +171,7 @@ def test_select_song(client: FlaskClient) -> None:
                 "id": "test-song-id",
                 "name": "test-song-name",
                 "artist": "test-song-artist",
+                "artist_raw": '["test-song-artist"]',
             },
         )
         assert search_page_response.status_code == HTTPStatus.FOUND
@@ -179,6 +181,7 @@ def test_select_song(client: FlaskClient) -> None:
                 "id": "test-song-id",
                 "name": "test-song-name",
                 "artist": "test-song-artist",
+                "artist_raw": '["test-song-artist"]',
             },
             {"id": None},
             {"id": None},
@@ -193,6 +196,7 @@ def test_select_song_in_middle(client: FlaskClient) -> None:
                 "id": f"test-song-id-{i}",
                 "name": f"test-song-name-{i}",
                 "artist": f"test-song-artist-{i}",
+                "artist_raw": f'["test-song-artist-{i}"]',
             }
             for i in range(3)
         ]
@@ -206,6 +210,7 @@ def test_select_song_in_middle(client: FlaskClient) -> None:
                 "id": "test-song-id",
                 "name": "test-song-name",
                 "artist": "test-song-artist",
+                "artist_raw": '["test-song-artist"]',
             },
         )
         assert search_page_response.status_code == HTTPStatus.FOUND
@@ -214,6 +219,7 @@ def test_select_song_in_middle(client: FlaskClient) -> None:
             "id": "test-song-id",
             "name": "test-song-name",
             "artist": "test-song-artist",
+            "artist_raw": '["test-song-artist"]',
         }
 
 
@@ -225,6 +231,7 @@ def test_remove_song(client: FlaskClient) -> None:
                 "id": f"test-song-id-{i}",
                 "name": f"test-song-name-{i}",
                 "artist": f"test-song-artist-{i}",
+                "artist_raw": f'["test-song-artist-{i}"]',
             }
             for i in range(3)
         ]
@@ -245,6 +252,7 @@ def test_generate_playlist_button_disabled_until_three_songs_selected(
                 "id": f"test-song-id-{i}",
                 "name": f"test-song-name-{i}",
                 "artist": f"test-song-artist-{i}",
+                "artist_raw": f'["test-song-artist-{i}"]',
             }
             for i in range(3)
         ]

@@ -60,7 +60,9 @@ def mock_listenbrainz_radio_request(requests_mock: Mocker) -> adapter._Matcher:
                         "track": [
                             {
                                 "title": f"name-{i}",
-                                "identifier": f"https://musicbrainz.org/recording/fake-uuid-{i}",
+                                "identifier": [
+                                    f"https://musicbrainz.org/recording/fake-uuid-{i}"
+                                ],
                                 "creator": f"artist-{i}",
                             }
                             for i in range(32)

@@ -47,7 +47,7 @@ def _get_spotify_recommendations(selected_songs: dict[str, str]) -> list[Song]:
             id=song["id"],
             name=song["name"],
             artist=", ".join([artist["name"] for artist in song["artists"]]),
-            artist_raw=json.dumps([artist["name"] for artist in song["artists"]]),
+            artist_raw=[artist["name"] for artist in song["artists"]],
         )
         for song in playlist_response.json()["tracks"]
     ]
@@ -87,8 +87,8 @@ def _get_listenbrainz_radio(
 
     playlist_songs += [
         Song(
-            uri=track["identifier"],
-            id=track["identifier"].split("/")[-1],
+            uri=track["identifier"][0],
+            id=track["identifier"][0].split("/")[-1],
             name=track["title"],
             artist=track["creator"],
             artist_raw=json.dumps([track["creator"]]),
@@ -104,6 +104,7 @@ def _get_listenbrainz_radio(
 def generate_playlist() -> str:
     config = get_config()
     selected_songs = session.get("selected_songs")
+    g.logger.debug(" selected_songs={}", selected_songs)
 
     match config.recommendation_service:
         case RecommendationService.SPOTIFY:

@@ -1,5 +1,3 @@
-import json
-
 import requests
 from flask import Blueprint, g, redirect, render_template, request, session
 from werkzeug.wrappers.response import Response
@@ -42,7 +40,7 @@ def get_search_page() -> str:
                 id=song["id"],
                 name=song["name"],
                 artist=", ".join([artist["name"] for artist in song["artists"]]),
-                artist_raw=json.dumps([artist["name"] for artist in song["artists"]]),
+                artist_raw=[artist["name"] for artist in song["artists"]],
             )
             for song in rjson["tracks"]["items"]
         ]
@@ -79,8 +77,10 @@ def select_song() -> Response:
             song["id"] = request.form.get("id")
             song["name"] = request.form.get("name")
             song["artist"] = request.form.get("artist")
+            song["artist_raw"] = request.form.get("artist_raw")
             break
 
+    g.logger.debug(" selected_songs: {}", selected_songs)
     session["selected_songs"] = selected_songs
 
     return redirect(request.referrer)

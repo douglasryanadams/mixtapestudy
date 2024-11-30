@@ -9,4 +9,4 @@ class Song:
     # Comma Separated String, list of names
     artist: str
     # JSON String, list of names
-    artist_raw: str
+    artist_raw: list[str]

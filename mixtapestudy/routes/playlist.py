@@ -55,21 +55,37 @@ def _get_spotify_recommendations(selected_songs: dict[str, str]) -> list[Song]:
     return playlist_songs
 
 
-def _get_listenbrainz_radio(selected_songs: dict[str, str]) -> list[Song]:
+def _get_listenbrainz_radio(
+    selected_songs: dict[str, str], listenbrainz_api_key: str
+) -> list[Song]:
     artists = []
     for song in selected_songs:
         artists += json.loads(song["artist_raw"])
     g.logger.debug("  artists: {}", artists)
-    query_string = " ".join([f"artist:({artist})" for artist in artists])
+    prompt_string = " ".join([f"artist:({artist})" for artist in artists])
+
     radio_response = requests.get(
         url="https://api.listenbrainz.org/1/explore/lb-radio",
-        params={"mode": "easy", "query": query_string},
-        # TODO: Add token header
+        params={"mode": "easy", "prompt": prompt_string},
+        headers={"Authorization": f"Bearer {listenbrainz_api_key}"},
         timeout=30,
     )
     radio_response.raise_for_status()
 
     playlist_songs = [
+        Song(
+            uri=song["uri"],
+            id=song["id"],
+            name=song["name"],
+            artist=song["artist"],
+            artist_raw=song["artist_raw"],
+        )
+        for song in selected_songs
+    ]
+
+    # TODO: Turn into Spotify Tracks
+
+    playlist_songs += [
         Song(
             uri=track["identifier"],
             id=track["identifier"].split("/")[-1],
@@ -93,7 +109,9 @@ def generate_playlist() -> str:
         case RecommendationService.SPOTIFY:
             playlist_songs = _get_spotify_recommendations(selected_songs)
         case RecommendationService.LISTENBRAINZ:
-            playlist_songs = _get_listenbrainz_radio(selected_songs)
+            playlist_songs = _get_listenbrainz_radio(
+                selected_songs, config.listenbrainz_api_key
+            )
 
     return render_template("playlist.html.j2", playlist_songs=playlist_songs)
 

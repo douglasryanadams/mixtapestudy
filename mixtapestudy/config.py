@@ -12,6 +12,11 @@ class MissingEnvironmentVariableError(Exception):
         super().__init__(f"No {variable_name} environment variable provided")
 
 
+class InvalidConfigurationError(Exception):
+    def __init__(self, variable_name: str, valid_value: str) -> None:
+        super().__init__(f"{variable_name} is not {valid_value}")
+
+
 class RecommendationService(StrEnum):
     LISTENBRAINZ = "listenbrainz"
     SPOTIFY = "spotify"
@@ -63,6 +68,12 @@ class Config:
             sys.exit(1)
         logger.debug("recommendation_service={}", self._recommendation_service)
 
+        if self._recommendation_service == RecommendationService.LISTENBRAINZ:
+            self._listenbrainz_api_key: str = os.getenv("LISTENBRAINZ_API_KEY", "")
+            if not self._listenbrainz_api_key:
+                raise MissingEnvironmentVariableError("LISTENBRAINZ_API_KEY")
+            logger.debug("LISTENBRAINZ_API_KEY defined (not shown)")
+
     @property
     def log_file(self) -> str:
         return self._log_file
@@ -90,6 +101,12 @@ class Config:
     @property
     def recommendation_service(self) -> RecommendationService:
         return self._recommendation_service
+
+    @property
+    def listenbrainz_api_key(self) -> str:
+        if self._recommendation_service == RecommendationService.LISTENBRAINZ:
+            return self._listenbrainz_api_key
+        raise InvalidConfigurationError("RECOMMENDATION_SERVICE", "listenbrainz")
 
 
 _config: Config | None = None

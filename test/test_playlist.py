@@ -9,7 +9,7 @@ from flask.testing import FlaskClient
 from requests_mock import Mocker, adapter
 
 from mixtapestudy.config import SPOTIFY_BASE_URL, RecommendationService
-from test.conftest import FAKE_ACCESS_TOKEN
+from test.conftest import FAKE_ACCESS_TOKEN, FAKE_LISTENBRAINZ_API_KEY
 
 # TODO: Tests for edge cases
 
@@ -42,15 +42,18 @@ def mock_recommendation_request(requests_mock: Mocker) -> adapter._Matcher:
 @pytest.fixture
 def mock_listenbrainz_radio_request(requests_mock: Mocker) -> adapter._Matcher:
     params = urlencode(
-        {"mode": "easy", "query": " ".join([f"selected-artist-{i}" for i in range(3)])}
+        {
+            "mode": "easy",
+            "prompt": " ".join([f"artist:(selected-artist-{i})" for i in range(3)]),
+        }
     )
     return requests_mock.get(
-        url="https://api.listenbrainz.org/1/explore/lb-radio",
-        # TODO: Token Header
+        url=f"https://api.listenbrainz.org/1/explore/lb-radio?{params}",
+        request_headers={"Authorization": f"Bearer {FAKE_LISTENBRAINZ_API_KEY}"},
         json={
             # This is a dramatically simplified version of this response
             # For full example see:
-            #   curl 'https://api.listenbrainz.org/1/explore/lb-radio?prompt=artist%3A(noah%20gundersen)&mode=easy' | jq
+            #   curl 'https://api.listenbrainz.org/1/explore/lb-radio?prompt=artist%3A(noah%20gundersen)&mode=easy' | jq  # noqa: E501
             "payload": {
                 "jspf": {
                     "playlist": {
@@ -60,7 +63,7 @@ def mock_listenbrainz_radio_request(requests_mock: Mocker) -> adapter._Matcher:
                                 "identifier": f"https://musicbrainz.org/recording/fake-uuid-{i}",
                                 "creator": f"artist-{i}",
                             }
-                            for i in range(35)
+                            for i in range(32)
                         ]
                     }
                 }
@@ -159,6 +162,7 @@ def test_load_page_recommendation_service_listenbrainz(
         fake_get_config.return_value.recommendation_service = (
             RecommendationService.LISTENBRAINZ
         )
+        fake_get_config.return_value.listenbrainz_api_key = FAKE_LISTENBRAINZ_API_KEY
         playlist_page_response = client.post("/playlist/preview")
 
     assert mock_listenbrainz_radio_request.called
@@ -182,8 +186,8 @@ def test_load_page_recommendation_service_listenbrainz(
 
     last_row = table_rows[-1].find_all("td")
     assert [c.string for c in last_row] == [
-        "name-35",
-        "artist-35",
+        "name-31",
+        "artist-31",
     ]
 
     assert not soup.find(id="success-header")

@@ -17,8 +17,10 @@ from sqlalchemy.orm import Session
 from mixtapestudy.app import create_app
 from mixtapestudy.database import User, get_session
 
-FAKE_USER_ID = UUID("7061fb8a-5680-44b2-86c9-17a008df0be2")
-# Need these to be longer than 255
+FAKE_USER_ID = UUID("00000000-0000-4000-0000-000000000000")
+FAKE_LISTENBRAINZ_API_KEY = "00000000-0000-4000-0000-000000000001"
+
+# Need these to be longer than 255 characters
 _STUB = (
     "%s_"
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"

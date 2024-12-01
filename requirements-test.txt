@@ -3,3 +3,4 @@ pytest-socket
 ruff
 requests-mock
 freezegun
+jupyterlab

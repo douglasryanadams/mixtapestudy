@@ -12,6 +12,9 @@ from mixtapestudy.config import SPOTIFY_BASE_URL, RecommendationService
 from test.conftest import FAKE_ACCESS_TOKEN, FAKE_LISTENBRAINZ_API_KEY
 
 # TODO: Tests for edge cases
+# TODO: Test for Listenbrainz returning a 400 because the artist isn't in the database
+#   - In this case, try again without that artist
+#   - If none of the artists work, display an error message
 
 
 @pytest.fixture

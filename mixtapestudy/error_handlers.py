@@ -43,8 +43,8 @@ def handle_http_request_error(error: HTTPError) -> (str, int):
         error.add_note(f"Response: {error.response}")
         error.add_note(f"Response headers: {error.response.headers}")
         error.add_note(f"Response body: {error.response.text}")
-    except Exception as error_handling_error:  # noqa: BLE001
-        logger.exception(error_handling_error)
+    except Exception:  # noqa: BLE001
+        logger.exception()
     finally:
         return handle_generic_errors(error)  # noqa: B012
 

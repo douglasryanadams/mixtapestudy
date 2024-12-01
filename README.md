@@ -68,6 +68,16 @@ Source code for the API call is here:
 curl -v 'https://api.listenbrainz.org/1/explore/lb-radio?prompt=artist%3A(noah%20gundersen)&mode=easy' | jq
 ```
 
+To translate the songs returned by this API need to be translated to Spotify track IDs for the playlist generation.
+
+For this we need to use Spotify's Search API: https://developer.spotify.com/documentation/web-api/reference/search
+
+If we have an isrc:
+
+```bash
+curl -v -H 'Authorizaiton: Bearer ...' 'https://api.spotify.com/v1/search?q=isrc%3AUSUM71313944&type=track' | jq
+```
+
 ### Music Search
 
 We need an API for translating search terms that aren't artists into artists for the search algorithm. That means we need a way to search for traacks by name. A sibling project supports such a search API based on a Lucene search of the MusicBrainz database.

@@ -52,3 +52,7 @@ dev:
 		LOG_FILE='./dev_mixtapestudy.log' \
 		RECOMMENDATION_SERVICE='listenbrainz' \
 		.venv/bin/flask --app mixtapestudy.app run --debug"
+
+.PHONY: jupyter
+jupyter:
+	source .env.sh && .venv/bin/jupyter-lab

@@ -78,6 +78,19 @@ If we have an isrc:
 curl -v -H 'Authorizaiton: Bearer ...' 'https://api.spotify.com/v1/search?q=isrc%3AUSUM71313944&type=track' | jq
 ```
 
+The new implementation requires making 2 HTTP calls per Track in the recommendations:
+
+1. A call to retrieve the MusicBrainz track data based on the MusicBrainz ID (mbid), including artist and track name or isrc
+2. A call to the Spotify search API to retrieve the songs based on the data we get from MusicBrainz
+    * Note: In theory the MusicBrainz might include Spotify URLs directly but that doesn't appear to happen in practice
+
+This makes loading the results take at least 30 seconds if done concurrently (likely much more) which is a long time to wait for "nothing" to happen. So we need to do something different.
+
+Options:
+
+1. Parallelize the calls, which would not
+
+
 ### Music Search
 
 We need an API for translating search terms that aren't artists into artists for the search algorithm. That means we need a way to search for traacks by name. A sibling project supports such a search API based on a Lucene search of the MusicBrainz database.

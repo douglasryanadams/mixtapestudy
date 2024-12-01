@@ -18,6 +18,8 @@ from mixtapestudy.routes.util import get_user
 
 playlist = Blueprint("playlist", __name__)
 
+# TODO: Loading spinner after submitting the request, it takes a lot longer now
+
 
 def _get_spotify_recommendations(
     selected_songs: dict[str, str], access_token: str

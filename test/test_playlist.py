@@ -104,6 +104,34 @@ def mock_musicbrainz_recording_requests(
 
 
 @pytest.fixture
+def mock_musicbrainz_recording_request_many_artists(
+    requests_mock: Mocker,
+) -> list[adapter._Matcher]:
+    params = urlencode({"fmt": "json", "inc": "isrcs artists"})
+    mbids = [f"fake-uuid-{i}" for i in range(32)]
+    return [
+        requests_mock.get(
+            url=f"https://musicbrainz.org/ws/2/recording/{mbid}?{params}",
+            request_headers={"User-Agent": USER_AGENT},
+            headers={
+                "X-RateLimit-Remaining": "999",
+                "X-RateLimit-Limit": "1000",
+            },
+            json={
+                "isrcs": [f"ISRC000{i}"]
+                if i % 2 == 0
+                else [],  # I've never seen more than one in this list
+                "title": f"song-{i}",
+                "artist-credit": [
+                    {"artist": {"name": f"artist name {i} {k}"}} for k in range(20)
+                ],
+            },
+        )
+        for i, mbid in enumerate(mbids)
+    ]
+
+
+@pytest.fixture
 def mock_spotify_search(requests_mock: Mocker) -> list[adapter._Matcher]:
     mock_requests = []
     for i in range(32):
@@ -125,6 +153,42 @@ def mock_spotify_search(requests_mock: Mocker) -> list[adapter._Matcher]:
                                 "id": f"song-{i}",
                                 "name": f"name-{i}",
                                 "artists": [{"name": f"artist name {i}"}],
+                            }
+                        ]
+                    }
+                },
+            )
+        )
+    return mock_requests
+
+
+@pytest.fixture
+def mock_spotify_search_many_artists(requests_mock: Mocker) -> list[adapter._Matcher]:
+    mock_requests = []
+    for i in range(32):
+        query_string = (
+            f"isrc:ISRC000{i}"
+            if i % 2 == 0
+            else f"track:song-{i} "
+            f"artist:artist name {i} 0 "
+            f"artist:artist name {i} 1 "
+            f"artist:artist name {i} 2"
+        )
+        params = urlencode({"type": "track", "q": query_string})
+        mock_requests.append(
+            requests_mock.get(
+                url=f"{SPOTIFY_BASE_URL}/search?{params}",
+                request_headers={"Authorization": f"Bearer {FAKE_ACCESS_TOKEN}"},
+                json={
+                    "tracks": {
+                        "items": [
+                            {
+                                "uri": f"spotify:song-{i}",
+                                "id": f"song-{i}",
+                                "name": f"name-{i}",
+                                "artists": [
+                                    {"name": f"artist name {i} {k}"} for k in range(20)
+                                ],
                             }
                         ]
                     }
@@ -256,6 +320,69 @@ def test_load_page_recommendation_service_listenbrainz(
     assert [c.string for c in last_row] == [
         "name-31",
         "artist name 31",
+    ]
+
+    assert not soup.find(id="success-header")
+    assert not soup.find(id="error-header")
+
+
+def test_load_page_recommendation_service_listenbrainz_many_artists(
+    client: FlaskClient,
+    mock_listenbrainz_radio_request: adapter._Matcher,
+    mock_musicbrainz_recording_request_many_artists: list[adapter._Matcher],
+    mock_spotify_search_many_artists: list[adapter._Matcher],
+) -> None:
+    """Validates that we only submit at most 3 artists to the search.
+
+    We only submit the first three artists on the track to the search.
+    If you submit more than that to spotify you get an HTTP 502.
+    """
+    with client.session_transaction() as tsession:
+        tsession["selected_songs"] = [
+            {
+                "uri": f"spotify:track:selected-song-{i}",
+                "id": f"selected-song-{i}",
+                "name": f"selected-name-{i}",
+                "artist": f"selected-artist-{i}",
+                "artist_raw": f'["selected-artist-{i}"]',
+            }
+            for i in range(3)
+        ]
+
+    with patch("mixtapestudy.routes.playlist.get_config") as fake_get_config:
+        fake_get_config.return_value.recommendation_service = (
+            RecommendationService.LISTENBRAINZ
+        )
+        fake_get_config.return_value.listenbrainz_api_key = FAKE_LISTENBRAINZ_API_KEY
+        playlist_page_response = client.post("/playlist/preview")
+
+    assert mock_listenbrainz_radio_request.called
+    for mock in mock_musicbrainz_recording_request_many_artists:
+        assert mock.called
+    for mock in mock_spotify_search_many_artists:
+        assert mock.called
+
+    soup = BeautifulSoup(playlist_page_response.text, "html.parser")
+    table_rows = soup.find_all("tr")
+    number_of_songs = 35
+    assert len(table_rows) == number_of_songs + 1  # Extra row for header
+
+    first_row = table_rows[1].find_all("td")
+    assert [c.string for c in first_row] == [
+        "selected-name-0",
+        "selected-artist-0",
+    ]
+
+    fourth_row = table_rows[4].find_all("td")
+    assert [c.string for c in fourth_row] == [
+        "name-0",
+        ", ".join([f"artist name 0 {k}" for k in range(20)]),
+    ]
+
+    last_row = table_rows[-1].find_all("td")
+    assert [c.string for c in last_row] == [
+        "name-31",
+        ", ".join([f"artist name 31 {k}" for k in range(20)]),
     ]
 
     assert not soup.find(id="success-header")

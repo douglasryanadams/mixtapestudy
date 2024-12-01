@@ -20,4 +20,4 @@ COPY --chown=nonroot:nonroot alembic.ini .
 COPY --chown=nonroot:nonroot alembic alembic
 COPY --chown=nonroot:nonroot mixtapestudy mixtapestudy
 
-CMD ["gunicorn", "-w 4", "-t 30", "-b 0.0.0.0", "mixtapestudy.app:create_app()"]
+CMD ["gunicorn", "--workers=4", "--timeout=120", "-b 0.0.0.0", "mixtapestudy.app:create_app()"]

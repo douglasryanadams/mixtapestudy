@@ -109,7 +109,10 @@ def _get_listenbrainz_radio(
             query_string = f'track:{recording_json["title"]}'
             if artist_credit:
                 query_string += " " + " ".join(
-                    [f'artist:{artist["artist"]["name"]}' for artist in artist_credit]
+                    [
+                        f'artist:{artist["artist"]["name"]}'
+                        for artist in artist_credit[:3]
+                    ]
                 )
 
         g.logger.debug("query_string: {}", query_string)

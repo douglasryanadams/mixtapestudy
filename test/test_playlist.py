@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup
 from flask.testing import FlaskClient
 from requests_mock import Mocker, adapter
 
-from mixtapestudy.config import SPOTIFY_BASE_URL, RecommendationService
+from mixtapestudy.config import SPOTIFY_BASE_URL, USER_AGENT, RecommendationService
 from test.conftest import FAKE_ACCESS_TOKEN, FAKE_LISTENBRAINZ_API_KEY
 
 # TODO: Tests for edge cases
@@ -75,6 +75,63 @@ def mock_listenbrainz_radio_request(requests_mock: Mocker) -> adapter._Matcher:
             }
         },
     )
+
+
+@pytest.fixture
+def mock_musicbrainz_recording_requests(
+    requests_mock: Mocker,
+) -> list[adapter._Matcher]:
+    params = urlencode({"fmt": "json", "inc": "isrcs artists"})
+    mbids = [f"fake-uuid-{i}" for i in range(32)]
+    return [
+        requests_mock.get(
+            url=f"https://musicbrainz.org/ws/2/recording/{mbid}?{params}",
+            request_headers={"User-Agent": USER_AGENT},
+            headers={
+                "X-RateLimit-Remaining": "999",
+                "X-RateLimit-Limit": "1000",
+            },
+            json={
+                "isrcs": [f"ISRC000{i}"]
+                if i % 2 == 0
+                else [],  # I've never seen more than one in this list
+                "title": f"song-{i}",
+                "artist-credit": [{"artist": {"name": f"artist name {i}"}}],
+            },
+        )
+        for i, mbid in enumerate(mbids)
+    ]
+
+
+@pytest.fixture
+def mock_spotify_search(requests_mock: Mocker) -> list[adapter._Matcher]:
+    mock_requests = []
+    for i in range(32):
+        query_string = (
+            f"isrc:ISRC000{i}"
+            if i % 2 == 0
+            else f"track:song-{i} artist:artist name {i}"
+        )
+        params = urlencode({"type": "track", "q": query_string})
+        mock_requests.append(
+            requests_mock.get(
+                url=f"{SPOTIFY_BASE_URL}/search?{params}",
+                request_headers={"Authorization": f"Bearer {FAKE_ACCESS_TOKEN}"},
+                json={
+                    "tracks": {
+                        "items": [
+                            {
+                                "uri": f"spotify:song-{i}",
+                                "id": f"song-{i}",
+                                "name": f"name-{i}",
+                                "artists": [{"name": f"artist name {i}"}],
+                            }
+                        ]
+                    }
+                },
+            )
+        )
+    return mock_requests
 
 
 @pytest.fixture
@@ -150,6 +207,8 @@ def test_load_page_recommendation_service_spotify(
 def test_load_page_recommendation_service_listenbrainz(
     client: FlaskClient,
     mock_listenbrainz_radio_request: adapter._Matcher,
+    mock_musicbrainz_recording_requests: list[adapter._Matcher],
+    mock_spotify_search: list[adapter._Matcher],
 ) -> None:
     with client.session_transaction() as tsession:
         tsession["selected_songs"] = [
@@ -171,6 +230,10 @@ def test_load_page_recommendation_service_listenbrainz(
         playlist_page_response = client.post("/playlist/preview")
 
     assert mock_listenbrainz_radio_request.called
+    for mock in mock_musicbrainz_recording_requests:
+        assert mock.called
+    for mock in mock_spotify_search:
+        assert mock.called
 
     soup = BeautifulSoup(playlist_page_response.text, "html.parser")
     table_rows = soup.find_all("tr")
@@ -186,13 +249,13 @@ def test_load_page_recommendation_service_listenbrainz(
     fourth_row = table_rows[4].find_all("td")
     assert [c.string for c in fourth_row] == [
         "name-0",
-        "artist-0",
+        "artist name 0",
     ]
 
     last_row = table_rows[-1].find_all("td")
     assert [c.string for c in last_row] == [
         "name-31",
-        "artist-31",
+        "artist name 31",
     ]
 
     assert not soup.find(id="success-header")

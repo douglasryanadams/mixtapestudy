@@ -1,11 +1,17 @@
 import json
+import time
 from datetime import datetime, timezone
 from urllib.parse import ParseResult
 
 import requests
 from flask import Blueprint, Response, g, redirect, render_template, request, session
 
-from mixtapestudy.config import SPOTIFY_BASE_URL, RecommendationService, get_config
+from mixtapestudy.config import (
+    SPOTIFY_BASE_URL,
+    USER_AGENT,
+    RecommendationService,
+    get_config,
+)
 from mixtapestudy.database import User, get_session
 from mixtapestudy.models import Song
 from mixtapestudy.routes.util import get_user
@@ -13,11 +19,9 @@ from mixtapestudy.routes.util import get_user
 playlist = Blueprint("playlist", __name__)
 
 
-def _get_spotify_recommendations(selected_songs: dict[str, str]) -> list[Song]:
-    user = get_user()
-
-    access_token = user.access_token
-
+def _get_spotify_recommendations(
+    selected_songs: dict[str, str], access_token: str
+) -> list[Song]:
     g.logger.debug("  selected_songs={}", selected_songs)
 
     playlist_response = requests.get(
@@ -56,7 +60,7 @@ def _get_spotify_recommendations(selected_songs: dict[str, str]) -> list[Song]:
 
 
 def _get_listenbrainz_radio(
-    selected_songs: dict[str, str], listenbrainz_api_key: str
+    selected_songs: dict[str, str], listenbrainz_api_key: str, spotify_access_token: str
 ) -> list[Song]:
     artists = []
     for song in selected_songs:
@@ -72,6 +76,57 @@ def _get_listenbrainz_radio(
     )
     radio_response.raise_for_status()
 
+    mbids = [
+        track["identifier"][0].split("/")[-1]
+        for track in radio_response.json()["payload"]["jspf"]["playlist"]["track"]
+    ]
+
+    spotify_tracks = []
+    rate_limit_remaining = 900  # Arbitrary > 0 number
+    rate_limit_max = 1000  # Slightly larger arbitrary > 0 number
+
+    for mbid in mbids:
+        time.sleep((rate_limit_max - rate_limit_remaining) / 1000)
+
+        # https://musicbrainz.org/doc/MusicBrainz_API#Lookups
+        mb_recording = requests.get(
+            url=f"https://musicbrainz.org/ws/2/recording/{mbid}",
+            params={"fmt": "json", "inc": "isrcs artists"},
+            headers={"User-Agent": USER_AGENT},
+            timeout=30,
+        )
+        mb_recording.raise_for_status()
+
+        recording_json = mb_recording.json()
+        rate_limit_remaining = int(mb_recording.headers["X-RateLimit-Remaining"])
+        rate_limit_max = int(mb_recording.headers["X-RateLimit-Limit"])
+        isrcs = recording_json["isrcs"]
+        artist_credit = recording_json["artist-credit"]
+
+        if isrcs:
+            query_string = f"isrc:{isrcs[0]}"
+        else:
+            query_string = f'track:{recording_json["title"]}'
+            if artist_credit:
+                query_string += " " + " ".join(
+                    [f'artist:{artist["artist"]["name"]}' for artist in artist_credit]
+                )
+
+        g.logger.debug("query_string: {}", query_string)
+
+        # https://developer.spotify.com/documentation/web-api/reference/search
+        spotify_search = requests.get(
+            url=f"{SPOTIFY_BASE_URL}/search",
+            params={"type": "track", "q": query_string},
+            headers={"Authorization": f"Bearer {spotify_access_token}"},
+            timeout=30,
+        )
+        spotify_search.raise_for_status()
+
+        spotify_json = spotify_search.json()
+        if spotify_json["tracks"] and spotify_json["tracks"]["items"]:
+            spotify_tracks.append(spotify_json["tracks"]["items"][0])
+
     playlist_songs = [
         Song(
             uri=song["uri"],
@@ -83,17 +138,18 @@ def _get_listenbrainz_radio(
         for song in selected_songs
     ]
 
-    # TODO: Turn into Spotify Tracks
-
+    # This is slightly sub-optimal since we loop through tracks above,
+    # but it's a small list and this is much easier to think about
+    # if everything's taken care of above
     playlist_songs += [
         Song(
-            uri=track["identifier"][0],
-            id=track["identifier"][0].split("/")[-1],
-            name=track["title"],
-            artist=track["creator"],
-            artist_raw=json.dumps([track["creator"]]),
+            uri=song["uri"],
+            id=song["id"],
+            name=song["name"],
+            artist=", ".join([artist["name"] for artist in song["artists"]]),
+            artist_raw=[artist["name"] for artist in song["artists"]],
         )
-        for track in radio_response.json()["payload"]["jspf"]["playlist"]["track"]
+        for song in spotify_tracks
     ]
     g.logger.debug(playlist_songs)
 
@@ -106,12 +162,15 @@ def generate_playlist() -> str:
     selected_songs = session.get("selected_songs")
     g.logger.debug(" selected_songs={}", selected_songs)
 
+    user = get_user()
+    access_token = user.access_token
+
     match config.recommendation_service:
         case RecommendationService.SPOTIFY:
-            playlist_songs = _get_spotify_recommendations(selected_songs)
+            playlist_songs = _get_spotify_recommendations(selected_songs, access_token)
         case RecommendationService.LISTENBRAINZ:
             playlist_songs = _get_listenbrainz_radio(
-                selected_songs, config.listenbrainz_api_key
+                selected_songs, config.listenbrainz_api_key, access_token
             )
 
     return render_template("playlist.html.j2", playlist_songs=playlist_songs)

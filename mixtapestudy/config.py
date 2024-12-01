@@ -5,6 +5,7 @@ from enum import StrEnum
 from loguru import logger
 
 SPOTIFY_BASE_URL = "https://api.spotify.com/v1"
+USER_AGENT = "https://mixtapestudy.com/v1 ( douglas@builtonbits.com )"
 
 
 class MissingEnvironmentVariableError(Exception):

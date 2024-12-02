@@ -7,14 +7,12 @@ import pytest
 from bs4 import BeautifulSoup
 from flask.testing import FlaskClient
 from requests_mock import Mocker, adapter
+from werkzeug.test import TestResponse
 
 from mixtapestudy.config import SPOTIFY_BASE_URL, USER_AGENT, RecommendationService
 from test.conftest import FAKE_ACCESS_TOKEN, FAKE_LISTENBRAINZ_API_KEY
 
 # TODO: Tests for edge cases
-# TODO: Test for Listenbrainz returning a 400 because the artist isn't in the database
-#   - In this case, try again without that artist
-#   - If none of the artists work, display an error message
 
 
 @pytest.fixture
@@ -75,6 +73,47 @@ def mock_listenbrainz_radio_request(requests_mock: Mocker) -> adapter._Matcher:
             }
         },
     )
+
+
+@pytest.fixture
+def mock_listenbrainz_radio_requests_bad_artists(
+    requests_mock: list[Mocker],
+) -> adapter._Matcher:
+    mocks = []
+    bad_artist_iterations = [
+        "artist:(selected-artist-0) artist:(selected-artist-3) "
+        "artist:(selected-artist-1) artist:(selected-artist-4) "
+        "artist:(selected-artist-2) artist:(selected-artist-5)",
+        "artist:(selected-artist-0) artist:(selected-artist-1) "
+        "artist:(selected-artist-4) artist:(selected-artist-2) "
+        "artist:(selected-artist-5)",
+        "artist:(selected-artist-0) artist:(selected-artist-1) "
+        "artist:(selected-artist-2) artist:(selected-artist-5)",
+    ]
+
+    for i in range(3):
+        params = urlencode(
+            {
+                "mode": "easy",
+                "prompt": bad_artist_iterations[i],
+            }
+        )
+        mocks.append(
+            requests_mock.get(
+                url=f"https://api.listenbrainz.org/1/explore/lb-radio?{params}",
+                request_headers={
+                    "Authorization": f"Bearer {FAKE_LISTENBRAINZ_API_KEY}"
+                },
+                status_code=400,
+                json={
+                    "code": 400,
+                    "error": "LB Radio generation failed:"
+                    f" Artist selected-artist-{i+3} could not"  # 3, 4, 5
+                    " be looked up. Please use exact spelling.",
+                },
+            )
+        )
+    return mocks
 
 
 @pytest.fixture
@@ -268,6 +307,42 @@ def test_load_page_recommendation_service_spotify(
     assert not soup.find(id="error-header")
 
 
+def _validate_playlist_page(
+    mock_musicbrainz_recording_requests: list[adapter._Matcher],
+    mock_spotify_search: adapter._Matcher,
+    playlist_page_response: TestResponse,
+) -> None:
+    for mock in mock_musicbrainz_recording_requests:
+        assert mock.called
+    for mock in mock_spotify_search:
+        assert mock.called
+
+    soup = BeautifulSoup(playlist_page_response.text, "html.parser")
+    table_rows = soup.find_all("tr")
+    number_of_songs = 35
+
+    assert len(table_rows) == number_of_songs + 1  # Extra row for header
+    first_row = table_rows[1].find_all("td")
+
+    assert [c.string for c in first_row] == [
+        "selected-name-0",
+        "selected-artist-0",
+    ]
+
+    fourth_row = table_rows[4].find_all("td")
+    assert [c.string for c in fourth_row] == [
+        "name-0",
+        "artist name 0",
+    ]
+    last_row = table_rows[-1].find_all("td")
+    assert [c.string for c in last_row] == [
+        "name-31",
+        "artist name 31",
+    ]
+    assert not soup.find(id="success-header")
+    assert not soup.find(id="error-header")
+
+
 def test_load_page_recommendation_service_listenbrainz(
     client: FlaskClient,
     mock_listenbrainz_radio_request: adapter._Matcher,
@@ -294,36 +369,51 @@ def test_load_page_recommendation_service_listenbrainz(
         playlist_page_response = client.post("/playlist/preview")
 
     assert mock_listenbrainz_radio_request.called
-    for mock in mock_musicbrainz_recording_requests:
+
+    _validate_playlist_page(
+        mock_musicbrainz_recording_requests, mock_spotify_search, playlist_page_response
+    )
+
+
+def test_load_page_recommendation_service_listenbrainz_bad_artist(
+    client: FlaskClient,
+    mock_listenbrainz_radio_request: adapter._Matcher,
+    mock_listenbrainz_radio_requests_bad_artists: list[adapter._Matcher],
+    mock_musicbrainz_recording_requests: list[adapter._Matcher],
+    mock_spotify_search: list[adapter._Matcher],
+) -> None:
+    # The way this test works is a little hard to follow, hopefully this comment helps
+    # I'm adding an extra artist in the session to each track that's "bad."
+    # The code should attempt the search on each song and retry, removing bad artists
+    # until a successful search is achieved or all artists fail and the title of
+    # the track is the only search term left.
+
+    with client.session_transaction() as tsession:
+        tsession["selected_songs"] = [
+            {
+                "uri": f"spotify:track:selected-song-{i}",
+                "id": f"selected-song-{i}",
+                "name": f"selected-name-{i}",
+                "artist": f"selected-artist-{i}",
+                "artist_raw": f'["selected-artist-{i}","selected-artist-{i + 3}"]',
+            }
+            for i in range(3)
+        ]
+
+    with patch("mixtapestudy.routes.playlist.get_config") as fake_get_config:
+        fake_get_config.return_value.recommendation_service = (
+            RecommendationService.LISTENBRAINZ
+        )
+        fake_get_config.return_value.listenbrainz_api_key = FAKE_LISTENBRAINZ_API_KEY
+        playlist_page_response = client.post("/playlist/preview")
+
+    assert mock_listenbrainz_radio_request.called
+    for mock in mock_listenbrainz_radio_requests_bad_artists:
         assert mock.called
-    for mock in mock_spotify_search:
-        assert mock.called
 
-    soup = BeautifulSoup(playlist_page_response.text, "html.parser")
-    table_rows = soup.find_all("tr")
-    number_of_songs = 35
-    assert len(table_rows) == number_of_songs + 1  # Extra row for header
-
-    first_row = table_rows[1].find_all("td")
-    assert [c.string for c in first_row] == [
-        "selected-name-0",
-        "selected-artist-0",
-    ]
-
-    fourth_row = table_rows[4].find_all("td")
-    assert [c.string for c in fourth_row] == [
-        "name-0",
-        "artist name 0",
-    ]
-
-    last_row = table_rows[-1].find_all("td")
-    assert [c.string for c in last_row] == [
-        "name-31",
-        "artist name 31",
-    ]
-
-    assert not soup.find(id="success-header")
-    assert not soup.find(id="error-header")
+    _validate_playlist_page(
+        mock_musicbrainz_recording_requests, mock_spotify_search, playlist_page_response
+    )
 
 
 def test_load_page_recommendation_service_listenbrainz_many_artists(
@@ -357,6 +447,7 @@ def test_load_page_recommendation_service_listenbrainz_many_artists(
         playlist_page_response = client.post("/playlist/preview")
 
     assert mock_listenbrainz_radio_request.called
+
     for mock in mock_musicbrainz_recording_request_many_artists:
         assert mock.called
     for mock in mock_spotify_search_many_artists:

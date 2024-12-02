@@ -1,6 +1,8 @@
 import json
+import re
 import time
 from datetime import datetime, timezone
+from http.client import BAD_REQUEST
 from urllib.parse import ParseResult
 
 import requests
@@ -59,22 +61,58 @@ def _get_spotify_recommendations(
     return playlist_songs
 
 
-def _get_listenbrainz_radio(
-    selected_songs: dict[str, str], listenbrainz_api_key: str, spotify_access_token: str
-) -> list[Song]:
+def _get_good_radio_response(
+    listenbrainz_api_key: str, selected_songs: dict[str, str]
+) -> Response:
+    # There might be a cleaner way to do this, I wanted to avoid recursion and
+    # prevent a potential infinite loop.
     artists = []
     for song in selected_songs:
         artists += json.loads(song["artist_raw"])
-    g.logger.debug("  artists: {}", artists)
-    prompt_string = " ".join([f"artist:({artist})" for artist in artists])
 
-    radio_response = requests.get(
-        url="https://api.listenbrainz.org/1/explore/lb-radio",
-        params={"mode": "easy", "prompt": prompt_string},
-        headers={"Authorization": f"Bearer {listenbrainz_api_key}"},
-        timeout=30,
-    )
-    radio_response.raise_for_status()
+    radio_response = None
+
+    for _ in range(30):
+        g.logger.debug("  artists: {}", artists)
+        prompt_string = " ".join([f"artist:({artist})" for artist in artists])
+
+        radio_response = requests.get(
+            url="https://api.listenbrainz.org/1/explore/lb-radio",
+            params={"mode": "easy", "prompt": prompt_string},
+            headers={"Authorization": f"Bearer {listenbrainz_api_key}"},
+            timeout=30,
+        )
+        try:
+            radio_response.raise_for_status()
+            break
+        except requests.exceptions.HTTPError as error:
+            if error.response.status_code != BAD_REQUEST:
+                raise
+
+            error_response = error.response.json()
+            g.logger.debug(" failed to retrieve lb-radio: {} {}", error, error_response)
+            error_message = error_response["error"]
+            artist_name_search = re.search(
+                "Artist (.+) could not be looked up.", error_message
+            )
+
+            if artist_name_search:
+                bad_artist = artist_name_search.group(1)
+                artists = [artist for artist in artists if artist != bad_artist]
+
+            if not artists:
+                raise
+
+    if radio_response:
+        radio_response.raise_for_status()
+
+    return radio_response
+
+
+def _get_listenbrainz_radio(
+    selected_songs: dict[str, str], listenbrainz_api_key: str, spotify_access_token: str
+) -> list[Song]:
+    radio_response = _get_good_radio_response(listenbrainz_api_key, selected_songs)
 
     mbids = [
         track["identifier"][0].split("/")[-1]

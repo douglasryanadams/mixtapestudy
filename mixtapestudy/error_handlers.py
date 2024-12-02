@@ -36,17 +36,25 @@ def handle_generic_errors(error: Exception) -> (str, int):
 
 
 def handle_http_request_error(error: HTTPError) -> (str, int):
+    error_code = uuid4()
     try:
+        error.add_note(f"Error code: {error_code}")
         error.add_note(f"Request: {error.request}")
         error.add_note(f"Request headers: {error.request.headers}")
         error.add_note(f"Request body: {error.request.body}")
         error.add_note(f"Response: {error.response}")
         error.add_note(f"Response headers: {error.response.headers}")
         error.add_note(f"Response body: {error.response.text}")
-    except Exception:  # noqa: BLE001
-        logger.exception()
-    finally:
-        return handle_generic_errors(error)  # noqa: B012
+
+    except Exception as secondary_error:  # noqa: BLE001
+        logger.exception("Error handling HTTPError")
+        return handle_generic_errors(secondary_error)
+
+    return render_template(
+        "400_error.html.j2",
+        error_message=error.response.text,
+        error_code=str(error_code)[24:],
+    )
 
 
 def handle_404_not_found(error: NotFound) -> (str, int):

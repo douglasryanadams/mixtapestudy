@@ -2,9 +2,9 @@
 {% block body %}
     <main>
         <div class="grid">
-            <div>
+            <div id="playlist-preview-form-div">
                 <h2>Selected Songs</h2>
-                <form action="/playlist/preview" method="POST">
+                <form action="/playlist/preview" method="POST" id="playlist-preview-form">
                     <!-- Playlist retrieves selected songs from session -->
                     {% if selected_songs_full %}
                         <input id="generate-playlist" type="submit" value="Generate Playlist"/>
@@ -14,6 +14,7 @@
                         </a>
                     {% endif %}
                 </form>
+                <div id="playlist-preview-progress-bar">Loading Playlist ...</div>
             </div>
             <div>
                 <h2>Search for Songs</h2>
@@ -99,5 +100,18 @@
                 </article>
             </div>
         </div>
+        <script>
+            window.onload = function () {
+                const progressBar = document.querySelector('#playlist-preview-progress-bar');
+                progressBar.classList.add("hidden")
+
+                const playlistPreviewForm = document.querySelector('#playlist-preview-form-div');
+                if (playlistPreviewForm) {
+                    playlistPreviewForm.addEventListener('submit', function (event) {
+                        progressBar.classList.remove("hidden")
+                    });
+                }
+            }
+        </script>
     </main>
 {% endblock %}

@@ -1,0 +1,25 @@
+{% extends "base.html.j2" %}
+{% block body %}
+    <div class="body-wrapper">
+        <article>
+            <h1 style="text-align: center;">Bad Request (HTTP 400)</h1>
+            <p>
+                Unfortunately, your request encountered an unrecoverable error.<br/>
+                This is the error message received by the site that resulted in that error, it may help you avoid the error in the short term.<br>
+            </p>
+            <p>
+                {{ error_message }}
+            </p>
+            <h3>ERROR CODE: {{ error_code }}</h3>
+            <p>
+                If you continue to experience issues, please contact
+                <a
+                        href="mailto:douglas@builtonbits.com?subject=mixtapestudy.com ERROR:{{ error_code }}&body=Hello, I encountered an error on mixtapestudy.com ({{ error_code }}). Additional context below:"
+                >
+                    douglas@builtonbits.com
+                </a>
+                and include the error code above.
+            </p>
+        </article>
+    </div>
+{% endblock %}

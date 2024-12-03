@@ -9,7 +9,7 @@ from flask.testing import FlaskClient
 from requests_mock import Mocker, adapter
 from werkzeug.test import TestResponse
 
-from mixtapestudy.config import SPOTIFY_BASE_URL, USER_AGENT, RecommendationService
+from mixtapestudy.config import SPOTIFY_BASE_URL, RecommendationService
 from test.conftest import FAKE_ACCESS_TOKEN, FAKE_LISTENBRAINZ_API_KEY
 
 # TODO: Tests for edge cases
@@ -60,11 +60,8 @@ def mock_listenbrainz_radio_request(requests_mock: Mocker) -> adapter._Matcher:
                     "playlist": {
                         "track": [
                             {
-                                "title": f"name-{i}",
-                                "identifier": [
-                                    f"https://musicbrainz.org/recording/fake-uuid-{i}"
-                                ],
-                                "creator": f"artist-{i}",
+                                "title": f"song {i}",
+                                "creator": f"artist name {i}",
                             }
                             for i in range(32)
                         ]
@@ -108,7 +105,7 @@ def mock_listenbrainz_radio_requests_bad_artists(
                 json={
                     "code": 400,
                     "error": "LB Radio generation failed:"
-                    f" Artist selected-artist-{i+3} could not"  # 3, 4, 5
+                    f" Artist selected-artist-{i + 3} could not"  # 3, 4, 5
                     " be looked up. Please use exact spelling.",
                 },
             )
@@ -117,69 +114,24 @@ def mock_listenbrainz_radio_requests_bad_artists(
 
 
 @pytest.fixture
-def mock_musicbrainz_recording_requests(
-    requests_mock: Mocker,
-) -> list[adapter._Matcher]:
-    params = urlencode({"fmt": "json", "inc": "isrcs artists"})
-    mbids = [f"fake-uuid-{i}" for i in range(32)]
-    return [
-        requests_mock.get(
-            url=f"https://musicbrainz.org/ws/2/recording/{mbid}?{params}",
-            request_headers={"User-Agent": USER_AGENT},
-            headers={
-                "X-RateLimit-Remaining": "999",
-                "X-RateLimit-Limit": "1000",
-            },
-            json={
-                "isrcs": [f"ISRC000{i}"]
-                if i % 2 == 0
-                else [],  # I've never seen more than one in this list
-                "title": f"song-{i}",
-                "artist-credit": [{"artist": {"name": f"artist name {i}"}}],
-            },
-        )
-        for i, mbid in enumerate(mbids)
-    ]
-
-
-@pytest.fixture
-def mock_musicbrainz_recording_request_many_artists(
-    requests_mock: Mocker,
-) -> list[adapter._Matcher]:
-    params = urlencode({"fmt": "json", "inc": "isrcs artists"})
-    mbids = [f"fake-uuid-{i}" for i in range(32)]
-    return [
-        requests_mock.get(
-            url=f"https://musicbrainz.org/ws/2/recording/{mbid}?{params}",
-            request_headers={"User-Agent": USER_AGENT},
-            headers={
-                "X-RateLimit-Remaining": "999",
-                "X-RateLimit-Limit": "1000",
-            },
-            json={
-                "isrcs": [f"ISRC000{i}"]
-                if i % 2 == 0
-                else [],  # I've never seen more than one in this list
-                "title": f"song-{i}",
-                "artist-credit": [
-                    {"artist": {"name": f"artist name {i} {k}"}} for k in range(20)
-                ],
-            },
-        )
-        for i, mbid in enumerate(mbids)
-    ]
-
-
-@pytest.fixture
 def mock_spotify_search(requests_mock: Mocker) -> list[adapter._Matcher]:
     mock_requests = []
     for i in range(32):
-        query_string = (
-            f"isrc:ISRC000{i}"
-            if i % 2 == 0
-            else f"track:song-{i} artist:artist name {i}"
+        params = urlencode(
+            {"type": "track", "q": f"track:song {i} artist:artist name {i}"}
         )
-        params = urlencode({"type": "track", "q": query_string})
+
+        if i % 2 == 0:
+            mock_requests.append(
+                requests_mock.get(
+                    url=f"{SPOTIFY_BASE_URL}/search?{params}",
+                    request_headers={"Authorization": f"Bearer {FAKE_ACCESS_TOKEN}"},
+                    json={"tracks": {"items": []}},
+                )
+            )
+
+            params = urlencode({"type": "track", "q": f"song {i} artist name {i}"})
+
         mock_requests.append(
             requests_mock.get(
                 url=f"{SPOTIFY_BASE_URL}/search?{params}",
@@ -198,42 +150,7 @@ def mock_spotify_search(requests_mock: Mocker) -> list[adapter._Matcher]:
                 },
             )
         )
-    return mock_requests
 
-
-@pytest.fixture
-def mock_spotify_search_many_artists(requests_mock: Mocker) -> list[adapter._Matcher]:
-    mock_requests = []
-    for i in range(32):
-        query_string = (
-            f"isrc:ISRC000{i}"
-            if i % 2 == 0
-            else f"track:song-{i} "
-            f"artist:artist name {i} 0 "
-            f"artist:artist name {i} 1 "
-            f"artist:artist name {i} 2"
-        )
-        params = urlencode({"type": "track", "q": query_string})
-        mock_requests.append(
-            requests_mock.get(
-                url=f"{SPOTIFY_BASE_URL}/search?{params}",
-                request_headers={"Authorization": f"Bearer {FAKE_ACCESS_TOKEN}"},
-                json={
-                    "tracks": {
-                        "items": [
-                            {
-                                "uri": f"spotify:song-{i}",
-                                "id": f"song-{i}",
-                                "name": f"name-{i}",
-                                "artists": [
-                                    {"name": f"artist name {i} {k}"} for k in range(20)
-                                ],
-                            }
-                        ]
-                    }
-                },
-            )
-        )
     return mock_requests
 
 
@@ -308,12 +225,9 @@ def test_load_page_recommendation_service_spotify(
 
 
 def _validate_playlist_page(
-    mock_musicbrainz_recording_requests: list[adapter._Matcher],
     mock_spotify_search: adapter._Matcher,
     playlist_page_response: TestResponse,
 ) -> None:
-    for mock in mock_musicbrainz_recording_requests:
-        assert mock.called
     for mock in mock_spotify_search:
         assert mock.called
 
@@ -346,7 +260,6 @@ def _validate_playlist_page(
 def test_load_page_recommendation_service_listenbrainz(
     client: FlaskClient,
     mock_listenbrainz_radio_request: adapter._Matcher,
-    mock_musicbrainz_recording_requests: list[adapter._Matcher],
     mock_spotify_search: list[adapter._Matcher],
 ) -> None:
     with client.session_transaction() as tsession:
@@ -370,16 +283,13 @@ def test_load_page_recommendation_service_listenbrainz(
 
     assert mock_listenbrainz_radio_request.called
 
-    _validate_playlist_page(
-        mock_musicbrainz_recording_requests, mock_spotify_search, playlist_page_response
-    )
+    _validate_playlist_page(mock_spotify_search, playlist_page_response)
 
 
 def test_load_page_recommendation_service_listenbrainz_bad_artist(
     client: FlaskClient,
     mock_listenbrainz_radio_request: adapter._Matcher,
     mock_listenbrainz_radio_requests_bad_artists: list[adapter._Matcher],
-    mock_musicbrainz_recording_requests: list[adapter._Matcher],
     mock_spotify_search: list[adapter._Matcher],
 ) -> None:
     # The way this test works is a little hard to follow, hopefully this comment helps
@@ -411,73 +321,7 @@ def test_load_page_recommendation_service_listenbrainz_bad_artist(
     for mock in mock_listenbrainz_radio_requests_bad_artists:
         assert mock.called
 
-    _validate_playlist_page(
-        mock_musicbrainz_recording_requests, mock_spotify_search, playlist_page_response
-    )
-
-
-def test_load_page_recommendation_service_listenbrainz_many_artists(
-    client: FlaskClient,
-    mock_listenbrainz_radio_request: adapter._Matcher,
-    mock_musicbrainz_recording_request_many_artists: list[adapter._Matcher],
-    mock_spotify_search_many_artists: list[adapter._Matcher],
-) -> None:
-    """Validates that we only submit at most 3 artists to the search.
-
-    We only submit the first three artists on the track to the search.
-    If you submit more than that to spotify you get an HTTP 502.
-    """
-    with client.session_transaction() as tsession:
-        tsession["selected_songs"] = [
-            {
-                "uri": f"spotify:track:selected-song-{i}",
-                "id": f"selected-song-{i}",
-                "name": f"selected-name-{i}",
-                "artist": f"selected-artist-{i}",
-                "artist_raw": f'["selected-artist-{i}"]',
-            }
-            for i in range(3)
-        ]
-
-    with patch("mixtapestudy.routes.playlist.get_config") as fake_get_config:
-        fake_get_config.return_value.recommendation_service = (
-            RecommendationService.LISTENBRAINZ
-        )
-        fake_get_config.return_value.listenbrainz_api_key = FAKE_LISTENBRAINZ_API_KEY
-        playlist_page_response = client.post("/playlist/preview")
-
-    assert mock_listenbrainz_radio_request.called
-
-    for mock in mock_musicbrainz_recording_request_many_artists:
-        assert mock.called
-    for mock in mock_spotify_search_many_artists:
-        assert mock.called
-
-    soup = BeautifulSoup(playlist_page_response.text, "html.parser")
-    table_rows = soup.find_all("tr")
-    number_of_songs = 35
-    assert len(table_rows) == number_of_songs + 1  # Extra row for header
-
-    first_row = table_rows[1].find_all("td")
-    assert [c.string for c in first_row] == [
-        "selected-name-0",
-        "selected-artist-0",
-    ]
-
-    fourth_row = table_rows[4].find_all("td")
-    assert [c.string for c in fourth_row] == [
-        "name-0",
-        ", ".join([f"artist name 0 {k}" for k in range(20)]),
-    ]
-
-    last_row = table_rows[-1].find_all("td")
-    assert [c.string for c in last_row] == [
-        "name-31",
-        ", ".join([f"artist name 31 {k}" for k in range(20)]),
-    ]
-
-    assert not soup.find(id="success-header")
-    assert not soup.find(id="error-header")
+    _validate_playlist_page(mock_spotify_search, playlist_page_response)
 
 
 def test_save_playlist(

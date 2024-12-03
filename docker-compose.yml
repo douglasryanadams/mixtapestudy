@@ -47,13 +47,13 @@ services:
       - "8000:8000"
     environment:
       OAUTH_REDIRECT_BASE_URL: "http://127.0.0.1"
+      RECOMMENDATION_SERVICE: "listenbrainz"  # listenbrainz | spotify
       # Set these in a .env file
       SPOTIFY_CLIENT_SECRET: "${SPOTIFY_CLIENT_SECRET}"
       SPOTIFY_CLIENT_ID: "${SPOTIFY_CLIENT_ID}"
       SESSION_SECRET: "${SESSION_SECRET}"
       DATABASE_URL: "${DATABASE_URL}"
       LISTENBRAINZ_API_KEY: "${LISTENBRAINZ_API_KEY}"
-      RECOMMENDATION_SERVICE: "listenbrainz"  # listenbrainz | spotify
     volumes:
       - ./build/log:/home/app/log
     depends_on:

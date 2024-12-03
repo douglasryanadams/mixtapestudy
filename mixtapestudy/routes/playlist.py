@@ -1,6 +1,5 @@
 import json
 import re
-import time
 from datetime import datetime, timezone
 from http.client import BAD_REQUEST
 from urllib.parse import ParseResult
@@ -10,7 +9,6 @@ from flask import Blueprint, Response, g, redirect, render_template, request, se
 
 from mixtapestudy.config import (
     SPOTIFY_BASE_URL,
-    USER_AGENT,
     RecommendationService,
     get_config,
 )
@@ -114,50 +112,15 @@ def _get_listenbrainz_radio(
 ) -> list[Song]:
     radio_response = _get_good_radio_response(listenbrainz_api_key, selected_songs)
 
-    mbids = [
-        track["identifier"][0].split("/")[-1]
-        for track in radio_response.json()["payload"]["jspf"]["playlist"]["track"]
-    ]
-
     spotify_tracks = []
-    rate_limit_remaining = 900  # Arbitrary > 0 number
-    rate_limit_max = 1000  # Slightly larger arbitrary > 0 number
 
-    for mbid in mbids:
-        time.sleep((rate_limit_max - rate_limit_remaining) / 1000)
-
-        # https://musicbrainz.org/doc/MusicBrainz_API#Lookups
-        mb_recording = requests.get(
-            url=f"https://musicbrainz.org/ws/2/recording/{mbid}",
-            params={"fmt": "json", "inc": "isrcs artists"},
-            headers={"User-Agent": USER_AGENT},
-            timeout=30,
-        )
-        mb_recording.raise_for_status()
-
-        recording_json = mb_recording.json()
-        rate_limit_remaining = int(mb_recording.headers["X-RateLimit-Remaining"])
-        rate_limit_max = int(mb_recording.headers["X-RateLimit-Limit"])
-        isrcs = recording_json["isrcs"]
-        artist_credit = recording_json["artist-credit"]
-
-        if isrcs:
-            query_string = f"isrc:{isrcs[0]}"
-        else:
-            query_string = f'track:{recording_json["title"]}'
-            if artist_credit:
-                query_string += " " + " ".join(
-                    [
-                        f'artist:{artist["artist"]["name"]}'
-                        for artist in artist_credit[:3]
-                    ]
-                )
-
-        g.logger.debug("query_string: {}", query_string)
+    for track in radio_response.json()["payload"]["jspf"]["playlist"]["track"]:
+        query_string = f'track:{track["title"]} artist:{track["creator"]}'
+        track_found_icon = "[ ]"
 
         # https://developer.spotify.com/documentation/web-api/reference/search
         spotify_search = requests.get(
-            url=f"{SPOTIFY_BASE_URL}/search",
+            url="https://api.spotify.com/v1/search",
             params={"type": "track", "q": query_string},
             headers={"Authorization": f"Bearer {spotify_access_token}"},
             timeout=30,
@@ -165,8 +128,26 @@ def _get_listenbrainz_radio(
         spotify_search.raise_for_status()
 
         spotify_json = spotify_search.json()
+
         if spotify_json["tracks"] and spotify_json["tracks"]["items"]:
             spotify_tracks.append(spotify_json["tracks"]["items"][0])
+            track_found_icon = "[X]"
+        else:
+            query_string = f'{track["title"]} {track["creator"]}'
+            spotify_search = requests.get(
+                url="https://api.spotify.com/v1/search",
+                params={"type": "track", "q": query_string},
+                headers={"Authorization": f"Bearer {spotify_access_token}"},
+                timeout=30,
+            )
+            spotify_search.raise_for_status()
+
+            spotify_json = spotify_search.json()
+            if spotify_json["tracks"] and spotify_json["tracks"]["items"]:
+                track_found_icon = "[/]"
+                spotify_tracks.append(spotify_json["tracks"]["items"][0])
+
+        g.logger.debug("{} {}", track_found_icon, query_string)
 
     playlist_songs = [
         Song(

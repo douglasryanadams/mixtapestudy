@@ -4,7 +4,7 @@
         <div class="grid">
             <div id="playlist-preview-form-div">
                 <h2>Selected Songs</h2>
-                <form action="/playlist/preview" method="POST" id="playlist-preview-form">
+                <form action="/playlist/preview" method="POST" id="playlist-preview-form" onsubmit="showProgressBar()">
                     <!-- Playlist retrieves selected songs from session -->
                     {% if selected_songs_full %}
                         <input id="generate-playlist" type="submit" value="Generate Playlist"/>
@@ -14,7 +14,6 @@
                         </a>
                     {% endif %}
                 </form>
-                <div id="playlist-preview-progress-bar">Loading Playlist ...</div>
             </div>
             <div>
                 <h2>Search for Songs</h2>
@@ -100,18 +99,17 @@
                 </article>
             </div>
         </div>
-        <script>
-            window.onpageshow = function () {
-                const progressBar = document.querySelector('#playlist-preview-progress-bar');
-                progressBar.classList.add("hidden")
-
-                const playlistPreviewForm = document.querySelector('#playlist-preview-form-div');
-                if (playlistPreviewForm) {
-                    playlistPreviewForm.addEventListener('submit', function (event) {
-                        progressBar.classList.remove("hidden")
-                    });
-                }
-            }
-        </script>
     </main>
+    <script>
+        function showProgressBar() {
+            const playlistPreviewForm = document.getElementById('playlist-preview-form');
+            const progressBar = document.createElement("progress")
+            progressBar.id = '#playlist-preview-progress-bar';
+            playlistPreviewForm.appendChild(progressBar);
+
+            const generatePlaylistButton = document.getElementById("generate-playlist");
+            generatePlaylistButton.disabled = true;
+            generatePlaylistButton.value = "... loading playlist ..."
+        }
+    </script>
 {% endblock %}

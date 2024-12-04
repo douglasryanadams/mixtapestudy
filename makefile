@@ -44,7 +44,7 @@ run:
 
 .PHONY: dev
 dev:
-	trap 'docker compose logs --timestamps --no-color > docker.log && docker compose down --volumes --remove-orphans' EXIT; \
+	source .env.sh && trap 'docker compose logs --timestamps --no-color > docker.log && docker compose down --volumes --remove-orphans' EXIT; \
 	bash -c "docker compose up --build --detach migration_done && \
 		SESSION_SECRET='WP9zwHnJ' \
 		OAUTH_REDIRECT_BASE_URL='http://127.0.0.1:5000' \

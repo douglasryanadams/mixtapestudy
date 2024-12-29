@@ -9,7 +9,7 @@ from flask.testing import FlaskClient
 from requests_mock import Mocker, adapter
 
 from mixtapestudy.config import SPOTIFY_BASE_URL
-from test.conftest import FAKE_ACCESS_TOKEN, FAKE_USER_ID
+from test.app.conftest import FAKE_ACCESS_TOKEN, FAKE_USER_ID
 
 # TODO: Write tests to handle edge cases and errors
 # TODO: Test clicking all the buttons

@@ -18,7 +18,7 @@ from sqlalchemy.orm import Session
 
 from mixtapestudy.config import SPOTIFY_BASE_URL
 from mixtapestudy.database import User
-from test.conftest import FAKE_ACCESS_TOKEN, FAKE_REFRESH_TOKEN, FAKE_USER_ID
+from test.app.conftest import FAKE_ACCESS_TOKEN, FAKE_REFRESH_TOKEN, FAKE_USER_ID
 
 # TODO: Write tests for handling expired auth tokens
 # TODO: Write tests for different users logging in

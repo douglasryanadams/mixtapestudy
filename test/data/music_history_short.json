@@ -1,0 +1,20 @@
+[
+  {
+    "endTime" : "2023-04-09 03:55",
+    "artistName" : "John Mayer",
+    "trackName" : "Heartbreak Warfare",
+    "msPlayed" : 265550
+  },
+  {
+    "endTime" : "2023-04-09 04:00",
+    "artistName" : "John Mayer",
+    "trackName" : "All We Ever Do Is Say Goodbye",
+    "msPlayed" : 271011
+  },
+  {
+    "endTime" : "2023-04-09 04:01",
+    "artistName" : "John Mayer",
+    "trackName" : "Half of My Heart",
+    "msPlayed" : 90674
+  }
+]

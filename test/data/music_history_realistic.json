@@ -1,0 +1,4826 @@
+[
+  {
+    "endTime" : "2023-04-09 03:55",
+    "artistName" : "John Mayer",
+    "trackName" : "Heartbreak Warfare",
+    "msPlayed" : 265550
+  },
+  {
+    "endTime" : "2023-04-09 04:00",
+    "artistName" : "John Mayer",
+    "trackName" : "All We Ever Do Is Say Goodbye",
+    "msPlayed" : 271011
+  },
+  {
+    "endTime" : "2023-04-09 04:01",
+    "artistName" : "John Mayer",
+    "trackName" : "Half of My Heart",
+    "msPlayed" : 90674
+  },
+  {
+    "endTime" : "2023-04-11 03:29",
+    "artistName" : "Slushii",
+    "trackName" : "Sapient Dream",
+    "msPlayed" : 248791
+  },
+  {
+    "endTime" : "2023-04-11 03:34",
+    "artistName" : "Rameses B",
+    "trackName" : "Never Forget",
+    "msPlayed" : 288339
+  },
+  {
+    "endTime" : "2023-04-11 03:37",
+    "artistName" : "Dabin",
+    "trackName" : "In Flames",
+    "msPlayed" : 204787
+  },
+  {
+    "endTime" : "2023-04-11 03:41",
+    "artistName" : "Electus",
+    "trackName" : "Seize the Day",
+    "msPlayed" : 214166
+  },
+  {
+    "endTime" : "2023-04-11 03:44",
+    "artistName" : "Mr FijiWiji",
+    "trackName" : "Enough",
+    "msPlayed" : 218081
+  },
+  {
+    "endTime" : "2023-04-11 03:47",
+    "artistName" : "Nick Bateman",
+    "trackName" : "Forget the Money",
+    "msPlayed" : 160003
+  },
+  {
+    "endTime" : "2023-04-11 03:50",
+    "artistName" : "Massane",
+    "trackName" : "Another Dawn",
+    "msPlayed" : 196989
+  },
+  {
+    "endTime" : "2023-04-11 03:54",
+    "artistName" : "ILLENIUM",
+    "trackName" : "Good Things Fall Apart (with Jon Bellion)",
+    "msPlayed" : 216672
+  },
+  {
+    "endTime" : "2023-04-11 03:56",
+    "artistName" : "Shallou",
+    "trackName" : "count on",
+    "msPlayed" : 127498
+  },
+  {
+    "endTime" : "2023-04-11 03:58",
+    "artistName" : "Jacoo",
+    "trackName" : "The Blizzard Was Relentless, But Surely He Was Getting Closer to That Shimmer",
+    "msPlayed" : 134095
+  },
+  {
+    "endTime" : "2023-04-11 04:01",
+    "artistName" : "Tycho",
+    "trackName" : "Field",
+    "msPlayed" : 160112
+  },
+  {
+    "endTime" : "2023-04-11 04:04",
+    "artistName" : "Dabin",
+    "trackName" : "Alive",
+    "msPlayed" : 184183
+  },
+  {
+    "endTime" : "2023-04-12 03:33",
+    "artistName" : "Drake",
+    "trackName" : "That’s How You Feel",
+    "msPlayed" : 157608
+  },
+  {
+    "endTime" : "2023-04-12 03:37",
+    "artistName" : "JAY-Z",
+    "trackName" : "Numb / Encore",
+    "msPlayed" : 205284
+  },
+  {
+    "endTime" : "2023-04-12 03:40",
+    "artistName" : "NF",
+    "trackName" : "Dreams",
+    "msPlayed" : 221578
+  },
+  {
+    "endTime" : "2023-04-12 03:43",
+    "artistName" : "Russ",
+    "trackName" : "NASTY - Extended Version",
+    "msPlayed" : 176770
+  },
+  {
+    "endTime" : "2023-04-12 03:48",
+    "artistName" : "Kanye West",
+    "trackName" : "Family Business",
+    "msPlayed" : 278898
+  },
+  {
+    "endTime" : "2023-04-12 03:52",
+    "artistName" : "Lil Dicky",
+    "trackName" : "Molly (feat. Brendon Urie of Panic at the Disco)",
+    "msPlayed" : 244344
+  },
+  {
+    "endTime" : "2023-04-12 03:57",
+    "artistName" : "Eminem",
+    "trackName" : "Beautiful Pain",
+    "msPlayed" : 265030
+  },
+  {
+    "endTime" : "2023-04-12 04:00",
+    "artistName" : "Nas",
+    "trackName" : "The Message",
+    "msPlayed" : 234098
+  },
+  {
+    "endTime" : "2023-04-12 04:03",
+    "artistName" : "Wu-Tang Clan",
+    "trackName" : "Preservation",
+    "msPlayed" : 146537
+  },
+  {
+    "endTime" : "2023-04-12 04:04",
+    "artistName" : "Royce Da 5'9\"",
+    "trackName" : "Woke",
+    "msPlayed" : 92996
+  },
+  {
+    "endTime" : "2023-04-12 04:08",
+    "artistName" : "NF",
+    "trackName" : "If You Want Love",
+    "msPlayed" : 199391
+  },
+  {
+    "endTime" : "2023-04-12 04:12",
+    "artistName" : "JAY-Z",
+    "trackName" : "Dirt off Your Shoulder / Lying From You",
+    "msPlayed" : 244698
+  },
+  {
+    "endTime" : "2023-04-12 04:15",
+    "artistName" : "Drake",
+    "trackName" : "Nice For What",
+    "msPlayed" : 210751
+  },
+  {
+    "endTime" : "2023-04-12 04:22",
+    "artistName" : "Eminem",
+    "trackName" : "Beautiful",
+    "msPlayed" : 392836
+  },
+  {
+    "endTime" : "2023-04-12 04:27",
+    "artistName" : "Nas",
+    "trackName" : "If I Ruled the World (Imagine That) (feat. Lauryn Hill)",
+    "msPlayed" : 282379
+  },
+  {
+    "endTime" : "2023-04-12 04:30",
+    "artistName" : "Kanye West",
+    "trackName" : "Homecoming",
+    "msPlayed" : 203497
+  },
+  {
+    "endTime" : "2023-04-12 04:33",
+    "artistName" : "Phora",
+    "trackName" : "Fake Smiles",
+    "msPlayed" : 207205
+  },
+  {
+    "endTime" : "2023-04-12 04:38",
+    "artistName" : "T.I.",
+    "trackName" : "What You Know",
+    "msPlayed" : 274338
+  },
+  {
+    "endTime" : "2023-04-12 04:42",
+    "artistName" : "JAY-Z",
+    "trackName" : "Dirt Off Your Shoulder",
+    "msPlayed" : 245178
+  },
+  {
+    "endTime" : "2023-04-12 04:46",
+    "artistName" : "Talib Kweli",
+    "trackName" : "Get By",
+    "msPlayed" : 227430
+  },
+  {
+    "endTime" : "2023-04-12 04:47",
+    "artistName" : "Eminem",
+    "trackName" : "The Way I Am",
+    "msPlayed" : 92507
+  },
+  {
+    "endTime" : "2023-04-13 03:54",
+    "artistName" : "Anderson .Paak",
+    "trackName" : "The Dreamer (feat. Talib Kweli & Timan Family Choir)",
+    "msPlayed" : 339981
+  },
+  {
+    "endTime" : "2023-04-13 04:02",
+    "artistName" : "Marc Cary",
+    "trackName" : "It’s Not A Good Day to Die",
+    "msPlayed" : 452652
+  },
+  {
+    "endTime" : "2023-04-13 04:07",
+    "artistName" : "Roy Ayers",
+    "trackName" : "Papa Was A Rolling Stone",
+    "msPlayed" : 333179
+  },
+  {
+    "endTime" : "2023-04-13 04:11",
+    "artistName" : "Tank and The Bangas",
+    "trackName" : "Why Try",
+    "msPlayed" : 215858
+  },
+  {
+    "endTime" : "2023-04-13 04:13",
+    "artistName" : "Otis McDonald",
+    "trackName" : "One for Dilla",
+    "msPlayed" : 114000
+  },
+  {
+    "endTime" : "2023-04-13 04:17",
+    "artistName" : "John Mayer",
+    "trackName" : "Heartbreak Warfare",
+    "msPlayed" : 269727
+  },
+  {
+    "endTime" : "2023-04-13 04:22",
+    "artistName" : "John Mayer",
+    "trackName" : "All We Ever Do Is Say Goodbye",
+    "msPlayed" : 275273
+  },
+  {
+    "endTime" : "2023-04-13 04:26",
+    "artistName" : "John Mayer",
+    "trackName" : "Half of My Heart",
+    "msPlayed" : 250379
+  },
+  {
+    "endTime" : "2023-04-13 05:14",
+    "artistName" : "John Mayer",
+    "trackName" : "Half of My Heart",
+    "msPlayed" : 1259
+  },
+  {
+    "endTime" : "2023-04-13 05:14",
+    "artistName" : "John Mayer",
+    "trackName" : "Who Says",
+    "msPlayed" : 146809
+  },
+  {
+    "endTime" : "2023-04-13 05:17",
+    "artistName" : "John Mayer",
+    "trackName" : "Who Says",
+    "msPlayed" : 175484
+  },
+  {
+    "endTime" : "2023-04-13 05:21",
+    "artistName" : "John Mayer",
+    "trackName" : "Perfectly Lonely",
+    "msPlayed" : 268100
+  },
+  {
+    "endTime" : "2023-04-13 05:27",
+    "artistName" : "John Mayer",
+    "trackName" : "Assassin",
+    "msPlayed" : 314861
+  },
+  {
+    "endTime" : "2023-04-13 05:29",
+    "artistName" : "John Mayer",
+    "trackName" : "Crossroads",
+    "msPlayed" : 149390
+  },
+  {
+    "endTime" : "2023-04-13 05:33",
+    "artistName" : "John Mayer",
+    "trackName" : "War of My Life",
+    "msPlayed" : 255126
+  },
+  {
+    "endTime" : "2023-04-13 05:39",
+    "artistName" : "John Mayer",
+    "trackName" : "Edge of Desire",
+    "msPlayed" : 332075
+  },
+  {
+    "endTime" : "2023-04-13 05:41",
+    "artistName" : "John Mayer",
+    "trackName" : "Do You Know Me",
+    "msPlayed" : 150324
+  },
+  {
+    "endTime" : "2023-04-13 05:47",
+    "artistName" : "John Mayer",
+    "trackName" : "Friends, Lovers or Nothing",
+    "msPlayed" : 359248
+  },
+  {
+    "endTime" : "2023-04-13 05:51",
+    "artistName" : "Kings of Leon",
+    "trackName" : "Pyro",
+    "msPlayed" : 250540
+  },
+  {
+    "endTime" : "2023-04-13 05:54",
+    "artistName" : "John Mayer",
+    "trackName" : "Something Like Olivia",
+    "msPlayed" : 180630
+  },
+  {
+    "endTime" : "2023-04-13 05:59",
+    "artistName" : "Ben Howard",
+    "trackName" : "The Fear",
+    "msPlayed" : 260348
+  },
+  {
+    "endTime" : "2023-04-13 06:03",
+    "artistName" : "Counting Crows",
+    "trackName" : "Anna Begins",
+    "msPlayed" : 271178
+  },
+  {
+    "endTime" : "2023-04-13 06:06",
+    "artistName" : "Eric Hutchinson",
+    "trackName" : "OK, It's Alright with Me",
+    "msPlayed" : 151510
+  },
+  {
+    "endTime" : "2023-04-13 06:11",
+    "artistName" : "The Lumineers",
+    "trackName" : "Stubborn Love",
+    "msPlayed" : 279006
+  },
+  {
+    "endTime" : "2023-04-13 06:14",
+    "artistName" : "Kings of Leon",
+    "trackName" : "Revelry",
+    "msPlayed" : 201738
+  },
+  {
+    "endTime" : "2023-04-13 06:18",
+    "artistName" : "John Mayer",
+    "trackName" : "Gravity",
+    "msPlayed" : 245833
+  },
+  {
+    "endTime" : "2023-04-13 06:22",
+    "artistName" : "Pearl Jam",
+    "trackName" : "Just Breathe",
+    "msPlayed" : 215858
+  },
+  {
+    "endTime" : "2023-04-13 06:25",
+    "artistName" : "Fleetwood Mac",
+    "trackName" : "Landslide",
+    "msPlayed" : 199497
+  },
+  {
+    "endTime" : "2023-04-13 06:29",
+    "artistName" : "Eric Hutchinson",
+    "trackName" : "Outside Villanova",
+    "msPlayed" : 255685
+  },
+  {
+    "endTime" : "2023-04-13 06:33",
+    "artistName" : "Ben Howard",
+    "trackName" : "Only Love",
+    "msPlayed" : 249179
+  },
+  {
+    "endTime" : "2023-04-13 06:36",
+    "artistName" : "Kings of Leon",
+    "trackName" : "Manhattan",
+    "msPlayed" : 141403
+  },
+  {
+    "endTime" : "2023-04-14 03:51",
+    "artistName" : "JAY-Z",
+    "trackName" : "My 1st Song",
+    "msPlayed" : 285755
+  },
+  {
+    "endTime" : "2023-04-14 03:55",
+    "artistName" : "NF",
+    "trackName" : "CAREFUL",
+    "msPlayed" : 209504
+  },
+  {
+    "endTime" : "2023-04-14 03:58",
+    "artistName" : "Eminem",
+    "trackName" : "Those Kinda Nights (feat. Ed Sheeran)",
+    "msPlayed" : 177697
+  },
+  {
+    "endTime" : "2023-04-14 04:03",
+    "artistName" : "Macklemore & Ryan Lewis",
+    "trackName" : "Same Love (feat. Mary Lambert)",
+    "msPlayed" : 318532
+  },
+  {
+    "endTime" : "2023-04-14 04:06",
+    "artistName" : "De La Soul",
+    "trackName" : "The Grind Date",
+    "msPlayed" : 202564
+  },
+  {
+    "endTime" : "2023-04-14 04:10",
+    "artistName" : "Mos Def",
+    "trackName" : "Ms. Fat Booty",
+    "msPlayed" : 223551
+  },
+  {
+    "endTime" : "2023-04-14 04:15",
+    "artistName" : "Lil Wayne",
+    "trackName" : "She Will",
+    "msPlayed" : 305846
+  },
+  {
+    "endTime" : "2023-04-14 04:19",
+    "artistName" : "Fugees",
+    "trackName" : "Ready or Not",
+    "msPlayed" : 226992
+  },
+  {
+    "endTime" : "2023-04-14 04:23",
+    "artistName" : "Macklemore",
+    "trackName" : "Good Old Days (feat. Kesha)",
+    "msPlayed" : 240512
+  },
+  {
+    "endTime" : "2023-04-14 04:27",
+    "artistName" : "Chance the Rapper",
+    "trackName" : "Same Drugs",
+    "msPlayed" : 257781
+  },
+  {
+    "endTime" : "2023-04-14 04:32",
+    "artistName" : "JAY-Z",
+    "trackName" : "99 Problems",
+    "msPlayed" : 9456
+  },
+  {
+    "endTime" : "2023-04-14 04:32",
+    "artistName" : "Childish Gambino",
+    "trackName" : "Heartbeat",
+    "msPlayed" : 269845
+  },
+  {
+    "endTime" : "2023-04-15 04:35",
+    "artistName" : "NF",
+    "trackName" : "Intro",
+    "msPlayed" : 199412
+  },
+  {
+    "endTime" : "2023-04-15 04:38",
+    "artistName" : "boygenius",
+    "trackName" : "Bite The Hand",
+    "msPlayed" : 192075
+  },
+  {
+    "endTime" : "2023-04-15 04:43",
+    "artistName" : "Julien Baker",
+    "trackName" : "The Modern Leper - from Tiny Changes: A Celebration of Frightened Rabbit's 'The Midnight Organ Fight'",
+    "msPlayed" : 267686
+  },
+  {
+    "endTime" : "2023-04-15 04:46",
+    "artistName" : "boygenius",
+    "trackName" : "Souvenir",
+    "msPlayed" : 212472
+  },
+  {
+    "endTime" : "2023-04-15 04:51",
+    "artistName" : "Hop Along",
+    "trackName" : "Tibetan Pop Stars",
+    "msPlayed" : 261128
+  },
+  {
+    "endTime" : "2023-04-15 04:54",
+    "artistName" : "Better Oblivion Community Center",
+    "trackName" : "Dylan Thomas",
+    "msPlayed" : 216791
+  },
+  {
+    "endTime" : "2023-04-15 04:59",
+    "artistName" : "boygenius",
+    "trackName" : "Salt In The Wound",
+    "msPlayed" : 251475
+  },
+  {
+    "endTime" : "2023-04-15 05:03",
+    "artistName" : "BANKS",
+    "trackName" : "Look What You're Doing To Me",
+    "msPlayed" : 240205
+  },
+  {
+    "endTime" : "2023-04-15 05:06",
+    "artistName" : "boygenius",
+    "trackName" : "Me & My Dog",
+    "msPlayed" : 206470
+  },
+  {
+    "endTime" : "2023-04-15 05:10",
+    "artistName" : "Echos",
+    "trackName" : "Guest Room",
+    "msPlayed" : 258387
+  },
+  {
+    "endTime" : "2023-04-15 05:13",
+    "artistName" : "boygenius",
+    "trackName" : "Ketchum, ID",
+    "msPlayed" : 174296
+  },
+  {
+    "endTime" : "2023-04-18 03:59",
+    "artistName" : "JAY-Z",
+    "trackName" : "Numb / Encore",
+    "msPlayed" : 205284
+  },
+  {
+    "endTime" : "2023-04-18 04:03",
+    "artistName" : "NF",
+    "trackName" : "HAPPY",
+    "msPlayed" : 242695
+  },
+  {
+    "endTime" : "2023-04-18 04:07",
+    "artistName" : "Eminem",
+    "trackName" : "Beautiful Pain",
+    "msPlayed" : 265030
+  },
+  {
+    "endTime" : "2023-04-18 04:10",
+    "artistName" : "A Tribe Called Quest",
+    "trackName" : "We The People....",
+    "msPlayed" : 172017
+  },
+  {
+    "endTime" : "2023-04-18 04:13",
+    "artistName" : "Kanye West",
+    "trackName" : "Homecoming",
+    "msPlayed" : 203497
+  },
+  {
+    "endTime" : "2023-04-18 04:17",
+    "artistName" : "Nas",
+    "trackName" : "The Message",
+    "msPlayed" : 234098
+  },
+  {
+    "endTime" : "2023-04-18 04:20",
+    "artistName" : "Logic",
+    "trackName" : "Everybody",
+    "msPlayed" : 162349
+  },
+  {
+    "endTime" : "2023-04-18 04:24",
+    "artistName" : "JAY-Z",
+    "trackName" : "Dirt off Your Shoulder / Lying From You",
+    "msPlayed" : 244699
+  },
+  {
+    "endTime" : "2023-04-18 04:27",
+    "artistName" : "NF",
+    "trackName" : "CAREFUL",
+    "msPlayed" : 209504
+  },
+  {
+    "endTime" : "2023-04-18 04:32",
+    "artistName" : "Eminem",
+    "trackName" : "The Way I Am",
+    "msPlayed" : 290432
+  },
+  {
+    "endTime" : "2023-04-18 04:35",
+    "artistName" : "Wu-Tang Clan",
+    "trackName" : "Preservation",
+    "msPlayed" : 146537
+  },
+  {
+    "endTime" : "2023-04-18 04:39",
+    "artistName" : "Kanye West",
+    "trackName" : "Family Business",
+    "msPlayed" : 278899
+  },
+  {
+    "endTime" : "2023-04-18 04:43",
+    "artistName" : "Drake",
+    "trackName" : "Nice For What",
+    "msPlayed" : 210751
+  },
+  {
+    "endTime" : "2023-04-18 04:47",
+    "artistName" : "Talib Kweli",
+    "trackName" : "Get By",
+    "msPlayed" : 227431
+  },
+  {
+    "endTime" : "2023-04-18 04:49",
+    "artistName" : "JAY-Z",
+    "trackName" : "Izzo / In the End",
+    "msPlayed" : 164870
+  },
+  {
+    "endTime" : "2023-04-18 04:53",
+    "artistName" : "NF",
+    "trackName" : "Remember This",
+    "msPlayed" : 240391
+  },
+  {
+    "endTime" : "2023-04-18 05:00",
+    "artistName" : "Eminem",
+    "trackName" : "Beautiful",
+    "msPlayed" : 392835
+  },
+  {
+    "endTime" : "2023-04-18 05:04",
+    "artistName" : "Chance the Rapper",
+    "trackName" : "Same Drugs",
+    "msPlayed" : 257782
+  },
+  {
+    "endTime" : "2023-04-18 05:06",
+    "artistName" : "Royce Da 5'9\"",
+    "trackName" : "Woke",
+    "msPlayed" : 92996
+  },
+  {
+    "endTime" : "2023-04-18 05:10",
+    "artistName" : "Macklemore",
+    "trackName" : "Good Old Days (feat. Kesha)",
+    "msPlayed" : 240511
+  },
+  {
+    "endTime" : "2023-04-18 05:13",
+    "artistName" : "Kanye West",
+    "trackName" : "Lord I Need You",
+    "msPlayed" : 162112
+  },
+  {
+    "endTime" : "2023-04-18 05:14",
+    "artistName" : "JAY-Z",
+    "trackName" : "Gotta Have It",
+    "msPlayed" : 78702
+  },
+  {
+    "endTime" : "2023-04-19 04:22",
+    "artistName" : "The Chainsmokers",
+    "trackName" : "Let You Go - Radio Edit",
+    "msPlayed" : 218978
+  },
+  {
+    "endTime" : "2023-04-19 04:25",
+    "artistName" : "Kygo",
+    "trackName" : "First Time",
+    "msPlayed" : 193515
+  },
+  {
+    "endTime" : "2023-04-19 04:28",
+    "artistName" : "BANKS",
+    "trackName" : "Lovesick",
+    "msPlayed" : 200737
+  },
+  {
+    "endTime" : "2023-04-19 04:32",
+    "artistName" : "Shallou",
+    "trackName" : "There's Another Life 4 U",
+    "msPlayed" : 213991
+  },
+  {
+    "endTime" : "2023-04-19 04:36",
+    "artistName" : "Ryn Weaver",
+    "trackName" : "Reasons Not To Die - Demo",
+    "msPlayed" : 220634
+  },
+  {
+    "endTime" : "2023-04-19 04:39",
+    "artistName" : "Dean Lewis",
+    "trackName" : "Be Alright",
+    "msPlayed" : 196378
+  },
+  {
+    "endTime" : "2023-04-19 04:42",
+    "artistName" : "Halsey",
+    "trackName" : "Is There Somewhere",
+    "msPlayed" : 211674
+  },
+  {
+    "endTime" : "2023-04-19 04:46",
+    "artistName" : "Lane 8",
+    "trackName" : "Road",
+    "msPlayed" : 238038
+  },
+  {
+    "endTime" : "2023-04-19 04:50",
+    "artistName" : "Zella Day",
+    "trackName" : "Compass",
+    "msPlayed" : 193765
+  },
+  {
+    "endTime" : "2023-04-19 04:53",
+    "artistName" : "Jeremy Zucker",
+    "trackName" : "better off",
+    "msPlayed" : 193951
+  },
+  {
+    "endTime" : "2023-04-19 04:56",
+    "artistName" : "Xavier Dunn",
+    "trackName" : "Warming",
+    "msPlayed" : 199313
+  },
+  {
+    "endTime" : "2023-04-19 05:00",
+    "artistName" : "BANKS",
+    "trackName" : "Look What You're Doing To Me",
+    "msPlayed" : 240205
+  },
+  {
+    "endTime" : "2023-04-19 05:03",
+    "artistName" : "Kygo",
+    "trackName" : "Freedom",
+    "msPlayed" : 198639
+  },
+  {
+    "endTime" : "2023-04-19 05:07",
+    "artistName" : "Halsey",
+    "trackName" : "Hold Me Down",
+    "msPlayed" : 204789
+  },
+  {
+    "endTime" : "2023-04-19 05:10",
+    "artistName" : "Vancouver Sleep Clinic",
+    "trackName" : "The Wire",
+    "msPlayed" : 180444
+  },
+  {
+    "endTime" : "2023-04-19 05:13",
+    "artistName" : "BROODS",
+    "trackName" : "Sleep Baby Sleep",
+    "msPlayed" : 180072
+  },
+  {
+    "endTime" : "2023-04-19 05:16",
+    "artistName" : "Ella Vos",
+    "trackName" : "Rearrange",
+    "msPlayed" : 186460
+  },
+  {
+    "endTime" : "2023-04-19 05:20",
+    "artistName" : "Chelsea Cutler",
+    "trackName" : "Men On The Moon",
+    "msPlayed" : 220802
+  },
+  {
+    "endTime" : "2023-04-19 05:23",
+    "artistName" : "BANKS",
+    "trackName" : "Fuck With Myself",
+    "msPlayed" : 175443
+  },
+  {
+    "endTime" : "2023-04-19 05:26",
+    "artistName" : "The Chainsmokers",
+    "trackName" : "Somebody - Riggi & Piros Remix",
+    "msPlayed" : 182457
+  },
+  {
+    "endTime" : "2023-04-19 05:28",
+    "artistName" : "Au/Ra",
+    "trackName" : "Concrete Jungle - Acoustic",
+    "msPlayed" : 160349
+  },
+  {
+    "endTime" : "2023-04-19 05:32",
+    "artistName" : "Shallou",
+    "trackName" : "High Tide",
+    "msPlayed" : 197155
+  },
+  {
+    "endTime" : "2023-04-19 05:35",
+    "artistName" : "Vancouver Sleep Clinic",
+    "trackName" : "Lung",
+    "msPlayed" : 205150
+  },
+  {
+    "endTime" : "2023-04-20 03:15",
+    "artistName" : "John Mayer",
+    "trackName" : "Who Says",
+    "msPlayed" : 175484
+  },
+  {
+    "endTime" : "2023-04-20 03:16",
+    "artistName" : "Tyler Childers",
+    "trackName" : "Shake the Frost (Live)",
+    "msPlayed" : 52766
+  },
+  {
+    "endTime" : "2023-04-20 03:19",
+    "artistName" : "John Mayer",
+    "trackName" : "Who Says",
+    "msPlayed" : 178192
+  },
+  {
+    "endTime" : "2023-04-20 03:22",
+    "artistName" : "Tyler Childers",
+    "trackName" : "Shake the Frost (Live)",
+    "msPlayed" : 175123
+  },
+  {
+    "endTime" : "2023-04-20 03:25",
+    "artistName" : "Lake Street Dive",
+    "trackName" : "I Can Change",
+    "msPlayed" : 191697
+  },
+  {
+    "endTime" : "2023-04-20 03:26",
+    "artistName" : "Diplo",
+    "trackName" : "Use Me (Brutal Hearts) (feat. Sturgill Simpson, Dove Cameron & Johnny Blue Skies)",
+    "msPlayed" : 60809
+  },
+  {
+    "endTime" : "2023-04-20 03:31",
+    "artistName" : "Noah Gundersen",
+    "trackName" : "Lover",
+    "msPlayed" : 248658
+  },
+  {
+    "endTime" : "2023-04-20 03:34",
+    "artistName" : "Jason Isbell",
+    "trackName" : "24 Frames",
+    "msPlayed" : 193629
+  },
+  {
+    "endTime" : "2023-04-20 03:39",
+    "artistName" : "Bon Iver",
+    "trackName" : "Skinny Love",
+    "msPlayed" : 238607
+  },
+  {
+    "endTime" : "2023-04-20 03:42",
+    "artistName" : "Johnny Cash",
+    "trackName" : "God's Gonna Cut You Down",
+    "msPlayed" : 158583
+  },
+  {
+    "endTime" : "2023-04-20 03:44",
+    "artistName" : "José González",
+    "trackName" : "Heartbeats",
+    "msPlayed" : 161690
+  },
+  {
+    "endTime" : "2023-04-20 04:03",
+    "artistName" : "John Mayer",
+    "trackName" : "Heartbreak Warfare",
+    "msPlayed" : 481446
+  },
+  {
+    "endTime" : "2023-04-20 04:06",
+    "artistName" : "Half Moon Run",
+    "trackName" : "Call Me in the Afternoon",
+    "msPlayed" : 193244
+  },
+  {
+    "endTime" : "2023-04-20 04:09",
+    "artistName" : "Aoife O'Donovan",
+    "trackName" : "Loretta",
+    "msPlayed" : 148526
+  },
+  {
+    "endTime" : "2023-04-20 04:13",
+    "artistName" : "Noah Gundersen",
+    "trackName" : "Sleepless in Seattle",
+    "msPlayed" : 240819
+  },
+  {
+    "endTime" : "2023-04-20 04:17",
+    "artistName" : "Jason Isbell",
+    "trackName" : "Speed Trap Town",
+    "msPlayed" : 242059
+  },
+  {
+    "endTime" : "2023-04-20 04:20",
+    "artistName" : "Donovan Woods",
+    "trackName" : "Portland, Maine",
+    "msPlayed" : 203875
+  },
+  {
+    "endTime" : "2023-04-20 04:24",
+    "artistName" : "Mumford & Sons",
+    "trackName" : "The Cave",
+    "msPlayed" : 217990
+  },
+  {
+    "endTime" : "2023-04-20 04:28",
+    "artistName" : "John Mayer",
+    "trackName" : "Slow Dancing in a Burning Room",
+    "msPlayed" : 242006
+  },
+  {
+    "endTime" : "2023-04-20 04:31",
+    "artistName" : "Eric Church",
+    "trackName" : "Record Year",
+    "msPlayed" : 179351
+  },
+  {
+    "endTime" : "2023-04-20 04:34",
+    "artistName" : "Noah Reid",
+    "trackName" : "Simply the Best (From \"Schitt's Creek\")",
+    "msPlayed" : 177923
+  },
+  {
+    "endTime" : "2023-04-20 04:36",
+    "artistName" : "Noah Gundersen",
+    "trackName" : "David",
+    "msPlayed" : 115969
+  },
+  {
+    "endTime" : "2023-04-23 04:31",
+    "artistName" : "John Mayer",
+    "trackName" : "On The Way Home",
+    "msPlayed" : 239556
+  },
+  {
+    "endTime" : "2023-04-23 04:35",
+    "artistName" : "Julien Baker",
+    "trackName" : "Rejoice",
+    "msPlayed" : 213806
+  },
+  {
+    "endTime" : "2023-04-23 04:38",
+    "artistName" : "Tyler Childers",
+    "trackName" : "Nose On The Grindstone (OurVinyl Sessions)",
+    "msPlayed" : 204004
+  },
+  {
+    "endTime" : "2023-04-23 04:42",
+    "artistName" : "Noah Gundersen",
+    "trackName" : "Nashville",
+    "msPlayed" : 217018
+  },
+  {
+    "endTime" : "2023-04-23 04:45",
+    "artistName" : "The Stray Birds",
+    "trackName" : "Dream in Blue",
+    "msPlayed" : 212032
+  },
+  {
+    "endTime" : "2023-04-23 04:49",
+    "artistName" : "boygenius",
+    "trackName" : "Souvenir",
+    "msPlayed" : 212472
+  },
+  {
+    "endTime" : "2023-04-23 04:52",
+    "artistName" : "Ryan Adams",
+    "trackName" : "To Be Without You",
+    "msPlayed" : 201512
+  },
+  {
+    "endTime" : "2023-04-23 04:55",
+    "artistName" : "John Mayer",
+    "trackName" : "Something Like Olivia",
+    "msPlayed" : 180631
+  },
+  {
+    "endTime" : "2023-04-23 04:57",
+    "artistName" : "Novo Amor",
+    "trackName" : "Decimal",
+    "msPlayed" : 127566
+  },
+  {
+    "endTime" : "2023-04-23 05:01",
+    "artistName" : "Shakey Graves",
+    "trackName" : "Tomorrow",
+    "msPlayed" : 240592
+  },
+  {
+    "endTime" : "2023-04-23 05:05",
+    "artistName" : "Tyler Childers",
+    "trackName" : "Rock Salt and Nails (Live)",
+    "msPlayed" : 194817
+  },
+  {
+    "endTime" : "2023-04-23 05:08",
+    "artistName" : "Noah Gundersen",
+    "trackName" : "Family",
+    "msPlayed" : 214845
+  },
+  {
+    "endTime" : "2023-04-23 05:11",
+    "artistName" : "Julien Baker",
+    "trackName" : "Sprained Ankle",
+    "msPlayed" : 142050
+  },
+  {
+    "endTime" : "2023-04-23 05:13",
+    "artistName" : "Haux",
+    "trackName" : "Arrows",
+    "msPlayed" : 149578
+  },
+  {
+    "endTime" : "2023-04-23 05:17",
+    "artistName" : "John Mayer",
+    "trackName" : "Gravity",
+    "msPlayed" : 245833
+  },
+  {
+    "endTime" : "2023-04-23 05:20",
+    "artistName" : "Novo Amor",
+    "trackName" : "Halloween",
+    "msPlayed" : 154777
+  },
+  {
+    "endTime" : "2023-04-23 05:23",
+    "artistName" : "Ryan Adams",
+    "trackName" : "Lucky Now",
+    "msPlayed" : 172190
+  },
+  {
+    "endTime" : "2023-04-23 05:24",
+    "artistName" : "Tyler Childers",
+    "trackName" : "Feathered Indians",
+    "msPlayed" : 116524
+  },
+  {
+    "endTime" : "2023-05-14 17:13",
+    "artistName" : "Cookie Monster",
+    "trackName" : "Healthy Food",
+    "msPlayed" : 3150
+  },
+  {
+    "endTime" : "2023-05-23 22:06",
+    "artistName" : "Charlee Nguyen",
+    "trackName" : "The One I Love",
+    "msPlayed" : 144827
+  },
+  {
+    "endTime" : "2023-05-23 22:09",
+    "artistName" : "Blurred Figures",
+    "trackName" : "snowfall",
+    "msPlayed" : 155806
+  },
+  {
+    "endTime" : "2023-05-23 22:11",
+    "artistName" : "Chau Sara",
+    "trackName" : "Mramor",
+    "msPlayed" : 138287
+  },
+  {
+    "endTime" : "2023-05-23 22:14",
+    "artistName" : "j'san",
+    "trackName" : "outer space",
+    "msPlayed" : 152571
+  },
+  {
+    "endTime" : "2023-05-23 22:16",
+    "artistName" : "Elior",
+    "trackName" : "Discover",
+    "msPlayed" : 159529
+  },
+  {
+    "endTime" : "2023-05-23 22:19",
+    "artistName" : "Bcalm",
+    "trackName" : "Hiraeth",
+    "msPlayed" : 136551
+  },
+  {
+    "endTime" : "2023-05-23 22:21",
+    "artistName" : "Spencer Hunt",
+    "trackName" : "willow hill",
+    "msPlayed" : 112065
+  },
+  {
+    "endTime" : "2023-05-23 22:23",
+    "artistName" : "eleven",
+    "trackName" : "Misty Meadows",
+    "msPlayed" : 137142
+  },
+  {
+    "endTime" : "2023-05-23 22:25",
+    "artistName" : "Goodnyght",
+    "trackName" : "time for bed",
+    "msPlayed" : 139746
+  },
+  {
+    "endTime" : "2023-05-23 22:29",
+    "artistName" : "Blue Wednesday",
+    "trackName" : "The Descent",
+    "msPlayed" : 213038
+  },
+  {
+    "endTime" : "2023-05-23 22:31",
+    "artistName" : "takeo",
+    "trackName" : "Blue Moon",
+    "msPlayed" : 132971
+  },
+  {
+    "endTime" : "2023-05-23 22:34",
+    "artistName" : "Jhove",
+    "trackName" : "About Us",
+    "msPlayed" : 156000
+  },
+  {
+    "endTime" : "2023-05-23 22:37",
+    "artistName" : "Spencer Hunt",
+    "trackName" : "Dreamscape",
+    "msPlayed" : 179985
+  },
+  {
+    "endTime" : "2023-05-23 22:40",
+    "artistName" : "H.1",
+    "trackName" : "A Way Home",
+    "msPlayed" : 189802
+  },
+  {
+    "endTime" : "2023-05-23 22:42",
+    "artistName" : "ticofaces",
+    "trackName" : "Arrival",
+    "msPlayed" : 147200
+  },
+  {
+    "endTime" : "2023-05-23 22:45",
+    "artistName" : "Tibeauthetraveler",
+    "trackName" : "miss you",
+    "msPlayed" : 155392
+  },
+  {
+    "endTime" : "2023-05-23 22:47",
+    "artistName" : "HM Surf",
+    "trackName" : "Sugar Haze",
+    "msPlayed" : 147692
+  },
+  {
+    "endTime" : "2023-05-23 22:49",
+    "artistName" : "Living Room",
+    "trackName" : "Rituals",
+    "msPlayed" : 132625
+  },
+  {
+    "endTime" : "2023-05-23 22:53",
+    "artistName" : "WYS",
+    "trackName" : "The Bad Party",
+    "msPlayed" : 194583
+  },
+  {
+    "endTime" : "2023-05-23 22:55",
+    "artistName" : "Bcalm",
+    "trackName" : "Together",
+    "msPlayed" : 144000
+  },
+  {
+    "endTime" : "2023-05-23 22:57",
+    "artistName" : "Living Room",
+    "trackName" : "A Friendly Hello",
+    "msPlayed" : 131641
+  },
+  {
+    "endTime" : "2023-05-23 23:01",
+    "artistName" : "Laffey",
+    "trackName" : "Forest Friends",
+    "msPlayed" : 189928
+  },
+  {
+    "endTime" : "2023-05-23 23:03",
+    "artistName" : "møndberg",
+    "trackName" : "Backyard Memories",
+    "msPlayed" : 153003
+  },
+  {
+    "endTime" : "2023-05-23 23:05",
+    "artistName" : "no one's perfect",
+    "trackName" : "Dahlia",
+    "msPlayed" : 127058
+  },
+  {
+    "endTime" : "2023-05-23 23:07",
+    "artistName" : "No Spirit",
+    "trackName" : "7 Suns",
+    "msPlayed" : 135600
+  },
+  {
+    "endTime" : "2023-05-23 23:10",
+    "artistName" : "A[way]",
+    "trackName" : "Warm Nights",
+    "msPlayed" : 126202
+  },
+  {
+    "endTime" : "2023-05-23 23:13",
+    "artistName" : "Krynoze",
+    "trackName" : "Blooming Dales",
+    "msPlayed" : 166321
+  },
+  {
+    "endTime" : "2023-05-23 23:16",
+    "artistName" : "Chiccote's Beats",
+    "trackName" : "Away",
+    "msPlayed" : 160000
+  },
+  {
+    "endTime" : "2023-05-23 23:19",
+    "artistName" : "hi jude",
+    "trackName" : "ocean rays",
+    "msPlayed" : 145945
+  },
+  {
+    "endTime" : "2023-05-23 23:21",
+    "artistName" : "Goson",
+    "trackName" : "Arcadia",
+    "msPlayed" : 140428
+  },
+  {
+    "endTime" : "2023-05-23 23:23",
+    "artistName" : "softy",
+    "trackName" : "Until The Morning Comes",
+    "msPlayed" : 137586
+  },
+  {
+    "endTime" : "2023-05-23 23:24",
+    "artistName" : "Lilac",
+    "trackName" : "Under A Wishing Sky",
+    "msPlayed" : 72296
+  },
+  {
+    "endTime" : "2023-05-23 23:27",
+    "artistName" : "l'Outlander",
+    "trackName" : "Desert Night",
+    "msPlayed" : 156006
+  },
+  {
+    "endTime" : "2023-05-23 23:30",
+    "artistName" : "gCoope",
+    "trackName" : "Passing Time",
+    "msPlayed" : 146665
+  },
+  {
+    "endTime" : "2023-05-23 23:32",
+    "artistName" : "steezy prime",
+    "trackName" : "in the air",
+    "msPlayed" : 139687
+  },
+  {
+    "endTime" : "2023-05-23 23:37",
+    "artistName" : "Krynoze",
+    "trackName" : "Hold My Hand",
+    "msPlayed" : 164161
+  },
+  {
+    "endTime" : "2023-05-24 00:00",
+    "artistName" : "Tibeauthetraveler",
+    "trackName" : "Distant",
+    "msPlayed" : 133508
+  },
+  {
+    "endTime" : "2023-05-24 00:03",
+    "artistName" : "Sitting Duck",
+    "trackName" : "Hope",
+    "msPlayed" : 150857
+  },
+  {
+    "endTime" : "2023-05-24 00:06",
+    "artistName" : "amies",
+    "trackName" : "Destination Unknown",
+    "msPlayed" : 172000
+  },
+  {
+    "endTime" : "2023-05-24 00:08",
+    "artistName" : "Goson",
+    "trackName" : "Cohesion",
+    "msPlayed" : 138880
+  },
+  {
+    "endTime" : "2023-05-24 00:10",
+    "artistName" : "M e a d o w",
+    "trackName" : "Leaves",
+    "msPlayed" : 112000
+  },
+  {
+    "endTime" : "2023-05-24 00:13",
+    "artistName" : "Purrple Cat",
+    "trackName" : "Tabula Rasa",
+    "msPlayed" : 192312
+  },
+  {
+    "endTime" : "2023-05-24 00:15",
+    "artistName" : "Ornithology",
+    "trackName" : "Swaying Trees",
+    "msPlayed" : 125901
+  },
+  {
+    "endTime" : "2023-05-24 00:18",
+    "artistName" : "TABAL",
+    "trackName" : "Last Light",
+    "msPlayed" : 176103
+  },
+  {
+    "endTime" : "2023-05-24 00:21",
+    "artistName" : "Mindeliq",
+    "trackName" : "Birds In The Sky",
+    "msPlayed" : 150892
+  },
+  {
+    "endTime" : "2023-05-24 00:23",
+    "artistName" : "gCoope",
+    "trackName" : "When The Stars Align",
+    "msPlayed" : 148236
+  },
+  {
+    "endTime" : "2023-05-24 00:25",
+    "artistName" : "Tom Doolie",
+    "trackName" : "Sincere",
+    "msPlayed" : 123240
+  },
+  {
+    "endTime" : "2023-05-24 00:26",
+    "artistName" : "Epona",
+    "trackName" : "Misty",
+    "msPlayed" : 62423
+  },
+  {
+    "endTime" : "2023-05-24 00:32",
+    "artistName" : "Downtown Binary",
+    "trackName" : "Light Cycles",
+    "msPlayed" : 336111
+  },
+  {
+    "endTime" : "2023-05-24 00:35",
+    "artistName" : "Hotel Pools",
+    "trackName" : "Return",
+    "msPlayed" : 187199
+  },
+  {
+    "endTime" : "2023-05-24 00:38",
+    "artistName" : "KING PALM",
+    "trackName" : "Coast",
+    "msPlayed" : 158984
+  },
+  {
+    "endTime" : "2023-05-24 00:40",
+    "artistName" : "Xtract",
+    "trackName" : "Audiotool Day 2016",
+    "msPlayed" : 150567
+  },
+  {
+    "endTime" : "2023-05-24 00:47",
+    "artistName" : "Timecop1983",
+    "trackName" : "Home (Prologue)",
+    "msPlayed" : 379519
+  },
+  {
+    "endTime" : "2023-05-24 00:53",
+    "artistName" : "Timecop1983",
+    "trackName" : "Lovers (feat. Seawaves)",
+    "msPlayed" : 369963
+  },
+  {
+    "endTime" : "2023-05-24 00:59",
+    "artistName" : "Timecop1983",
+    "trackName" : "Come Back",
+    "msPlayed" : 347978
+  },
+  {
+    "endTime" : "2023-05-24 00:59",
+    "artistName" : "Timecop1983",
+    "trackName" : "Waiting",
+    "msPlayed" : 3256
+  },
+  {
+    "endTime" : "2023-07-14 23:37",
+    "artistName" : "Timecop1983",
+    "trackName" : "Waiting",
+    "msPlayed" : 4713
+  },
+  {
+    "endTime" : "2023-07-14 23:41",
+    "artistName" : "The Black Ghosts",
+    "trackName" : "Full Moon",
+    "msPlayed" : 231333
+  },
+  {
+    "endTime" : "2023-07-14 23:41",
+    "artistName" : "Linkin Park",
+    "trackName" : "Leave Out All The Rest",
+    "msPlayed" : 17270
+  },
+  {
+    "endTime" : "2023-07-14 23:44",
+    "artistName" : "Mutemath",
+    "trackName" : "Spotlight",
+    "msPlayed" : 200515
+  },
+  {
+    "endTime" : "2023-07-14 23:48",
+    "artistName" : "Collective Soul",
+    "trackName" : "Tremble For My Beloved",
+    "msPlayed" : 232560
+  },
+  {
+    "endTime" : "2023-07-14 23:49",
+    "artistName" : "Blue Foundation",
+    "trackName" : "Eyes on Fire",
+    "msPlayed" : 53844
+  },
+  {
+    "endTime" : "2023-07-14 23:53",
+    "artistName" : "Iron & Wine",
+    "trackName" : "Flightless Bird, American Mouth",
+    "msPlayed" : 241917
+  },
+  {
+    "endTime" : "2023-07-14 23:55",
+    "artistName" : "Dan Redfeld & Elizabeth Hedman",
+    "trackName" : "Twilight: Bella's Lullaby",
+    "msPlayed" : 140984
+  },
+  {
+    "endTime" : "2023-07-15 00:00",
+    "artistName" : "Smash Hits Cover Band",
+    "trackName" : "Claire de Lune (Piano Version) [Made Famous By The Apm Orchestra]",
+    "msPlayed" : 294504
+  },
+  {
+    "endTime" : "2023-07-15 00:04",
+    "artistName" : "Skeler",
+    "trackName" : "Eyes on Fire (Skeler Remix) - Re-Recorded",
+    "msPlayed" : 201336
+  },
+  {
+    "endTime" : "2023-07-15 00:08",
+    "artistName" : "Bon Iver",
+    "trackName" : "Rosyln",
+    "msPlayed" : 289560
+  },
+  {
+    "endTime" : "2023-07-15 00:09",
+    "artistName" : "Dario Marianelli",
+    "trackName" : "Liz On Top Of The World - From \"Pride & Prejudice\" Soundtrack",
+    "msPlayed" : 55490
+  },
+  {
+    "endTime" : "2023-07-15 00:12",
+    "artistName" : "José González",
+    "trackName" : "Heartbeats",
+    "msPlayed" : 161680
+  },
+  {
+    "endTime" : "2023-07-15 00:15",
+    "artistName" : "Zella Day",
+    "trackName" : "Compass",
+    "msPlayed" : 193760
+  },
+  {
+    "endTime" : "2023-07-15 00:16",
+    "artistName" : "Placebo",
+    "trackName" : "Running Up That Hill",
+    "msPlayed" : 8322
+  },
+  {
+    "endTime" : "2023-07-15 02:21",
+    "artistName" : "Thomas Newman",
+    "trackName" : "Nemo Egg (Main Title)",
+    "msPlayed" : 76133
+  },
+  {
+    "endTime" : "2023-07-15 02:24",
+    "artistName" : "The Black Ghosts",
+    "trackName" : "Full Moon",
+    "msPlayed" : 231333
+  },
+  {
+    "endTime" : "2023-07-15 02:25",
+    "artistName" : "Tom Tykwer",
+    "trackName" : "Prelude: The Atlas March",
+    "msPlayed" : 835
+  },
+  {
+    "endTime" : "2023-07-15 02:25",
+    "artistName" : "Dan Redfeld",
+    "trackName" : "Revelations (from \"PURIM SPIEL\")",
+    "msPlayed" : 1021
+  },
+  {
+    "endTime" : "2023-07-15 02:25",
+    "artistName" : "Frédéric Chopin",
+    "trackName" : "Chopin: 24 Preludes, Op. 28: No. 4 in E Minor",
+    "msPlayed" : 1811
+  },
+  {
+    "endTime" : "2023-07-15 02:25",
+    "artistName" : "Angus & Julia Stone",
+    "trackName" : "The Devil's Tears",
+    "msPlayed" : 580
+  },
+  {
+    "endTime" : "2023-07-15 02:25",
+    "artistName" : "Aidan Hawken",
+    "trackName" : "Walking Blind",
+    "msPlayed" : 1021
+  },
+  {
+    "endTime" : "2023-07-15 02:25",
+    "artistName" : "The Aardvark",
+    "trackName" : "Fur Elise",
+    "msPlayed" : 1160
+  },
+  {
+    "endTime" : "2023-07-15 02:25",
+    "artistName" : "Mélanie Laurent",
+    "trackName" : "Début",
+    "msPlayed" : 3041
+  },
+  {
+    "endTime" : "2023-07-15 02:25",
+    "artistName" : "thenewno2",
+    "trackName" : "Interception",
+    "msPlayed" : 394
+  },
+  {
+    "endTime" : "2023-07-15 02:25",
+    "artistName" : "Dario Marianelli",
+    "trackName" : "The Secret Life Of Daydreams - From \"Pride & Prejudice\" Soundtrack",
+    "msPlayed" : 49468
+  },
+  {
+    "endTime" : "2023-07-15 02:26",
+    "artistName" : "Lo Mimieux",
+    "trackName" : "La Fille Sans Larmes",
+    "msPlayed" : 1207
+  },
+  {
+    "endTime" : "2023-07-15 02:30",
+    "artistName" : "French For Rabbits",
+    "trackName" : "Claimed by the Sea",
+    "msPlayed" : 405
+  },
+  {
+    "endTime" : "2023-07-15 02:30",
+    "artistName" : "Paramore",
+    "trackName" : "Part II",
+    "msPlayed" : 281240
+  },
+  {
+    "endTime" : "2023-07-15 02:35",
+    "artistName" : "French For Rabbits",
+    "trackName" : "Claimed by the Sea",
+    "msPlayed" : 34492
+  },
+  {
+    "endTime" : "2023-07-15 02:35",
+    "artistName" : "Paramore",
+    "trackName" : "Part II",
+    "msPlayed" : 281240
+  },
+  {
+    "endTime" : "2023-07-15 02:40",
+    "artistName" : "French For Rabbits",
+    "trackName" : "Claimed by the Sea",
+    "msPlayed" : 73
+  },
+  {
+    "endTime" : "2023-07-15 02:40",
+    "artistName" : "Paramore",
+    "trackName" : "Part II",
+    "msPlayed" : 281240
+  },
+  {
+    "endTime" : "2023-08-06 21:47",
+    "artistName" : "Tom Petty and the Heartbreakers",
+    "trackName" : "Refugee",
+    "msPlayed" : 934
+  },
+  {
+    "endTime" : "2023-09-30 01:48",
+    "artistName" : "John Mayer",
+    "trackName" : "Gravity",
+    "msPlayed" : 45332
+  },
+  {
+    "endTime" : "2023-09-30 01:52",
+    "artistName" : "John Mayer",
+    "trackName" : "Gravity",
+    "msPlayed" : 245826
+  },
+  {
+    "endTime" : "2023-09-30 01:56",
+    "artistName" : "Frightened Rabbit",
+    "trackName" : "The Woodpile",
+    "msPlayed" : 207560
+  },
+  {
+    "endTime" : "2023-09-30 02:00",
+    "artistName" : "Ed Sheeran",
+    "trackName" : "The A Team",
+    "msPlayed" : 258373
+  },
+  {
+    "endTime" : "2023-09-30 02:06",
+    "artistName" : "John Mayer",
+    "trackName" : "Edge of Desire",
+    "msPlayed" : 332066
+  },
+  {
+    "endTime" : "2023-09-30 02:09",
+    "artistName" : "Ray LaMontagne",
+    "trackName" : "This Love Is Over (with The Pariah Dogs)",
+    "msPlayed" : 209600
+  },
+  {
+    "endTime" : "2023-09-30 02:13",
+    "artistName" : "Maroon 5",
+    "trackName" : "Sunday Morning",
+    "msPlayed" : 210274
+  },
+  {
+    "endTime" : "2023-11-01 21:36",
+    "artistName" : "'68",
+    "trackName" : "Without Any Words (Only Crying and Laughter)",
+    "msPlayed" : 198073
+  },
+  {
+    "endTime" : "2023-11-01 21:40",
+    "artistName" : "Code Orange",
+    "trackName" : "Snapshot",
+    "msPlayed" : 209582
+  },
+  {
+    "endTime" : "2023-11-01 21:44",
+    "artistName" : "Sweet Pill",
+    "trackName" : "Starchild",
+    "msPlayed" : 229555
+  },
+  {
+    "endTime" : "2023-11-01 21:47",
+    "artistName" : "'68",
+    "trackName" : "Bad Bite",
+    "msPlayed" : 190030
+  },
+  {
+    "endTime" : "2023-11-01 21:51",
+    "artistName" : "Many Eyes",
+    "trackName" : "Revelation",
+    "msPlayed" : 253746
+  },
+  {
+    "endTime" : "2023-11-01 21:55",
+    "artistName" : "'68",
+    "trackName" : "Track 1 R",
+    "msPlayed" : 212626
+  },
+  {
+    "endTime" : "2023-11-01 21:58",
+    "artistName" : "Thornhill",
+    "trackName" : "Viper Room",
+    "msPlayed" : 237055
+  },
+  {
+    "endTime" : "2023-11-01 22:02",
+    "artistName" : "Every Time I Die",
+    "trackName" : "All This And War",
+    "msPlayed" : 190840
+  },
+  {
+    "endTime" : "2023-11-01 22:04",
+    "artistName" : "Microwave",
+    "trackName" : "Roaches",
+    "msPlayed" : 164520
+  },
+  {
+    "endTime" : "2023-11-01 22:07",
+    "artistName" : "'68",
+    "trackName" : "Whether Terrified or Unafraid",
+    "msPlayed" : 181421
+  },
+  {
+    "endTime" : "2023-11-01 22:12",
+    "artistName" : "Drug Church",
+    "trackName" : "Weed Pin",
+    "msPlayed" : 282121
+  },
+  {
+    "endTime" : "2023-11-01 22:16",
+    "artistName" : "Code Orange",
+    "trackName" : "A Drone Opting Out Of The Hive",
+    "msPlayed" : 13852
+  },
+  {
+    "endTime" : "2023-11-01 22:16",
+    "artistName" : "'68",
+    "trackName" : "With Distance Between",
+    "msPlayed" : 233356
+  },
+  {
+    "endTime" : "2023-11-01 22:20",
+    "artistName" : "Belinda Carlisle",
+    "trackName" : "Heaven Is A Place On Earth",
+    "msPlayed" : 247293
+  },
+  {
+    "endTime" : "2023-11-01 22:25",
+    "artistName" : "John Parr",
+    "trackName" : "St. Elmos Fire (Man in Motion)",
+    "msPlayed" : 251800
+  },
+  {
+    "endTime" : "2023-11-01 22:31",
+    "artistName" : "Phil Collins",
+    "trackName" : "Take Me Home - 2016 Remaster",
+    "msPlayed" : 353573
+  },
+  {
+    "endTime" : "2023-11-01 22:37",
+    "artistName" : "Bill Medley",
+    "trackName" : "(I've Had) The Time of My Life - 12\" Version",
+    "msPlayed" : 406946
+  },
+  {
+    "endTime" : "2023-11-01 22:41",
+    "artistName" : "Tina Turner",
+    "trackName" : "Private Dancer - Single Edit",
+    "msPlayed" : 218951
+  },
+  {
+    "endTime" : "2023-11-01 22:43",
+    "artistName" : "Don Johnson",
+    "trackName" : "Heartbeat",
+    "msPlayed" : 114357
+  },
+  {
+    "endTime" : "2023-11-01 22:49",
+    "artistName" : "Poison",
+    "trackName" : "Every Rose Has Its Thorn - 2003 Remaster",
+    "msPlayed" : 23017
+  },
+  {
+    "endTime" : "2023-11-01 22:49",
+    "artistName" : "Robert Palmer",
+    "trackName" : "Addicted To Love",
+    "msPlayed" : 363640
+  },
+  {
+    "endTime" : "2023-11-01 22:54",
+    "artistName" : "TOTO",
+    "trackName" : "I Won't Hold You Back",
+    "msPlayed" : 293306
+  },
+  {
+    "endTime" : "2023-11-01 22:58",
+    "artistName" : "Daryl Hall & John Oates",
+    "trackName" : "Maneater",
+    "msPlayed" : 210865
+  },
+  {
+    "endTime" : "2023-11-01 23:01",
+    "artistName" : "Chicago",
+    "trackName" : "Baby, What a Big Surprise - Edit",
+    "msPlayed" : 183666
+  },
+  {
+    "endTime" : "2023-11-05 16:11",
+    "artistName" : "Sting",
+    "trackName" : "Fortress Around Your Heart",
+    "msPlayed" : 138739
+  },
+  {
+    "endTime" : "2023-11-21 22:34",
+    "artistName" : "Noah Gundersen",
+    "trackName" : "Robin Williams",
+    "msPlayed" : 181573
+  },
+  {
+    "endTime" : "2023-11-21 22:37",
+    "artistName" : "Noah Gundersen",
+    "trackName" : "Crystal Creek",
+    "msPlayed" : 141346
+  },
+  {
+    "endTime" : "2023-11-21 22:41",
+    "artistName" : "Noah Gundersen",
+    "trackName" : "Lover",
+    "msPlayed" : 248613
+  },
+  {
+    "endTime" : "2023-11-21 22:44",
+    "artistName" : "Noah Gundersen",
+    "trackName" : "Watermelon",
+    "msPlayed" : 198226
+  },
+  {
+    "endTime" : "2023-11-21 22:49",
+    "artistName" : "Noah Gundersen",
+    "trackName" : "Lose You",
+    "msPlayed" : 266160
+  },
+  {
+    "endTime" : "2023-11-21 22:53",
+    "artistName" : "Noah Gundersen",
+    "trackName" : "Out of Time",
+    "msPlayed" : 255066
+  },
+  {
+    "endTime" : "2023-11-21 22:57",
+    "artistName" : "Noah Gundersen",
+    "trackName" : "Audrey Hepburn",
+    "msPlayed" : 230880
+  },
+  {
+    "endTime" : "2023-11-21 23:01",
+    "artistName" : "Noah Gundersen",
+    "trackName" : "Older",
+    "msPlayed" : 240400
+  },
+  {
+    "endTime" : "2023-11-21 23:11",
+    "artistName" : "Noah Gundersen",
+    "trackName" : "Wild Horses",
+    "msPlayed" : 260146
+  },
+  {
+    "endTime" : "2023-11-21 23:14",
+    "artistName" : "Noah Gundersen",
+    "trackName" : "So What",
+    "msPlayed" : 192440
+  },
+  {
+    "endTime" : "2023-11-21 23:17",
+    "artistName" : "Noah Gundersen",
+    "trackName" : "Little Cup",
+    "msPlayed" : 144253
+  },
+  {
+    "endTime" : "2023-11-21 23:20",
+    "artistName" : "Noah Gundersen",
+    "trackName" : "All My Friends",
+    "msPlayed" : 198786
+  },
+  {
+    "endTime" : "2023-11-21 23:25",
+    "artistName" : "Noah Gundersen",
+    "trackName" : "Kamikaze",
+    "msPlayed" : 288506
+  },
+  {
+    "endTime" : "2023-11-21 23:28",
+    "artistName" : "Novo Amor",
+    "trackName" : "Utican",
+    "msPlayed" : 175986
+  },
+  {
+    "endTime" : "2023-11-21 23:29",
+    "artistName" : "Wild Rivers",
+    "trackName" : "Kinda Feels Alright",
+    "msPlayed" : 107610
+  },
+  {
+    "endTime" : "2023-11-21 23:33",
+    "artistName" : "Noah Gundersen",
+    "trackName" : "David",
+    "msPlayed" : 219026
+  },
+  {
+    "endTime" : "2023-11-21 23:36",
+    "artistName" : "'68",
+    "trackName" : "Without Any Words (Only Crying and Laughter)",
+    "msPlayed" : 198073
+  },
+  {
+    "endTime" : "2023-11-21 23:40",
+    "artistName" : "Frightened Rabbit",
+    "trackName" : "The Woodpile",
+    "msPlayed" : 207560
+  },
+  {
+    "endTime" : "2023-11-21 23:44",
+    "artistName" : "Ed Sheeran",
+    "trackName" : "The A Team",
+    "msPlayed" : 258373
+  },
+  {
+    "endTime" : "2023-11-21 23:49",
+    "artistName" : "September 87",
+    "trackName" : "Bad Dream Baby",
+    "msPlayed" : 315250
+  },
+  {
+    "endTime" : "2023-11-21 23:52",
+    "artistName" : "John Mayer",
+    "trackName" : "Something Like Olivia",
+    "msPlayed" : 180626
+  },
+  {
+    "endTime" : "2023-11-21 23:59",
+    "artistName" : "Timecop1983",
+    "trackName" : "Lovers (feat. Seawaves)",
+    "msPlayed" : 369963
+  },
+  {
+    "endTime" : "2023-11-22 00:02",
+    "artistName" : "boygenius",
+    "trackName" : "Souvenir",
+    "msPlayed" : 212467
+  },
+  {
+    "endTime" : "2023-11-22 00:06",
+    "artistName" : "Noah Gundersen",
+    "trackName" : "Lover",
+    "msPlayed" : 248613
+  },
+  {
+    "endTime" : "2023-11-22 00:10",
+    "artistName" : "The National",
+    "trackName" : "I Need My Girl",
+    "msPlayed" : 245240
+  },
+  {
+    "endTime" : "2023-11-22 00:13",
+    "artistName" : "Microwave",
+    "trackName" : "Roaches",
+    "msPlayed" : 164520
+  },
+  {
+    "endTime" : "2023-11-22 00:14",
+    "artistName" : "'68",
+    "trackName" : "Whether Terrified or Unafraid",
+    "msPlayed" : 67489
+  },
+  {
+    "endTime" : "2023-11-22 00:18",
+    "artistName" : "boygenius",
+    "trackName" : "Souvenir",
+    "msPlayed" : 10849
+  },
+  {
+    "endTime" : "2023-11-22 00:18",
+    "artistName" : "NF",
+    "trackName" : "When I Grow Up",
+    "msPlayed" : 196800
+  },
+  {
+    "endTime" : "2023-11-22 00:19",
+    "artistName" : "Damien",
+    "trackName" : "Catch Me",
+    "msPlayed" : 1610
+  },
+  {
+    "endTime" : "2023-11-22 00:19",
+    "artistName" : "boygenius",
+    "trackName" : "Souvenir",
+    "msPlayed" : 618
+  },
+  {
+    "endTime" : "2023-11-22 00:21",
+    "artistName" : "Damien",
+    "trackName" : "Catch Me",
+    "msPlayed" : 138475
+  },
+  {
+    "endTime" : "2023-11-22 00:25",
+    "artistName" : "Ed Sheeran",
+    "trackName" : "The A Team",
+    "msPlayed" : 258373
+  },
+  {
+    "endTime" : "2023-11-22 00:28",
+    "artistName" : "Julien Baker",
+    "trackName" : "Vessels",
+    "msPlayed" : 180604
+  },
+  {
+    "endTime" : "2023-11-22 01:52",
+    "artistName" : "Noah Gundersen",
+    "trackName" : "Family",
+    "msPlayed" : 187370
+  },
+  {
+    "endTime" : "2023-11-22 01:53",
+    "artistName" : "Noah Gundersen",
+    "trackName" : "Family",
+    "msPlayed" : 14373
+  },
+  {
+    "endTime" : "2023-11-22 01:57",
+    "artistName" : "JAY-Z",
+    "trackName" : "Heart Of The City (Ain't No Love)",
+    "msPlayed" : 223240
+  },
+  {
+    "endTime" : "2023-11-22 02:01",
+    "artistName" : "NF",
+    "trackName" : "The Search",
+    "msPlayed" : 248040
+  },
+  {
+    "endTime" : "2023-11-22 02:03",
+    "artistName" : "Eminem",
+    "trackName" : "The Way I Am",
+    "msPlayed" : 140680
+  },
+  {
+    "endTime" : "2023-11-22 02:04",
+    "artistName" : "Macklemore",
+    "trackName" : "Good Old Days (feat. Kesha)",
+    "msPlayed" : 46579
+  },
+  {
+    "endTime" : "2023-11-22 02:06",
+    "artistName" : "Wu-Tang Clan",
+    "trackName" : "Preservation",
+    "msPlayed" : 146533
+  },
+  {
+    "endTime" : "2023-11-22 02:26",
+    "artistName" : "Mos Def",
+    "trackName" : "Ms. Fat Booty",
+    "msPlayed" : 223546
+  },
+  {
+    "endTime" : "2023-11-22 02:28",
+    "artistName" : "Frank Ocean",
+    "trackName" : "Lost",
+    "msPlayed" : 107831
+  },
+  {
+    "endTime" : "2023-11-22 02:28",
+    "artistName" : "J. Cole",
+    "trackName" : "MIDDLE CHILD",
+    "msPlayed" : 12817
+  },
+  {
+    "endTime" : "2023-11-22 02:29",
+    "artistName" : "Gang Starr",
+    "trackName" : "Work",
+    "msPlayed" : 69358
+  },
+  {
+    "endTime" : "2023-11-22 02:34",
+    "artistName" : "2Pac",
+    "trackName" : "California Love - Original Version",
+    "msPlayed" : 284906
+  },
+  {
+    "endTime" : "2023-11-22 02:39",
+    "artistName" : "2Pac",
+    "trackName" : "Hit 'Em Up - Single Version",
+    "msPlayed" : 312626
+  },
+  {
+    "endTime" : "2023-11-22 02:44",
+    "artistName" : "2Pac",
+    "trackName" : "Ambitionz Az A Ridah",
+    "msPlayed" : 278386
+  },
+  {
+    "endTime" : "2023-11-22 02:49",
+    "artistName" : "2Pac",
+    "trackName" : "All Eyez On Me (ft. Big Syke)",
+    "msPlayed" : 303291
+  },
+  {
+    "endTime" : "2023-11-22 02:52",
+    "artistName" : "2Pac",
+    "trackName" : "Changes",
+    "msPlayed" : 158081
+  },
+  {
+    "endTime" : "2023-11-26 07:21",
+    "artistName" : "Frightened Rabbit",
+    "trackName" : "Wait 'Til the Morning",
+    "msPlayed" : 41662
+  },
+  {
+    "endTime" : "2023-11-26 07:24",
+    "artistName" : "El Naturel",
+    "trackName" : "Singing Birds by the Stream",
+    "msPlayed" : 5674
+  },
+  {
+    "endTime" : "2023-11-26 07:25",
+    "artistName" : "El Naturel",
+    "trackName" : "Singing Birds by the Stream",
+    "msPlayed" : 47914
+  },
+  {
+    "endTime" : "2023-11-26 07:27",
+    "artistName" : "10 Hour Deep Relaxation",
+    "trackName" : "10 Hour Rain, Thunder, and Lightning | Deep Relaxation, Meditation, and Sleep",
+    "msPlayed" : 7018
+  },
+  {
+    "endTime" : "2023-11-26 07:27",
+    "artistName" : "10 Hour Deep Relaxation",
+    "trackName" : "10 Hour Rain, Thunder, and Lightning | Deep Relaxation, Meditation, and Sleep",
+    "msPlayed" : 118805
+  },
+  {
+    "endTime" : "2023-11-26 07:28",
+    "artistName" : "Sleepy John",
+    "trackName" : "Thunderstorms",
+    "msPlayed" : 10111
+  },
+  {
+    "endTime" : "2023-11-26 07:39",
+    "artistName" : "Sleepy John",
+    "trackName" : "Rain & Thunder",
+    "msPlayed" : 79658
+  },
+  {
+    "endTime" : "2023-11-26 10:20",
+    "artistName" : "Nature Sounds",
+    "trackName" : "Rain With Light Thunderstorm",
+    "msPlayed" : 1943483
+  },
+  {
+    "endTime" : "2023-11-26 10:23",
+    "artistName" : "Thunderstorm Sound Bank",
+    "trackName" : "Monsun Thunderstorm",
+    "msPlayed" : 191780
+  },
+  {
+    "endTime" : "2023-11-26 10:25",
+    "artistName" : "Weather Factory",
+    "trackName" : "Deep Thunderstorm",
+    "msPlayed" : 152562
+  },
+  {
+    "endTime" : "2023-11-26 10:28",
+    "artistName" : "Nataural",
+    "trackName" : "Rain & Thunder",
+    "msPlayed" : 183971
+  },
+  {
+    "endTime" : "2023-11-26 10:32",
+    "artistName" : "Natural Sound Selections",
+    "trackName" : "Good Night Sleep",
+    "msPlayed" : 239187
+  },
+  {
+    "endTime" : "2023-11-26 10:36",
+    "artistName" : "Nataural",
+    "trackName" : "Dripping Rain",
+    "msPlayed" : 190333
+  },
+  {
+    "endTime" : "2023-11-26 10:39",
+    "artistName" : "Forest FX",
+    "trackName" : "Camping Rain",
+    "msPlayed" : 184460
+  },
+  {
+    "endTime" : "2023-11-26 10:43",
+    "artistName" : "All Night Chill Makers",
+    "trackName" : "Deep Sky",
+    "msPlayed" : 249140
+  },
+  {
+    "endTime" : "2023-11-26 10:45",
+    "artistName" : "Tight Chill Creator",
+    "trackName" : "All Night Dream Rain",
+    "msPlayed" : 133492
+  },
+  {
+    "endTime" : "2023-11-26 10:47",
+    "artistName" : "Sleep Tight",
+    "trackName" : "River Rain Fall",
+    "msPlayed" : 143617
+  },
+  {
+    "endTime" : "2023-11-26 10:54",
+    "artistName" : "Nature Sounds",
+    "trackName" : "Blissful Rain Hitting Window",
+    "msPlayed" : 383295
+  },
+  {
+    "endTime" : "2023-11-26 10:57",
+    "artistName" : "Rain Recorders",
+    "trackName" : "Rainy Alley",
+    "msPlayed" : 205811
+  },
+  {
+    "endTime" : "2023-11-26 11:30",
+    "artistName" : "Nature Sounds",
+    "trackName" : "Rain With Distant Thunderstorm",
+    "msPlayed" : 1943483
+  },
+  {
+    "endTime" : "2023-11-26 11:32",
+    "artistName" : "WP Sounds",
+    "trackName" : "Rain Sounds Chill",
+    "msPlayed" : 155861
+  },
+  {
+    "endTime" : "2023-11-26 12:05",
+    "artistName" : "Nature Sounds",
+    "trackName" : "Rain With Light Thunderstorm",
+    "msPlayed" : 1943483
+  },
+  {
+    "endTime" : "2023-11-26 12:08",
+    "artistName" : "Thunderstorm Sound Bank",
+    "trackName" : "Monsun Thunderstorm",
+    "msPlayed" : 191780
+  },
+  {
+    "endTime" : "2023-11-26 12:10",
+    "artistName" : "Weather Factory",
+    "trackName" : "Deep Thunderstorm",
+    "msPlayed" : 152562
+  },
+  {
+    "endTime" : "2023-11-26 12:13",
+    "artistName" : "Nataural",
+    "trackName" : "Rain & Thunder",
+    "msPlayed" : 183971
+  },
+  {
+    "endTime" : "2023-11-26 12:17",
+    "artistName" : "Natural Sound Selections",
+    "trackName" : "Good Night Sleep",
+    "msPlayed" : 239187
+  },
+  {
+    "endTime" : "2023-11-26 12:21",
+    "artistName" : "Nataural",
+    "trackName" : "Dripping Rain",
+    "msPlayed" : 190333
+  },
+  {
+    "endTime" : "2023-11-26 12:24",
+    "artistName" : "Forest FX",
+    "trackName" : "Camping Rain",
+    "msPlayed" : 184460
+  },
+  {
+    "endTime" : "2023-11-26 12:28",
+    "artistName" : "All Night Chill Makers",
+    "trackName" : "Deep Sky",
+    "msPlayed" : 249140
+  },
+  {
+    "endTime" : "2023-11-26 12:30",
+    "artistName" : "Tight Chill Creator",
+    "trackName" : "All Night Dream Rain",
+    "msPlayed" : 133492
+  },
+  {
+    "endTime" : "2023-11-26 12:32",
+    "artistName" : "Sleep Tight",
+    "trackName" : "River Rain Fall",
+    "msPlayed" : 143617
+  },
+  {
+    "endTime" : "2023-11-26 12:39",
+    "artistName" : "Nature Sounds",
+    "trackName" : "Blissful Rain Hitting Window",
+    "msPlayed" : 383295
+  },
+  {
+    "endTime" : "2023-11-26 12:42",
+    "artistName" : "Rain Recorders",
+    "trackName" : "Rainy Alley",
+    "msPlayed" : 205811
+  },
+  {
+    "endTime" : "2023-11-26 13:15",
+    "artistName" : "Nature Sounds",
+    "trackName" : "Rain With Distant Thunderstorm",
+    "msPlayed" : 1943483
+  },
+  {
+    "endTime" : "2023-11-26 13:17",
+    "artistName" : "WP Sounds",
+    "trackName" : "Rain Sounds Chill",
+    "msPlayed" : 155861
+  },
+  {
+    "endTime" : "2023-11-26 13:50",
+    "artistName" : "Nature Sounds",
+    "trackName" : "Rain With Light Thunderstorm",
+    "msPlayed" : 1943483
+  },
+  {
+    "endTime" : "2023-11-26 13:53",
+    "artistName" : "Thunderstorm Sound Bank",
+    "trackName" : "Monsun Thunderstorm",
+    "msPlayed" : 191780
+  },
+  {
+    "endTime" : "2023-11-26 13:55",
+    "artistName" : "Weather Factory",
+    "trackName" : "Deep Thunderstorm",
+    "msPlayed" : 152562
+  },
+  {
+    "endTime" : "2023-11-26 13:59",
+    "artistName" : "Nataural",
+    "trackName" : "Rain & Thunder",
+    "msPlayed" : 183971
+  },
+  {
+    "endTime" : "2023-11-26 14:03",
+    "artistName" : "Natural Sound Selections",
+    "trackName" : "Good Night Sleep",
+    "msPlayed" : 239187
+  },
+  {
+    "endTime" : "2023-11-26 14:13",
+    "artistName" : "Nataural",
+    "trackName" : "Dripping Rain",
+    "msPlayed" : 22292
+  },
+  {
+    "endTime" : "2023-11-27 09:56",
+    "artistName" : "Nature Sounds",
+    "trackName" : "Jungle Ambience at Night",
+    "msPlayed" : 3157
+  },
+  {
+    "endTime" : "2023-11-27 09:56",
+    "artistName" : "HD Nature Sound Library",
+    "trackName" : "Rainy Day In Forest",
+    "msPlayed" : 5674
+  },
+  {
+    "endTime" : "2023-11-27 09:56",
+    "artistName" : "Nature Soundscape",
+    "trackName" : "South American Jungle Ambience",
+    "msPlayed" : 7765
+  },
+  {
+    "endTime" : "2023-11-27 09:59",
+    "artistName" : "HD Nature Sound Library",
+    "trackName" : "Rainy Day In Forest",
+    "msPlayed" : 178971
+  },
+  {
+    "endTime" : "2023-11-27 10:01",
+    "artistName" : "Olof Dahlström Recordings",
+    "trackName" : "The Rainforest",
+    "msPlayed" : 143553
+  },
+  {
+    "endTime" : "2023-11-27 10:04",
+    "artistName" : "Peter Graham",
+    "trackName" : "Rain In The Rainforest",
+    "msPlayed" : 143553
+  },
+  {
+    "endTime" : "2023-11-27 10:07",
+    "artistName" : "Mother Nature Sound FX",
+    "trackName" : "Florida Rain Storm",
+    "msPlayed" : 175313
+  },
+  {
+    "endTime" : "2023-11-27 10:08",
+    "artistName" : "Memorable",
+    "trackName" : "Birds in the Forest",
+    "msPlayed" : 50901
+  },
+  {
+    "endTime" : "2023-11-27 10:19",
+    "artistName" : "Pure Relaxing Vibes",
+    "trackName" : "Heavy Thunderstorm",
+    "msPlayed" : 655455
+  },
+  {
+    "endTime" : "2023-11-27 10:27",
+    "artistName" : "Pure Relaxing Vibes",
+    "trackName" : "Thunder and Rain Sounds for Sleep",
+    "msPlayed" : 499639
+  },
+  {
+    "endTime" : "2023-11-27 10:37",
+    "artistName" : "Pure Relaxing Vibes",
+    "trackName" : "Heavy Rain and Thunder Sounds",
+    "msPlayed" : 581679
+  },
+  {
+    "endTime" : "2023-11-27 10:46",
+    "artistName" : "Pure Relaxing Vibes",
+    "trackName" : "Rolling Thunder and Rain",
+    "msPlayed" : 590799
+  },
+  {
+    "endTime" : "2023-11-27 10:56",
+    "artistName" : "Pure Relaxing Vibes",
+    "trackName" : "Thunderstorm at Sea",
+    "msPlayed" : 547319
+  },
+  {
+    "endTime" : "2023-11-27 11:06",
+    "artistName" : "Pure Relaxing Vibes",
+    "trackName" : "Rain and Thunder for Deep Sleep",
+    "msPlayed" : 596839
+  },
+  {
+    "endTime" : "2023-11-27 11:13",
+    "artistName" : "Pure Sleeping Vibes",
+    "trackName" : "Rainstorm and Heavy Thunder",
+    "msPlayed" : 463899
+  },
+  {
+    "endTime" : "2023-11-27 11:21",
+    "artistName" : "Pure Relaxing Vibes",
+    "trackName" : "Strong Thunder and Heavy Rain",
+    "msPlayed" : 457746
+  },
+  {
+    "endTime" : "2023-11-27 11:28",
+    "artistName" : "Pure Relaxing Vibes",
+    "trackName" : "Deep Rolling Thunder and Rain",
+    "msPlayed" : 445573
+  },
+  {
+    "endTime" : "2023-11-27 11:35",
+    "artistName" : "Pure Relaxing Vibes",
+    "trackName" : "Deep Thunder and Rain at Night",
+    "msPlayed" : 406039
+  },
+  {
+    "endTime" : "2023-11-27 11:43",
+    "artistName" : "Pure Sleeping Vibes",
+    "trackName" : "Heavy Rain and Thunder for Sleeping",
+    "msPlayed" : 450279
+  },
+  {
+    "endTime" : "2023-11-27 11:49",
+    "artistName" : "Pure Relaxing Vibes",
+    "trackName" : "Gentle Rain and Deep Thunder",
+    "msPlayed" : 381279
+  },
+  {
+    "endTime" : "2023-11-27 11:57",
+    "artistName" : "Pure Sleeping Vibes",
+    "trackName" : "Strong Thunder and Rain for Sleep",
+    "msPlayed" : 454919
+  },
+  {
+    "endTime" : "2023-11-27 12:00",
+    "artistName" : "Sleepy Cow",
+    "trackName" : "Dreaming of Thunderstorms",
+    "msPlayed" : 207279
+  },
+  {
+    "endTime" : "2023-11-27 12:05",
+    "artistName" : "Pure Sleeping Vibes",
+    "trackName" : "Thunderstorm",
+    "msPlayed" : 317679
+  },
+  {
+    "endTime" : "2023-11-27 12:13",
+    "artistName" : "Pure Sleeping Vibes",
+    "trackName" : "Mountain Thunderstorm",
+    "msPlayed" : 449279
+  },
+  {
+    "endTime" : "2023-11-27 12:20",
+    "artistName" : "Pure Sleeping Vibes",
+    "trackName" : "Rain on Roof with Thunder",
+    "msPlayed" : 431439
+  },
+  {
+    "endTime" : "2023-11-27 12:26",
+    "artistName" : "Pure Sleeping Vibes",
+    "trackName" : "Tent in Thunderstorm",
+    "msPlayed" : 346639
+  },
+  {
+    "endTime" : "2023-11-27 12:33",
+    "artistName" : "Pure Relaxing Vibes",
+    "trackName" : "Rainforest Thunderstorm",
+    "msPlayed" : 406079
+  },
+  {
+    "endTime" : "2023-11-27 12:39",
+    "artistName" : "Pure Relaxing Vibes",
+    "trackName" : "Calming Thunder and Rain",
+    "msPlayed" : 384999
+  },
+  {
+    "endTime" : "2023-11-27 12:47",
+    "artistName" : "Pure Relaxing Vibes",
+    "trackName" : "Desert Rain and Heavy Thunder",
+    "msPlayed" : 469039
+  },
+  {
+    "endTime" : "2023-11-27 13:00",
+    "artistName" : "Sleepy Cow",
+    "trackName" : "Gentle Rain and Thunder",
+    "msPlayed" : 166143
+  },
+  {
+    "endTime" : "2023-11-28 00:52",
+    "artistName" : "John Mayer",
+    "trackName" : "Slow Dancing in a Burning Room",
+    "msPlayed" : 241999
+  },
+  {
+    "endTime" : "2023-11-28 00:55",
+    "artistName" : "James TW",
+    "trackName" : "When You Love Someone",
+    "msPlayed" : 216373
+  },
+  {
+    "endTime" : "2023-11-28 00:59",
+    "artistName" : "Noah Gundersen",
+    "trackName" : "Older",
+    "msPlayed" : 240399
+  },
+  {
+    "endTime" : "2023-11-28 01:00",
+    "artistName" : "JAY-Z",
+    "trackName" : "99 Problems",
+    "msPlayed" : 2901
+  },
+  {
+    "endTime" : "2023-11-28 01:00",
+    "artistName" : "Radical Face",
+    "trackName" : "The Mute",
+    "msPlayed" : 41407
+  },
+  {
+    "endTime" : "2023-11-28 01:00",
+    "artistName" : "The Head And The Heart",
+    "trackName" : "Lost in My Mind",
+    "msPlayed" : 11221
+  },
+  {
+    "endTime" : "2023-11-28 01:00",
+    "artistName" : "The Lowest Pair",
+    "trackName" : "Aw Jeez",
+    "msPlayed" : 10602
+  },
+  {
+    "endTime" : "2023-11-28 01:00",
+    "artistName" : "ODESZA",
+    "trackName" : "Memories That You Call",
+    "msPlayed" : 3007
+  },
+  {
+    "endTime" : "2023-11-28 01:00",
+    "artistName" : "Paramore",
+    "trackName" : "Part II",
+    "msPlayed" : 2303
+  },
+  {
+    "endTime" : "2023-11-28 01:00",
+    "artistName" : "Slipknot",
+    "trackName" : "People = Shit",
+    "msPlayed" : 2709
+  },
+  {
+    "endTime" : "2023-11-28 01:06",
+    "artistName" : "Michael FK",
+    "trackName" : "The World Can Wait",
+    "msPlayed" : 342271
+  },
+  {
+    "endTime" : "2023-11-28 01:11",
+    "artistName" : "Kaisaku",
+    "trackName" : "Azimuth",
+    "msPlayed" : 287493
+  },
+  {
+    "endTime" : "2023-11-28 01:15",
+    "artistName" : "Sappheiros",
+    "trackName" : "The Sound of Rain",
+    "msPlayed" : 265743
+  },
+  {
+    "endTime" : "2023-11-28 01:21",
+    "artistName" : "Wayr",
+    "trackName" : "Against Fate",
+    "msPlayed" : 340975
+  },
+  {
+    "endTime" : "2023-11-28 01:24",
+    "artistName" : "AK",
+    "trackName" : "Life's so Short",
+    "msPlayed" : 178149
+  },
+  {
+    "endTime" : "2023-11-28 01:28",
+    "artistName" : "Michael FK",
+    "trackName" : "Memory Lane",
+    "msPlayed" : 211199
+  },
+  {
+    "endTime" : "2023-11-28 01:30",
+    "artistName" : "Amaranth Cove",
+    "trackName" : "Apparitions",
+    "msPlayed" : 132785
+  },
+  {
+    "endTime" : "2023-11-28 01:34",
+    "artistName" : "Dimatis",
+    "trackName" : "Emotional Tourism",
+    "msPlayed" : 233952
+  },
+  {
+    "endTime" : "2023-11-28 01:38",
+    "artistName" : "Groundfold",
+    "trackName" : "Change",
+    "msPlayed" : 260580
+  },
+  {
+    "endTime" : "2023-11-28 01:41",
+    "artistName" : "Subsets",
+    "trackName" : "All I Had",
+    "msPlayed" : 146181
+  },
+  {
+    "endTime" : "2023-11-28 01:44",
+    "artistName" : "Luca Francini",
+    "trackName" : "Sidereal",
+    "msPlayed" : 191520
+  },
+  {
+    "endTime" : "2023-11-28 01:51",
+    "artistName" : "Krisu",
+    "trackName" : "Coming Home",
+    "msPlayed" : 428004
+  },
+  {
+    "endTime" : "2023-11-28 01:56",
+    "artistName" : "Sultan + Shepard",
+    "trackName" : "Something, Everything",
+    "msPlayed" : 317428
+  },
+  {
+    "endTime" : "2023-11-28 02:01",
+    "artistName" : "Blackmill",
+    "trackName" : "Sarajevo (Blackmill Remix)",
+    "msPlayed" : 281834
+  },
+  {
+    "endTime" : "2023-11-28 02:04",
+    "artistName" : "Aurora Night",
+    "trackName" : "Piano",
+    "msPlayed" : 206769
+  },
+  {
+    "endTime" : "2023-11-28 02:09",
+    "artistName" : "MARION",
+    "trackName" : "Promises",
+    "msPlayed" : 259999
+  },
+  {
+    "endTime" : "2023-11-28 02:13",
+    "artistName" : "CMA",
+    "trackName" : "You're Not Alone",
+    "msPlayed" : 280624
+  },
+  {
+    "endTime" : "2023-11-28 02:17",
+    "artistName" : "Michael FK",
+    "trackName" : "Frozen in Time",
+    "msPlayed" : 211199
+  },
+  {
+    "endTime" : "2023-11-28 02:20",
+    "artistName" : "Oscuro",
+    "trackName" : "Devotion",
+    "msPlayed" : 206333
+  },
+  {
+    "endTime" : "2023-11-28 02:25",
+    "artistName" : "Michael FK",
+    "trackName" : "Falling Down",
+    "msPlayed" : 265999
+  },
+  {
+    "endTime" : "2023-11-28 02:29",
+    "artistName" : "CMA",
+    "trackName" : "Fragments Of The Past",
+    "msPlayed" : 273240
+  },
+  {
+    "endTime" : "2023-11-28 02:33",
+    "artistName" : "Kyon Grey",
+    "trackName" : "Hollowing",
+    "msPlayed" : 244153
+  },
+  {
+    "endTime" : "2023-11-28 02:38",
+    "artistName" : "MARION",
+    "trackName" : "Sitting on the Moon",
+    "msPlayed" : 271875
+  },
+  {
+    "endTime" : "2023-11-28 02:44",
+    "artistName" : "Eminus",
+    "trackName" : "Fragmented Past",
+    "msPlayed" : 346288
+  },
+  {
+    "endTime" : "2023-11-28 02:48",
+    "artistName" : "Sappheiros",
+    "trackName" : "Dreams",
+    "msPlayed" : 286105
+  },
+  {
+    "endTime" : "2023-11-28 02:53",
+    "artistName" : "Michael FK",
+    "trackName" : "Nocturne",
+    "msPlayed" : 255999
+  },
+  {
+    "endTime" : "2023-11-28 02:57",
+    "artistName" : "MARION",
+    "trackName" : "Something Tells Me",
+    "msPlayed" : 243999
+  },
+  {
+    "endTime" : "2023-11-28 03:02",
+    "artistName" : "Fyze",
+    "trackName" : "Mystery",
+    "msPlayed" : 329032
+  },
+  {
+    "endTime" : "2023-11-28 03:07",
+    "artistName" : "Buruks",
+    "trackName" : "Solarity",
+    "msPlayed" : 270947
+  },
+  {
+    "endTime" : "2023-11-28 03:20",
+    "artistName" : "Oscuro",
+    "trackName" : "Save Me",
+    "msPlayed" : 179114
+  },
+  {
+    "endTime" : "2023-11-28 05:35",
+    "artistName" : "HD Nature Sound Library",
+    "trackName" : "Rainy Day In Forest",
+    "msPlayed" : 7168
+  },
+  {
+    "endTime" : "2023-11-28 05:40",
+    "artistName" : "John Mayer",
+    "trackName" : "Heartbreak Warfare",
+    "msPlayed" : 269720
+  },
+  {
+    "endTime" : "2023-11-28 05:43",
+    "artistName" : "Fleetwood Mac",
+    "trackName" : "Landslide",
+    "msPlayed" : 199493
+  },
+  {
+    "endTime" : "2023-11-28 05:44",
+    "artistName" : "Gregory Alan Isakov",
+    "trackName" : "If I Go, I'm Goin",
+    "msPlayed" : 16533
+  },
+  {
+    "endTime" : "2023-11-28 05:44",
+    "artistName" : "Noah Cyrus",
+    "trackName" : "July (feat. Leon Bridges)",
+    "msPlayed" : 49914
+  },
+  {
+    "endTime" : "2023-11-28 05:47",
+    "artistName" : "Julien Baker",
+    "trackName" : "Faith Healer",
+    "msPlayed" : 174773
+  },
+  {
+    "endTime" : "2023-11-28 05:50",
+    "artistName" : "Phoebe Bridgers",
+    "trackName" : "Kyoto",
+    "msPlayed" : 184524
+  },
+  {
+    "endTime" : "2023-11-28 05:53",
+    "artistName" : "Bleachers",
+    "trackName" : "All My Heroes",
+    "msPlayed" : 183826
+  },
+  {
+    "endTime" : "2023-11-28 07:35",
+    "artistName" : "White Noise Radiance",
+    "trackName" : "Crackling Fire Sounds for Sleep, Pt. 01 (Continuous No Gaps)",
+    "msPlayed" : 5290
+  },
+  {
+    "endTime" : "2023-11-28 07:35",
+    "artistName" : "Noah Gundersen",
+    "trackName" : "Atlantis",
+    "msPlayed" : 283727
+  },
+  {
+    "endTime" : "2023-11-28 07:37",
+    "artistName" : "White Noise Radiance",
+    "trackName" : "Crackling Fire Sounds for Sleep, Pt. 01 (Continuous No Gaps)",
+    "msPlayed" : 5376
+  },
+  {
+    "endTime" : "2023-11-28 07:37",
+    "artistName" : "White Noise Radiance",
+    "trackName" : "Crackling Fire Sounds for Sleep, Pt. 01 (Continuous No Gaps)",
+    "msPlayed" : 145621
+  },
+  {
+    "endTime" : "2023-11-28 07:41",
+    "artistName" : "White Noise Radiance",
+    "trackName" : "Crackling Fire Sounds for Sleep, Pt. 01 (Continuous No Gaps)",
+    "msPlayed" : 205849
+  },
+  {
+    "endTime" : "2023-11-28 07:47",
+    "artistName" : "White Noise Radiance",
+    "trackName" : "Crackling Fire Sounds for Sleep, Pt. 02 (Continuous No Gaps)",
+    "msPlayed" : 359999
+  },
+  {
+    "endTime" : "2023-11-28 07:53",
+    "artistName" : "White Noise Radiance",
+    "trackName" : "Crackling Fire Sounds for Sleep, Pt. 03 (Continuous No Gaps)",
+    "msPlayed" : 359999
+  },
+  {
+    "endTime" : "2023-11-28 07:59",
+    "artistName" : "White Noise Radiance",
+    "trackName" : "Crackling Fire Sounds for Sleep, Pt. 04 (Continuous No Gaps)",
+    "msPlayed" : 359999
+  },
+  {
+    "endTime" : "2023-11-28 08:05",
+    "artistName" : "White Noise Radiance",
+    "trackName" : "Crackling Fire Sounds for Sleep, Pt. 05 (Continuous No Gaps)",
+    "msPlayed" : 359999
+  },
+  {
+    "endTime" : "2023-11-28 08:11",
+    "artistName" : "White Noise Radiance",
+    "trackName" : "Crackling Fire Sounds for Sleep, Pt. 06 (Continuous No Gaps)",
+    "msPlayed" : 359999
+  },
+  {
+    "endTime" : "2023-11-28 08:17",
+    "artistName" : "White Noise Radiance",
+    "trackName" : "Crackling Fire Sounds for Sleep, Pt. 07 (Continuous No Gaps)",
+    "msPlayed" : 359999
+  },
+  {
+    "endTime" : "2023-11-28 08:23",
+    "artistName" : "White Noise Radiance",
+    "trackName" : "Crackling Fire Sounds for Sleep, Pt. 08 (Continuous No Gaps)",
+    "msPlayed" : 359999
+  },
+  {
+    "endTime" : "2023-11-28 08:29",
+    "artistName" : "White Noise Radiance",
+    "trackName" : "Crackling Fire Sounds for Sleep, Pt. 09 (Continuous No Gaps)",
+    "msPlayed" : 359999
+  },
+  {
+    "endTime" : "2023-11-28 08:35",
+    "artistName" : "White Noise Radiance",
+    "trackName" : "Crackling Fire Sounds for Sleep, Pt. 10 (Continuous No Gaps)",
+    "msPlayed" : 359999
+  },
+  {
+    "endTime" : "2023-11-28 08:41",
+    "artistName" : "White Noise Radiance",
+    "trackName" : "Crackling Fire Sounds for Sleep, Pt. 11 (Continuous No Gaps)",
+    "msPlayed" : 359999
+  },
+  {
+    "endTime" : "2023-11-28 08:47",
+    "artistName" : "White Noise Radiance",
+    "trackName" : "Crackling Fire Sounds for Sleep, Pt. 12 (Continuous No Gaps)",
+    "msPlayed" : 359999
+  },
+  {
+    "endTime" : "2023-11-28 08:53",
+    "artistName" : "White Noise Radiance",
+    "trackName" : "Crackling Fire Sounds for Sleep, Pt. 13 (Continuous No Gaps)",
+    "msPlayed" : 359999
+  },
+  {
+    "endTime" : "2023-11-28 08:59",
+    "artistName" : "White Noise Radiance",
+    "trackName" : "Crackling Fire Sounds for Sleep, Pt. 14 (Continuous No Gaps)",
+    "msPlayed" : 359999
+  },
+  {
+    "endTime" : "2023-11-28 09:05",
+    "artistName" : "White Noise Radiance",
+    "trackName" : "Crackling Fire Sounds for Sleep, Pt. 15 (Continuous No Gaps)",
+    "msPlayed" : 359999
+  },
+  {
+    "endTime" : "2023-11-28 09:11",
+    "artistName" : "White Noise Radiance",
+    "trackName" : "Crackling Fire Sounds for Sleep, Pt. 16 (Continuous No Gaps)",
+    "msPlayed" : 359999
+  },
+  {
+    "endTime" : "2023-11-28 09:17",
+    "artistName" : "White Noise Radiance",
+    "trackName" : "Crackling Fire Sounds for Sleep, Pt. 17 (Continuous No Gaps)",
+    "msPlayed" : 359999
+  },
+  {
+    "endTime" : "2023-11-28 09:23",
+    "artistName" : "White Noise Radiance",
+    "trackName" : "Crackling Fire Sounds for Sleep, Pt. 18 (Continuous No Gaps)",
+    "msPlayed" : 359999
+  },
+  {
+    "endTime" : "2023-11-28 09:29",
+    "artistName" : "White Noise Radiance",
+    "trackName" : "Crackling Fire Sounds for Sleep, Pt. 19 (Continuous No Gaps)",
+    "msPlayed" : 359999
+  },
+  {
+    "endTime" : "2023-11-28 09:35",
+    "artistName" : "White Noise Radiance",
+    "trackName" : "Crackling Fire Sounds for Sleep, Pt. 20 (Continuous No Gaps)",
+    "msPlayed" : 359999
+  },
+  {
+    "endTime" : "2023-11-28 09:41",
+    "artistName" : "White Noise Radiance",
+    "trackName" : "Crackling Fire Sounds for Sleep, Pt. 21 (Continuous No Gaps)",
+    "msPlayed" : 359999
+  },
+  {
+    "endTime" : "2023-11-28 09:47",
+    "artistName" : "White Noise Radiance",
+    "trackName" : "Crackling Fire Sounds for Sleep, Pt. 22 (Continuous No Gaps)",
+    "msPlayed" : 359999
+  },
+  {
+    "endTime" : "2023-11-28 09:53",
+    "artistName" : "White Noise Radiance",
+    "trackName" : "Crackling Fire Sounds for Sleep, Pt. 23 (Continuous No Gaps)",
+    "msPlayed" : 359999
+  },
+  {
+    "endTime" : "2023-11-28 09:59",
+    "artistName" : "White Noise Radiance",
+    "trackName" : "Crackling Fire Sounds for Sleep, Pt. 24 (Continuous No Gaps)",
+    "msPlayed" : 359999
+  },
+  {
+    "endTime" : "2023-11-28 10:05",
+    "artistName" : "White Noise Radiance",
+    "trackName" : "Crackling Fire Sounds for Sleep, Pt. 25 (Continuous No Gaps)",
+    "msPlayed" : 359999
+  },
+  {
+    "endTime" : "2023-11-28 10:17",
+    "artistName" : "White Noise Radiance",
+    "trackName" : "Crackling Fire Sounds for Sleep, Pt. 26 (Continuous No Gaps)",
+    "msPlayed" : 116053
+  },
+  {
+    "endTime" : "2023-11-28 16:23",
+    "artistName" : "Tyler Childers",
+    "trackName" : "Nose On The Grindstone (OurVinyl Sessions)",
+    "msPlayed" : 23916
+  },
+  {
+    "endTime" : "2023-11-28 16:23",
+    "artistName" : "White Noise Radiance",
+    "trackName" : "Crackling Fire Sounds for Sleep, Pt. 26 (Continuous No Gaps)",
+    "msPlayed" : 27213
+  },
+  {
+    "endTime" : "2023-11-28 16:25",
+    "artistName" : "Slushii",
+    "trackName" : "Sapient Dream",
+    "msPlayed" : 105604
+  },
+  {
+    "endTime" : "2023-11-30 05:05",
+    "artistName" : "Unknown Artist",
+    "trackName" : "Unknown Track",
+    "msPlayed" : 18117
+  },
+  {
+    "endTime" : "2023-11-30 05:06",
+    "artistName" : "Unknown Artist",
+    "trackName" : "Unknown Track",
+    "msPlayed" : 680
+  },
+  {
+    "endTime" : "2023-11-30 07:40",
+    "artistName" : "Earth Alliance",
+    "trackName" : "Wildlife Storm (Nature)",
+    "msPlayed" : 6805
+  },
+  {
+    "endTime" : "2023-11-30 07:42",
+    "artistName" : "Earth Alliance",
+    "trackName" : "Wildlife Storm (Nature)",
+    "msPlayed" : 118093
+  },
+  {
+    "endTime" : "2023-11-30 07:45",
+    "artistName" : "Sounds of the Jungle",
+    "trackName" : "Evening Drizzle",
+    "msPlayed" : 179999
+  },
+  {
+    "endTime" : "2023-11-30 07:46",
+    "artistName" : "Beatrice Birds",
+    "trackName" : "April Rain",
+    "msPlayed" : 87509
+  },
+  {
+    "endTime" : "2023-11-30 07:47",
+    "artistName" : "Birdieu",
+    "trackName" : "Pluie Nocturne",
+    "msPlayed" : 54314
+  },
+  {
+    "endTime" : "2023-11-30 07:50",
+    "artistName" : "Macroix",
+    "trackName" : "Promised",
+    "msPlayed" : 153142
+  },
+  {
+    "endTime" : "2023-11-30 07:53",
+    "artistName" : "Jonas Sandberg",
+    "trackName" : "Melancholy",
+    "msPlayed" : 179294
+  },
+  {
+    "endTime" : "2023-11-30 07:56",
+    "artistName" : "South Noon",
+    "trackName" : "My Armour",
+    "msPlayed" : 199999
+  },
+  {
+    "endTime" : "2023-11-30 07:59",
+    "artistName" : "Gabriel Derus",
+    "trackName" : "Sakalas",
+    "msPlayed" : 176785
+  },
+  {
+    "endTime" : "2023-11-30 08:02",
+    "artistName" : "Aiden Gaarder",
+    "trackName" : "Spherical",
+    "msPlayed" : 175666
+  },
+  {
+    "endTime" : "2023-11-30 08:05",
+    "artistName" : "Mystery Ark",
+    "trackName" : "Isolate",
+    "msPlayed" : 196116
+  },
+  {
+    "endTime" : "2023-11-30 22:37",
+    "artistName" : "Gregory Alan Isakov",
+    "trackName" : "If I Go, I'm Goin",
+    "msPlayed" : 4138
+  },
+  {
+    "endTime" : "2023-11-30 22:37",
+    "artistName" : "Defeater",
+    "trackName" : "I Don't Mind",
+    "msPlayed" : 1386
+  },
+  {
+    "endTime" : "2023-11-30 22:37",
+    "artistName" : "Creed Bratton",
+    "trackName" : "All The Faces",
+    "msPlayed" : 1429
+  },
+  {
+    "endTime" : "2023-11-30 22:38",
+    "artistName" : "Drew Holcomb & The Neighbors",
+    "trackName" : "What Would I Do Without You",
+    "msPlayed" : 11082
+  },
+  {
+    "endTime" : "2023-11-30 22:38",
+    "artistName" : "NF",
+    "trackName" : "When I Grow Up",
+    "msPlayed" : 1855
+  },
+  {
+    "endTime" : "2023-11-30 22:38",
+    "artistName" : "Eminem",
+    "trackName" : "Lose Yourself",
+    "msPlayed" : 5151
+  },
+  {
+    "endTime" : "2023-11-30 22:40",
+    "artistName" : "JAY-Z",
+    "trackName" : "Dirt Off Your Shoulder",
+    "msPlayed" : 1823
+  },
+  {
+    "endTime" : "2023-11-30 22:40",
+    "artistName" : "Kanye West",
+    "trackName" : "Homecoming",
+    "msPlayed" : 13297
+  },
+  {
+    "endTime" : "2023-11-30 22:40",
+    "artistName" : "Linkin Park",
+    "trackName" : "What I've Done",
+    "msPlayed" : 1877
+  },
+  {
+    "endTime" : "2023-11-30 22:40",
+    "artistName" : "XXXTENTACION",
+    "trackName" : "Revenge",
+    "msPlayed" : 120026
+  },
+  {
+    "endTime" : "2023-11-30 22:45",
+    "artistName" : "Kid Cudi",
+    "trackName" : "Pursuit Of Happiness (Nightmare)",
+    "msPlayed" : 295293
+  },
+  {
+    "endTime" : "2023-11-30 22:48",
+    "artistName" : "NF",
+    "trackName" : "Let You Down",
+    "msPlayed" : 212120
+  },
+  {
+    "endTime" : "2023-11-30 22:50",
+    "artistName" : "XXXTENTACION",
+    "trackName" : "Jocelyn Flores",
+    "msPlayed" : 119133
+  },
+  {
+    "endTime" : "2023-11-30 22:57",
+    "artistName" : "Eminem",
+    "trackName" : "Beautiful",
+    "msPlayed" : 392826
+  },
+  {
+    "endTime" : "2023-11-30 23:01",
+    "artistName" : "Nas",
+    "trackName" : "The Message",
+    "msPlayed" : 234093
+  },
+  {
+    "endTime" : "2023-11-30 23:05",
+    "artistName" : "JAY-Z",
+    "trackName" : "No Church In The Wild",
+    "msPlayed" : 272506
+  },
+  {
+    "endTime" : "2023-11-30 23:09",
+    "artistName" : "Lupe Fiasco",
+    "trackName" : "The Show Goes On",
+    "msPlayed" : 239613
+  },
+  {
+    "endTime" : "2023-11-30 23:14",
+    "artistName" : "NF",
+    "trackName" : "CLOUDS",
+    "msPlayed" : 243760
+  },
+  {
+    "endTime" : "2023-11-30 23:15",
+    "artistName" : "XXXTENTACION",
+    "trackName" : "Everybody Dies In Their Nightmares",
+    "msPlayed" : 95466
+  },
+  {
+    "endTime" : "2023-11-30 23:20",
+    "artistName" : "Eminem",
+    "trackName" : "Kill You",
+    "msPlayed" : 264400
+  },
+  {
+    "endTime" : "2023-12-02 00:46",
+    "artistName" : "Logic",
+    "trackName" : "1-800-273-8255",
+    "msPlayed" : 106533
+  },
+  {
+    "endTime" : "2023-12-02 05:39",
+    "artistName" : "Tmsoft’s White Noise Sleep Sounds",
+    "trackName" : "Windy Pines",
+    "msPlayed" : 9728
+  },
+  {
+    "endTime" : "2023-12-02 19:41",
+    "artistName" : "Tmsoft’s White Noise Sleep Sounds",
+    "trackName" : "Wind Blowing",
+    "msPlayed" : 22825
+  },
+  {
+    "endTime" : "2023-12-03 09:47",
+    "artistName" : "Griffin' Groove",
+    "trackName" : "frost",
+    "msPlayed" : 7658
+  },
+  {
+    "endTime" : "2023-12-03 09:48",
+    "artistName" : "Griffin' Groove",
+    "trackName" : "frost",
+    "msPlayed" : 109717
+  },
+  {
+    "endTime" : "2023-12-03 09:49",
+    "artistName" : "Lunar Skybox",
+    "trackName" : "Rise",
+    "msPlayed" : 2960
+  },
+  {
+    "endTime" : "2023-12-03 09:49",
+    "artistName" : "Lunar Skybox",
+    "trackName" : "Rise",
+    "msPlayed" : 14570
+  },
+  {
+    "endTime" : "2023-12-03 09:52",
+    "artistName" : "Lunar Skybox",
+    "trackName" : "Rise",
+    "msPlayed" : 161301
+  },
+  {
+    "endTime" : "2023-12-03 10:02",
+    "artistName" : "Pure Relaxing Vibes",
+    "trackName" : "Heavy Thunderstorm",
+    "msPlayed" : 602199
+  },
+  {
+    "endTime" : "2023-12-03 10:10",
+    "artistName" : "Pure Relaxing Vibes",
+    "trackName" : "Thunder and Rain Sounds for Sleep",
+    "msPlayed" : 499639
+  },
+  {
+    "endTime" : "2023-12-03 10:20",
+    "artistName" : "Pure Relaxing Vibes",
+    "trackName" : "Heavy Rain and Thunder Sounds",
+    "msPlayed" : 581679
+  },
+  {
+    "endTime" : "2023-12-03 10:29",
+    "artistName" : "Pure Relaxing Vibes",
+    "trackName" : "Rolling Thunder and Rain",
+    "msPlayed" : 590799
+  },
+  {
+    "endTime" : "2023-12-03 10:39",
+    "artistName" : "Pure Relaxing Vibes",
+    "trackName" : "Thunderstorm at Sea",
+    "msPlayed" : 547319
+  },
+  {
+    "endTime" : "2023-12-03 10:49",
+    "artistName" : "Pure Relaxing Vibes",
+    "trackName" : "Rain and Thunder for Deep Sleep",
+    "msPlayed" : 596839
+  },
+  {
+    "endTime" : "2023-12-03 10:56",
+    "artistName" : "Pure Sleeping Vibes",
+    "trackName" : "Rainstorm and Heavy Thunder",
+    "msPlayed" : 463899
+  },
+  {
+    "endTime" : "2023-12-03 11:04",
+    "artistName" : "Pure Relaxing Vibes",
+    "trackName" : "Strong Thunder and Heavy Rain",
+    "msPlayed" : 457746
+  },
+  {
+    "endTime" : "2023-12-03 11:11",
+    "artistName" : "Pure Relaxing Vibes",
+    "trackName" : "Deep Rolling Thunder and Rain",
+    "msPlayed" : 445573
+  },
+  {
+    "endTime" : "2023-12-03 11:18",
+    "artistName" : "Pure Relaxing Vibes",
+    "trackName" : "Deep Thunder and Rain at Night",
+    "msPlayed" : 406039
+  },
+  {
+    "endTime" : "2023-12-03 11:26",
+    "artistName" : "Pure Sleeping Vibes",
+    "trackName" : "Heavy Rain and Thunder for Sleeping",
+    "msPlayed" : 450279
+  },
+  {
+    "endTime" : "2023-12-03 11:32",
+    "artistName" : "Pure Relaxing Vibes",
+    "trackName" : "Gentle Rain and Deep Thunder",
+    "msPlayed" : 381279
+  },
+  {
+    "endTime" : "2023-12-03 11:40",
+    "artistName" : "Pure Sleeping Vibes",
+    "trackName" : "Strong Thunder and Rain for Sleep",
+    "msPlayed" : 454919
+  },
+  {
+    "endTime" : "2023-12-03 11:43",
+    "artistName" : "Sleepy Cow",
+    "trackName" : "Dreaming of Thunderstorms",
+    "msPlayed" : 225610
+  },
+  {
+    "endTime" : "2023-12-03 11:49",
+    "artistName" : "Pure Sleeping Vibes",
+    "trackName" : "Thunderstorm",
+    "msPlayed" : 317679
+  },
+  {
+    "endTime" : "2023-12-03 11:56",
+    "artistName" : "Pure Sleeping Vibes",
+    "trackName" : "Mountain Thunderstorm",
+    "msPlayed" : 449279
+  },
+  {
+    "endTime" : "2023-12-03 12:03",
+    "artistName" : "Pure Sleeping Vibes",
+    "trackName" : "Rain on Roof with Thunder",
+    "msPlayed" : 431439
+  },
+  {
+    "endTime" : "2023-12-03 12:09",
+    "artistName" : "Pure Sleeping Vibes",
+    "trackName" : "Tent in Thunderstorm",
+    "msPlayed" : 346639
+  },
+  {
+    "endTime" : "2023-12-03 12:16",
+    "artistName" : "Pure Relaxing Vibes",
+    "trackName" : "Rainforest Thunderstorm",
+    "msPlayed" : 406079
+  },
+  {
+    "endTime" : "2023-12-03 12:22",
+    "artistName" : "Pure Relaxing Vibes",
+    "trackName" : "Calming Thunder and Rain",
+    "msPlayed" : 384999
+  },
+  {
+    "endTime" : "2023-12-03 12:30",
+    "artistName" : "Pure Relaxing Vibes",
+    "trackName" : "Desert Rain and Heavy Thunder",
+    "msPlayed" : 469039
+  },
+  {
+    "endTime" : "2023-12-03 12:33",
+    "artistName" : "Sleepy Cow",
+    "trackName" : "Gentle Rain and Thunder",
+    "msPlayed" : 187279
+  },
+  {
+    "endTime" : "2023-12-03 12:40",
+    "artistName" : "Pure Sleeping Vibes",
+    "trackName" : "Deep Rolling Thunder and Rain",
+    "msPlayed" : 413626
+  },
+  {
+    "endTime" : "2023-12-03 12:48",
+    "artistName" : "Pure Sleeping Vibes",
+    "trackName" : "Heavy Rain and Thunder for Sleeping",
+    "msPlayed" : 449799
+  },
+  {
+    "endTime" : "2023-12-03 12:55",
+    "artistName" : "Pure Sleeping Vibes",
+    "trackName" : "Strong Thunder and Rain for Sleep",
+    "msPlayed" : 454666
+  },
+  {
+    "endTime" : "2023-12-03 13:01",
+    "artistName" : "Pure Sleeping Vibes",
+    "trackName" : "Heavy Rain and Thunder at the Ocean",
+    "msPlayed" : 350319
+  },
+  {
+    "endTime" : "2023-12-03 13:07",
+    "artistName" : "Pure Relaxing Vibes",
+    "trackName" : "Gentle Rain and Thunder",
+    "msPlayed" : 381026
+  },
+  {
+    "endTime" : "2023-12-03 13:14",
+    "artistName" : "Pure Relaxing Vibes",
+    "trackName" : "Heavy Rainstorm and Thunder Sounds",
+    "msPlayed" : 414239
+  },
+  {
+    "endTime" : "2023-12-03 13:16",
+    "artistName" : "Pure Relaxing Vibes",
+    "trackName" : "Northern Thunderstorm Sounds",
+    "msPlayed" : 129199
+  },
+  {
+    "endTime" : "2023-12-03 13:19",
+    "artistName" : "Pure Relaxing Vibes",
+    "trackName" : "Baltic Rain and Thunder Sounds",
+    "msPlayed" : 158039
+  },
+  {
+    "endTime" : "2023-12-03 13:22",
+    "artistName" : "Pure Relaxing Vibes",
+    "trackName" : "Heavy Rain and Thunder at the Baltic Sea",
+    "msPlayed" : 152999
+  },
+  {
+    "endTime" : "2023-12-03 13:24",
+    "artistName" : "Pure Relaxing Vibes",
+    "trackName" : "Rainstorm and Deep Thunder",
+    "msPlayed" : 143813
+  },
+  {
+    "endTime" : "2023-12-03 13:30",
+    "artistName" : "Pure Relaxing Vibes",
+    "trackName" : "Gentle Rain and Deep Thunder",
+    "msPlayed" : 381033
+  },
+  {
+    "endTime" : "2023-12-03 13:38",
+    "artistName" : "Pure Sleeping Vibes",
+    "trackName" : "Rainy Lago Maggiore",
+    "msPlayed" : 436466
+  },
+  {
+    "endTime" : "2023-12-03 13:44",
+    "artistName" : "Pure Sleeping Vibes",
+    "trackName" : "Gentle Rain and Rumbling Thunder",
+    "msPlayed" : 381033
+  },
+  {
+    "endTime" : "2023-12-03 13:47",
+    "artistName" : "AMSpace",
+    "trackName" : "Rainy Lights",
+    "msPlayed" : 191399
+  },
+  {
+    "endTime" : "2023-12-03 13:54",
+    "artistName" : "Pure Relaxing Vibes",
+    "trackName" : "Rainstorm at Lago Maggiore",
+    "msPlayed" : 409533
+  },
+  {
+    "endTime" : "2023-12-03 14:00",
+    "artistName" : "Pure Sleeping Vibes",
+    "trackName" : "Tallgrass Rain and Thunder",
+    "msPlayed" : 343299
+  },
+  {
+    "endTime" : "2023-12-03 14:03",
+    "artistName" : "Edy Ocean",
+    "trackName" : "In the Wetlands",
+    "msPlayed" : 190959
+  },
+  {
+    "endTime" : "2023-12-03 14:53",
+    "artistName" : "Pure Relaxing Vibes",
+    "trackName" : "Gentle Rain and Powerful Thunder",
+    "msPlayed" : 3008874
+  },
+  {
+    "endTime" : "2023-12-03 17:41",
+    "artistName" : "Pure Relaxing Vibes",
+    "trackName" : "Gentle Rain and Powerful Thunder",
+    "msPlayed" : 67407
+  },
+  {
+    "endTime" : "2023-12-04 07:53",
+    "artistName" : "Miravaldini",
+    "trackName" : "Abrazo Sereno",
+    "msPlayed" : 8682
+  },
+  {
+    "endTime" : "2023-12-04 07:57",
+    "artistName" : "Miravaldini",
+    "trackName" : "Abrazo Sereno",
+    "msPlayed" : 211629
+  },
+  {
+    "endTime" : "2023-12-04 08:00",
+    "artistName" : "Macroix",
+    "trackName" : "Promised",
+    "msPlayed" : 153142
+  },
+  {
+    "endTime" : "2023-12-04 08:03",
+    "artistName" : "Jonas Sandberg",
+    "trackName" : "Melancholy",
+    "msPlayed" : 179294
+  },
+  {
+    "endTime" : "2023-12-04 08:05",
+    "artistName" : "Niebla Estelar",
+    "trackName" : "Atardecer",
+    "msPlayed" : 140718
+  },
+  {
+    "endTime" : "2023-12-04 08:08",
+    "artistName" : "Sabrina McGregor",
+    "trackName" : "Inner Peace",
+    "msPlayed" : 179222
+  },
+  {
+    "endTime" : "2023-12-04 08:10",
+    "artistName" : "Jademaia",
+    "trackName" : "Caminando",
+    "msPlayed" : 153173
+  },
+  {
+    "endTime" : "2023-12-04 08:13",
+    "artistName" : "Siona Swin",
+    "trackName" : "Sunsets",
+    "msPlayed" : 164399
+  },
+  {
+    "endTime" : "2023-12-04 08:16",
+    "artistName" : "Hausste",
+    "trackName" : "Now",
+    "msPlayed" : 159199
+  },
+  {
+    "endTime" : "2023-12-04 08:16",
+    "artistName" : "Meadowsweet",
+    "trackName" : "By The Coastline",
+    "msPlayed" : 33706
+  },
+  {
+    "endTime" : "2023-12-04 08:17",
+    "artistName" : "Meadowsweet",
+    "trackName" : "By The Coastline",
+    "msPlayed" : 11754
+  },
+  {
+    "endTime" : "2023-12-04 08:19",
+    "artistName" : "Meadowsweet",
+    "trackName" : "By The Coastline",
+    "msPlayed" : 125987
+  },
+  {
+    "endTime" : "2023-12-04 08:22",
+    "artistName" : "Velpo Sonols",
+    "trackName" : "Morgennebel",
+    "msPlayed" : 181715
+  },
+  {
+    "endTime" : "2023-12-04 08:25",
+    "artistName" : "Leo Mano",
+    "trackName" : "Life Of Hope",
+    "msPlayed" : 173728
+  },
+  {
+    "endTime" : "2023-12-04 08:28",
+    "artistName" : "An Valsa",
+    "trackName" : "Hidden Surfaces",
+    "msPlayed" : 182013
+  },
+  {
+    "endTime" : "2023-12-04 08:31",
+    "artistName" : "Peaceful Storm",
+    "trackName" : "Dancing Thoughts",
+    "msPlayed" : 189499
+  },
+  {
+    "endTime" : "2023-12-04 08:34",
+    "artistName" : "Dótira",
+    "trackName" : "Paradox",
+    "msPlayed" : 184541
+  },
+  {
+    "endTime" : "2023-12-04 08:37",
+    "artistName" : "Sirozza",
+    "trackName" : "Gaia",
+    "msPlayed" : 188931
+  },
+  {
+    "endTime" : "2023-12-04 08:40",
+    "artistName" : "Lulu Helensworth",
+    "trackName" : "Nightlight",
+    "msPlayed" : 167193
+  },
+  {
+    "endTime" : "2023-12-04 08:43",
+    "artistName" : "Lidia Peralta",
+    "trackName" : "Salve",
+    "msPlayed" : 186428
+  },
+  {
+    "endTime" : "2023-12-04 08:46",
+    "artistName" : "Palaestrio",
+    "trackName" : "Decipio",
+    "msPlayed" : 199999
+  },
+  {
+    "endTime" : "2023-12-04 08:49",
+    "artistName" : "Lush Lotus",
+    "trackName" : "If only for a while",
+    "msPlayed" : 165999
+  },
+  {
+    "endTime" : "2023-12-04 08:52",
+    "artistName" : "Lulu Helensworth",
+    "trackName" : "Timeless Dreams",
+    "msPlayed" : 185874
+  },
+  {
+    "endTime" : "2023-12-04 08:55",
+    "artistName" : "Infinite Field",
+    "trackName" : "Aeon",
+    "msPlayed" : 163499
+  },
+  {
+    "endTime" : "2023-12-04 08:58",
+    "artistName" : "Mina Rojas",
+    "trackName" : "Flying Away",
+    "msPlayed" : 185274
+  },
+  {
+    "endTime" : "2023-12-04 09:01",
+    "artistName" : "Hema",
+    "trackName" : "Reaching For The Light",
+    "msPlayed" : 177199
+  },
+  {
+    "endTime" : "2023-12-04 09:04",
+    "artistName" : "Nova Issue",
+    "trackName" : "Majestic",
+    "msPlayed" : 178374
+  },
+  {
+    "endTime" : "2023-12-04 09:07",
+    "artistName" : "Lea Bremer",
+    "trackName" : "Ingenmansland",
+    "msPlayed" : 170999
+  },
+  {
+    "endTime" : "2023-12-04 09:09",
+    "artistName" : "Abril Iluso",
+    "trackName" : "Armonía Serena",
+    "msPlayed" : 158823
+  },
+  {
+    "endTime" : "2023-12-04 09:13",
+    "artistName" : "Arush Mandal",
+    "trackName" : "Permanence",
+    "msPlayed" : 191461
+  },
+  {
+    "endTime" : "2023-12-04 09:15",
+    "artistName" : "Eleonora Feldt",
+    "trackName" : "Tillbakalutande",
+    "msPlayed" : 163408
+  },
+  {
+    "endTime" : "2023-12-04 09:18",
+    "artistName" : "Pax Magnolia",
+    "trackName" : "Verisimilitude",
+    "msPlayed" : 173333
+  },
+  {
+    "endTime" : "2023-12-04 09:21",
+    "artistName" : "Mina Tuma",
+    "trackName" : "Hidden In Between",
+    "msPlayed" : 182790
+  },
+  {
+    "endTime" : "2023-12-04 09:24",
+    "artistName" : "Mikkel Boyer",
+    "trackName" : "Into Oblivion",
+    "msPlayed" : 183999
+  },
+  {
+    "endTime" : "2023-12-04 09:27",
+    "artistName" : "Boudoin",
+    "trackName" : "Elusion",
+    "msPlayed" : 170999
+  },
+  {
+    "endTime" : "2023-12-04 09:30",
+    "artistName" : "Gabby Laurent",
+    "trackName" : "Dreamy Eyes",
+    "msPlayed" : 185443
+  },
+  {
+    "endTime" : "2023-12-04 09:33",
+    "artistName" : "Levineci",
+    "trackName" : "Aerial",
+    "msPlayed" : 169999
+  },
+  {
+    "endTime" : "2023-12-04 09:36",
+    "artistName" : "Light & Sound",
+    "trackName" : "Interlude",
+    "msPlayed" : 160799
+  },
+  {
+    "endTime" : "2023-12-04 09:39",
+    "artistName" : "Jake Slumber",
+    "trackName" : "Azure",
+    "msPlayed" : 167849
+  },
+  {
+    "endTime" : "2023-12-04 09:41",
+    "artistName" : "Loe Vida",
+    "trackName" : "Cycle",
+    "msPlayed" : 153273
+  },
+  {
+    "endTime" : "2023-12-04 09:45",
+    "artistName" : "Zerkzes",
+    "trackName" : "Aeipathy",
+    "msPlayed" : 201976
+  },
+  {
+    "endTime" : "2023-12-04 09:47",
+    "artistName" : "Savasana",
+    "trackName" : "Lorimor",
+    "msPlayed" : 139548
+  },
+  {
+    "endTime" : "2023-12-04 09:49",
+    "artistName" : "Adelina Palm",
+    "trackName" : "Nakts",
+    "msPlayed" : 137999
+  },
+  {
+    "endTime" : "2023-12-04 09:52",
+    "artistName" : "Csaba Vitez",
+    "trackName" : "Szeretet",
+    "msPlayed" : 181499
+  },
+  {
+    "endTime" : "2023-12-04 09:55",
+    "artistName" : "Elias Dome",
+    "trackName" : "Flucht",
+    "msPlayed" : 162499
+  },
+  {
+    "endTime" : "2023-12-04 09:58",
+    "artistName" : "Adumbration",
+    "trackName" : "Secluded Silence",
+    "msPlayed" : 183461
+  },
+  {
+    "endTime" : "2023-12-04 10:01",
+    "artistName" : "Tova Martin",
+    "trackName" : "Fleur",
+    "msPlayed" : 179868
+  },
+  {
+    "endTime" : "2023-12-04 10:04",
+    "artistName" : "Eckhart Lange",
+    "trackName" : "Sleep Loop",
+    "msPlayed" : 160499
+  },
+  {
+    "endTime" : "2023-12-04 10:07",
+    "artistName" : "Angelic Planet",
+    "trackName" : "Lullaby for Dreamers",
+    "msPlayed" : 182399
+  },
+  {
+    "endTime" : "2023-12-04 10:10",
+    "artistName" : "Apech",
+    "trackName" : "Windless",
+    "msPlayed" : 176999
+  },
+  {
+    "endTime" : "2023-12-04 10:12",
+    "artistName" : "santini perotti",
+    "trackName" : "Peak",
+    "msPlayed" : 166049
+  },
+  {
+    "endTime" : "2023-12-04 10:15",
+    "artistName" : "Madna Eúra",
+    "trackName" : "Soft",
+    "msPlayed" : 172565
+  },
+  {
+    "endTime" : "2023-12-04 10:18",
+    "artistName" : "Kim Nalah",
+    "trackName" : "Passages",
+    "msPlayed" : 181026
+  },
+  {
+    "endTime" : "2023-12-04 10:21",
+    "artistName" : "Rannar Sillard",
+    "trackName" : "Star Canvas",
+    "msPlayed" : 173346
+  },
+  {
+    "endTime" : "2023-12-04 10:24",
+    "artistName" : "Coseae",
+    "trackName" : "Envision",
+    "msPlayed" : 165056
+  },
+  {
+    "endTime" : "2023-12-04 10:27",
+    "artistName" : "Miesha Berens",
+    "trackName" : "Essence",
+    "msPlayed" : 176999
+  },
+  {
+    "endTime" : "2023-12-04 10:30",
+    "artistName" : "Sierra Rubio",
+    "trackName" : "Gently Flow",
+    "msPlayed" : 193999
+  },
+  {
+    "endTime" : "2023-12-04 10:33",
+    "artistName" : "My Lindahl",
+    "trackName" : "Serenity Flow",
+    "msPlayed" : 164999
+  },
+  {
+    "endTime" : "2023-12-04 10:35",
+    "artistName" : "Brisbois",
+    "trackName" : "Night Mind",
+    "msPlayed" : 143999
+  },
+  {
+    "endTime" : "2023-12-04 10:39",
+    "artistName" : "Isak Wellington",
+    "trackName" : "Ilinova",
+    "msPlayed" : 188666
+  },
+  {
+    "endTime" : "2023-12-04 10:41",
+    "artistName" : "Eleonor Bauer",
+    "trackName" : "Nano",
+    "msPlayed" : 160799
+  },
+  {
+    "endTime" : "2023-12-04 10:43",
+    "artistName" : "Qetesia",
+    "trackName" : "Kujtimet",
+    "msPlayed" : 134999
+  },
+  {
+    "endTime" : "2023-12-04 10:47",
+    "artistName" : "Echoes and Frequencies",
+    "trackName" : "juu",
+    "msPlayed" : 200999
+  },
+  {
+    "endTime" : "2023-12-04 10:50",
+    "artistName" : "Camilento",
+    "trackName" : "Colors Of Tomorrow",
+    "msPlayed" : 209999
+  },
+  {
+    "endTime" : "2023-12-04 10:53",
+    "artistName" : "TN2020",
+    "trackName" : "Upon",
+    "msPlayed" : 161249
+  },
+  {
+    "endTime" : "2023-12-04 10:56",
+    "artistName" : "Celestial Seekr",
+    "trackName" : "Bolide",
+    "msPlayed" : 203999
+  },
+  {
+    "endTime" : "2023-12-04 11:00",
+    "artistName" : "Warren Blues",
+    "trackName" : "Always Sleepy",
+    "msPlayed" : 201999
+  },
+  {
+    "endTime" : "2023-12-04 11:03",
+    "artistName" : "Luca Sana",
+    "trackName" : "Alima",
+    "msPlayed" : 166012
+  },
+  {
+    "endTime" : "2023-12-04 11:05",
+    "artistName" : "Erlea Odell",
+    "trackName" : "Cromulence",
+    "msPlayed" : 160909
+  },
+  {
+    "endTime" : "2023-12-04 11:08",
+    "artistName" : "Jon Laer",
+    "trackName" : "Whispered Views",
+    "msPlayed" : 172499
+  },
+  {
+    "endTime" : "2023-12-04 11:11",
+    "artistName" : "Dhanura",
+    "trackName" : "Here And There",
+    "msPlayed" : 178575
+  },
+  {
+    "endTime" : "2023-12-04 11:13",
+    "artistName" : "Olivier Lupin",
+    "trackName" : "Erstwhile",
+    "msPlayed" : 133612
+  },
+  {
+    "endTime" : "2023-12-04 11:17",
+    "artistName" : "Gordo Napalma",
+    "trackName" : "Expression",
+    "msPlayed" : 192666
+  },
+  {
+    "endTime" : "2023-12-04 11:20",
+    "artistName" : "Laura Dawson",
+    "trackName" : "Placebo",
+    "msPlayed" : 189249
+  },
+  {
+    "endTime" : "2023-12-04 11:22",
+    "artistName" : "Ghasel",
+    "trackName" : "My Heartland",
+    "msPlayed" : 154860
+  },
+  {
+    "endTime" : "2023-12-04 11:25",
+    "artistName" : "Lulu Ray",
+    "trackName" : "Soothing Silence",
+    "msPlayed" : 190833
+  },
+  {
+    "endTime" : "2023-12-04 11:29",
+    "artistName" : "Stephanie Hawk",
+    "trackName" : "Serene Whispers",
+    "msPlayed" : 198666
+  },
+  {
+    "endTime" : "2023-12-04 11:31",
+    "artistName" : "Valentinah Garcia",
+    "trackName" : "Transcendent (Ambient)",
+    "msPlayed" : 133143
+  },
+  {
+    "endTime" : "2023-12-04 11:34",
+    "artistName" : "Maddox JR",
+    "trackName" : "When we looked at the stars",
+    "msPlayed" : 201374
+  },
+  {
+    "endTime" : "2023-12-04 11:38",
+    "artistName" : "Conah Bouvet",
+    "trackName" : "Anwylyd",
+    "msPlayed" : 212499
+  },
+  {
+    "endTime" : "2023-12-04 11:41",
+    "artistName" : "Kim Nalah",
+    "trackName" : "Shaping",
+    "msPlayed" : 198076
+  },
+  {
+    "endTime" : "2023-12-04 11:44",
+    "artistName" : "Corda Una",
+    "trackName" : "In Balance",
+    "msPlayed" : 165999
+  },
+  {
+    "endTime" : "2023-12-04 11:46",
+    "artistName" : "Hain Sona",
+    "trackName" : "Moreno",
+    "msPlayed" : 147034
+  },
+  {
+    "endTime" : "2023-12-04 11:50",
+    "artistName" : "Tendai Marwan",
+    "trackName" : "Kupenya",
+    "msPlayed" : 190909
+  },
+  {
+    "endTime" : "2023-12-04 11:52",
+    "artistName" : "Eyla Calmes",
+    "trackName" : "Unistades",
+    "msPlayed" : 164999
+  },
+  {
+    "endTime" : "2023-12-04 11:55",
+    "artistName" : "Wenicia Lindh",
+    "trackName" : "Bland Minnen",
+    "msPlayed" : 158571
+  },
+  {
+    "endTime" : "2023-12-04 11:59",
+    "artistName" : "Keira Barton",
+    "trackName" : "Lygophilia",
+    "msPlayed" : 217221
+  },
+  {
+    "endTime" : "2023-12-04 12:02",
+    "artistName" : "Rippness.",
+    "trackName" : "Red Sky",
+    "msPlayed" : 187999
+  },
+  {
+    "endTime" : "2023-12-04 12:06",
+    "artistName" : "André Calmaz",
+    "trackName" : "Evanescenza",
+    "msPlayed" : 235715
+  },
+  {
+    "endTime" : "2023-12-04 12:09",
+    "artistName" : "Mystery Ark",
+    "trackName" : "Aurora",
+    "msPlayed" : 177999
+  },
+  {
+    "endTime" : "2023-12-04 12:11",
+    "artistName" : "Oberohn",
+    "trackName" : "Idyllica",
+    "msPlayed" : 133986
+  },
+  {
+    "endTime" : "2023-12-04 12:14",
+    "artistName" : "Modular 53",
+    "trackName" : "Meteor 5",
+    "msPlayed" : 175499
+  },
+  {
+    "endTime" : "2023-12-04 12:17",
+    "artistName" : "Majah Thur",
+    "trackName" : "Shine",
+    "msPlayed" : 170599
+  },
+  {
+    "endTime" : "2023-12-04 12:20",
+    "artistName" : "David Elo",
+    "trackName" : "Eternity",
+    "msPlayed" : 169707
+  },
+  {
+    "endTime" : "2023-12-04 12:31",
+    "artistName" : "Sleepy Sine",
+    "trackName" : "Soundness",
+    "msPlayed" : 83839
+  },
+  {
+    "endTime" : "2023-12-04 21:02",
+    "artistName" : "Sleepy Sine",
+    "trackName" : "Soundness",
+    "msPlayed" : 13514
+  },
+  {
+    "endTime" : "2023-12-06 05:18",
+    "artistName" : "Sleepy Sine",
+    "trackName" : "Soundness",
+    "msPlayed" : 35781
+  },
+  {
+    "endTime" : "2023-12-06 05:30",
+    "artistName" : "The Midnight",
+    "trackName" : "Crystalline",
+    "msPlayed" : 196336
+  },
+  {
+    "endTime" : "2023-12-06 05:31",
+    "artistName" : "The Fray",
+    "trackName" : "Look After You",
+    "msPlayed" : 54961
+  },
+  {
+    "endTime" : "2023-12-06 05:31",
+    "artistName" : "The Postal Service",
+    "trackName" : "The District Sleeps Alone Tonight",
+    "msPlayed" : 7128
+  },
+  {
+    "endTime" : "2023-12-06 05:33",
+    "artistName" : "The Postal Service",
+    "trackName" : "Nothing Better",
+    "msPlayed" : 3840
+  },
+  {
+    "endTime" : "2023-12-06 05:33",
+    "artistName" : "Miravaldini",
+    "trackName" : "Abrazo Sereno",
+    "msPlayed" : 3691
+  },
+  {
+    "endTime" : "2023-12-06 05:33",
+    "artistName" : "The Postal Service",
+    "trackName" : "Such Great Heights",
+    "msPlayed" : 30000
+  },
+  {
+    "endTime" : "2023-12-06 05:33",
+    "artistName" : "The Postal Service",
+    "trackName" : "Such Great Heights",
+    "msPlayed" : 92
+  },
+  {
+    "endTime" : "2023-12-06 05:35",
+    "artistName" : "The Postal Service",
+    "trackName" : "Such Great Heights",
+    "msPlayed" : 15785
+  },
+  {
+    "endTime" : "2023-12-06 22:48",
+    "artistName" : "Noah Kahan",
+    "trackName" : "Homesick",
+    "msPlayed" : 194416
+  },
+  {
+    "endTime" : "2023-12-06 22:49",
+    "artistName" : "Richy Mitch & The Coal Miners",
+    "trackName" : "Evergreen",
+    "msPlayed" : 77798
+  },
+  {
+    "endTime" : "2023-12-06 22:52",
+    "artistName" : "Ocie Elliott",
+    "trackName" : "Down by the Water",
+    "msPlayed" : 178293
+  },
+  {
+    "endTime" : "2023-12-06 22:55",
+    "artistName" : "Hazlett",
+    "trackName" : "Please Don't Be",
+    "msPlayed" : 175201
+  },
+  {
+    "endTime" : "2023-12-06 22:56",
+    "artistName" : "Chance Peña",
+    "trackName" : "Whiskey & Cigarettes",
+    "msPlayed" : 26721
+  },
+  {
+    "endTime" : "2023-12-06 23:06",
+    "artistName" : "Noah Gundersen",
+    "trackName" : "Robin Williams",
+    "msPlayed" : 347130
+  },
+  {
+    "endTime" : "2023-12-06 23:09",
+    "artistName" : "Ocie Elliott",
+    "trackName" : "Thinking About You",
+    "msPlayed" : 177093
+  },
+  {
+    "endTime" : "2023-12-06 23:13",
+    "artistName" : "Dustin Tebbutt",
+    "trackName" : "Resin",
+    "msPlayed" : 203939
+  },
+  {
+    "endTime" : "2023-12-06 23:16",
+    "artistName" : "Tall Heights",
+    "trackName" : "Back to Autumn",
+    "msPlayed" : 199653
+  },
+  {
+    "endTime" : "2023-12-06 23:20",
+    "artistName" : "Beta Radio",
+    "trackName" : "Our Remains",
+    "msPlayed" : 244120
+  },
+  {
+    "endTime" : "2023-12-06 23:25",
+    "artistName" : "The Paper Kites",
+    "trackName" : "Holes - twelvefour outtake",
+    "msPlayed" : 268933
+  },
+  {
+    "endTime" : "2023-12-06 23:27",
+    "artistName" : "Noah Gundersen",
+    "trackName" : "SENTIMENTAL KIDS",
+    "msPlayed" : 124001
+  },
+  {
+    "endTime" : "2023-12-06 23:28",
+    "artistName" : "Peter Bradley Adams",
+    "trackName" : "Who Else Could I Be",
+    "msPlayed" : 43167
+  },
+  {
+    "endTime" : "2023-12-06 23:32",
+    "artistName" : "Noah Gundersen",
+    "trackName" : "First Defeat",
+    "msPlayed" : 243773
+  },
+  {
+    "endTime" : "2023-12-06 23:40",
+    "artistName" : "Phoebe Bridgers",
+    "trackName" : "Killer + The Sound",
+    "msPlayed" : 475186
+  },
+  {
+    "endTime" : "2023-12-06 23:43",
+    "artistName" : "Foy Vance",
+    "trackName" : "She Burns",
+    "msPlayed" : 229226
+  },
+  {
+    "endTime" : "2023-12-06 23:47",
+    "artistName" : "Mumford & Sons",
+    "trackName" : "October Skies",
+    "msPlayed" : 14658
+  },
+  {
+    "endTime" : "2023-12-06 23:47",
+    "artistName" : "Donovan Woods",
+    "trackName" : "Portland, Maine",
+    "msPlayed" : 203869
+  },
+  {
+    "endTime" : "2023-12-06 23:52",
+    "artistName" : "Noah Gundersen",
+    "trackName" : "Lose You - Acoustic",
+    "msPlayed" : 280146
+  },
+  {
+    "endTime" : "2023-12-06 23:55",
+    "artistName" : "Lord Huron",
+    "trackName" : "Love Like Ghosts",
+    "msPlayed" : 224061
+  },
+  {
+    "endTime" : "2023-12-06 23:59",
+    "artistName" : "The Paper Kites",
+    "trackName" : "Arms",
+    "msPlayed" : 203560
+  },
+  {
+    "endTime" : "2023-12-07 00:25",
+    "artistName" : "Amber Run",
+    "trackName" : "5AM",
+    "msPlayed" : 136278
+  },
+  {
+    "endTime" : "2023-12-07 09:28",
+    "artistName" : "Nairuz",
+    "trackName" : "Heartfulness",
+    "msPlayed" : 10197
+  },
+  {
+    "endTime" : "2023-12-07 09:31",
+    "artistName" : "Nairuz",
+    "trackName" : "Heartfulness",
+    "msPlayed" : 157760
+  },
+  {
+    "endTime" : "2023-12-07 09:32",
+    "artistName" : "The Midnight",
+    "trackName" : "Crystalline",
+    "msPlayed" : 57065
+  },
+  {
+    "endTime" : "2023-12-08 02:37",
+    "artistName" : "Amber Run",
+    "trackName" : "5AM",
+    "msPlayed" : 121867
+  },
+  {
+    "endTime" : "2023-12-08 02:41",
+    "artistName" : "Beta Radio",
+    "trackName" : "Our Remains",
+    "msPlayed" : 244120
+  },
+  {
+    "endTime" : "2023-12-08 02:45",
+    "artistName" : "Noah Gundersen",
+    "trackName" : "Wrong Side",
+    "msPlayed" : 209847
+  },
+  {
+    "endTime" : "2023-12-08 02:46",
+    "artistName" : "Greg Laswell",
+    "trackName" : "Sweet Dream",
+    "msPlayed" : 67746
+  },
+  {
+    "endTime" : "2023-12-08 02:49",
+    "artistName" : "Ocie Elliott",
+    "trackName" : "Wait for You",
+    "msPlayed" : 193935
+  },
+  {
+    "endTime" : "2023-12-08 02:53",
+    "artistName" : "Dustin Tebbutt",
+    "trackName" : "Quiet Moon, Wild Sea",
+    "msPlayed" : 248858
+  },
+  {
+    "endTime" : "2023-12-08 02:57",
+    "artistName" : "Jon Bryant",
+    "trackName" : "At Home",
+    "msPlayed" : 226640
+  },
+  {
+    "endTime" : "2023-12-08 02:59",
+    "artistName" : "Noah Gundersen",
+    "trackName" : "Little Cup - Acoustic",
+    "msPlayed" : 144520
+  },
+  {
+    "endTime" : "2023-12-08 03:03",
+    "artistName" : "The Paper Kites",
+    "trackName" : "St. Clarity",
+    "msPlayed" : 227546
+  },
+  {
+    "endTime" : "2023-12-08 03:07",
+    "artistName" : "Novo Amor",
+    "trackName" : "From Gold",
+    "msPlayed" : 214335
+  },
+  {
+    "endTime" : "2023-12-08 03:11",
+    "artistName" : "Hayden Calnin",
+    "trackName" : "Warm with You",
+    "msPlayed" : 247749
+  },
+  {
+    "endTime" : "2023-12-08 03:15",
+    "artistName" : "Dustin Tebbutt",
+    "trackName" : "White Water",
+    "msPlayed" : 233391
+  },
+  {
+    "endTime" : "2023-12-08 03:18",
+    "artistName" : "Noah Gundersen",
+    "trackName" : "So What",
+    "msPlayed" : 192440
+  },
+  {
+    "endTime" : "2023-12-08 03:22",
+    "artistName" : "Lord Huron",
+    "trackName" : "Love Like Ghosts",
+    "msPlayed" : 224061
+  },
+  {
+    "endTime" : "2023-12-08 05:44",
+    "artistName" : "The Paper Kites",
+    "trackName" : "Nothing More Than That",
+    "msPlayed" : 108533
+  },
+  {
+    "endTime" : "2023-12-08 05:47",
+    "artistName" : "Robyn",
+    "trackName" : "Dancing On My Own",
+    "msPlayed" : 121068
+  },
+  {
+    "endTime" : "2023-12-08 05:51",
+    "artistName" : "Go West",
+    "trackName" : "The King of Wishful Thinking",
+    "msPlayed" : 241760
+  },
+  {
+    "endTime" : "2023-12-08 07:07",
+    "artistName" : "Annie Lennox",
+    "trackName" : "Walking on Broken Glass",
+    "msPlayed" : 4713
+  },
+  {
+    "endTime" : "2023-12-08 07:07",
+    "artistName" : "Wilson Phillips",
+    "trackName" : "Hold On",
+    "msPlayed" : 77144
+  },
+  {
+    "endTime" : "2023-12-08 07:10",
+    "artistName" : "Fine Young Cannibals",
+    "trackName" : "She Drives Me Crazy",
+    "msPlayed" : 215773
+  },
+  {
+    "endTime" : "2023-12-08 07:14",
+    "artistName" : "Cyndi Lauper",
+    "trackName" : "Time After Time",
+    "msPlayed" : 241333
+  },
+  {
+    "endTime" : "2023-12-08 07:15",
+    "artistName" : "REO Speedwagon",
+    "trackName" : "Keep on Loving You",
+    "msPlayed" : 18784
+  },
+  {
+    "endTime" : "2023-12-08 07:15",
+    "artistName" : "Steve Winwood",
+    "trackName" : "Valerie",
+    "msPlayed" : 4992
+  },
+  {
+    "endTime" : "2023-12-08 07:20",
+    "artistName" : "Mr. Mister",
+    "trackName" : "Broken Wings",
+    "msPlayed" : 343933
+  },
+  {
+    "endTime" : "2023-12-08 07:24",
+    "artistName" : "George Michael",
+    "trackName" : "Faith - Remastered",
+    "msPlayed" : 193200
+  },
+  {
+    "endTime" : "2023-12-10 03:03",
+    "artistName" : "Pat Benatar",
+    "trackName" : "We Belong",
+    "msPlayed" : 31490
+  },
+  {
+    "endTime" : "2023-12-10 03:05",
+    "artistName" : "Brenda Lee",
+    "trackName" : "Rockin' Around The Christmas Tree",
+    "msPlayed" : 126266
+  },
+  {
+    "endTime" : "2023-12-10 03:09",
+    "artistName" : "Nat King Cole",
+    "trackName" : "The Christmas Song (Merry Christmas To You)",
+    "msPlayed" : 192160
+  },
+  {
+    "endTime" : "2023-12-10 03:11",
+    "artistName" : "Bobby Helms",
+    "trackName" : "Jingle Bell Rock",
+    "msPlayed" : 130973
+  },
+  {
+    "endTime" : "2023-12-10 03:41",
+    "artistName" : "Eartha Kitt",
+    "trackName" : "Santa Baby",
+    "msPlayed" : 17964
+  },
+  {
+    "endTime" : "2023-12-10 03:44",
+    "artistName" : "Bing Crosby",
+    "trackName" : "White Christmas - 1947 Version",
+    "msPlayed" : 177480
+  },
+  {
+    "endTime" : "2023-12-10 03:44",
+    "artistName" : "José Feliciano",
+    "trackName" : "Feliz Navidad",
+    "msPlayed" : 5124
+  },
+  {
+    "endTime" : "2023-12-10 03:46",
+    "artistName" : "Dean Martin",
+    "trackName" : "Let It Snow! Let It Snow! Let It Snow!",
+    "msPlayed" : 100800
+  },
+  {
+    "endTime" : "2023-12-14 09:19",
+    "artistName" : "our distant worlds",
+    "trackName" : "Christmas Time Is Here - Piano",
+    "msPlayed" : 41429
+  },
+  {
+    "endTime" : "2023-12-14 09:19",
+    "artistName" : "Soothing Dreamscapes",
+    "trackName" : "Huma",
+    "msPlayed" : 8384
+  },
+  {
+    "endTime" : "2023-12-14 09:22",
+    "artistName" : "Les Moray",
+    "trackName" : "Hark The Herald Angels Sing",
+    "msPlayed" : 36245
+  },
+  {
+    "endTime" : "2023-12-14 09:22",
+    "artistName" : "Soothing Dreamscapes",
+    "trackName" : "Huma",
+    "msPlayed" : 137122
+  },
+  {
+    "endTime" : "2023-12-14 09:25",
+    "artistName" : "Soothing Dreamscapes",
+    "trackName" : "Huma",
+    "msPlayed" : 144766
+  },
+  {
+    "endTime" : "2023-12-14 09:28",
+    "artistName" : "Laurent Wilks",
+    "trackName" : "Arnofio",
+    "msPlayed" : 176999
+  },
+  {
+    "endTime" : "2023-12-14 09:30",
+    "artistName" : "Giulia De Serio",
+    "trackName" : "Profondità",
+    "msPlayed" : 164999
+  },
+  {
+    "endTime" : "2023-12-14 09:34",
+    "artistName" : "Miravaldini",
+    "trackName" : "Independencia",
+    "msPlayed" : 206275
+  },
+  {
+    "endTime" : "2023-12-14 09:36",
+    "artistName" : "Muni Yogi",
+    "trackName" : "Astral Distance",
+    "msPlayed" : 125995
+  },
+  {
+    "endTime" : "2023-12-14 09:39",
+    "artistName" : "Drömlandskap",
+    "trackName" : "Svävar Fritt",
+    "msPlayed" : 184018
+  },
+  {
+    "endTime" : "2023-12-14 09:42",
+    "artistName" : "Emanuel Kulo",
+    "trackName" : "Integral",
+    "msPlayed" : 180113
+  },
+  {
+    "endTime" : "2023-12-14 09:45",
+    "artistName" : "Xiliah Roth",
+    "trackName" : "Weather The Storm",
+    "msPlayed" : 169799
+  },
+  {
+    "endTime" : "2023-12-14 09:48",
+    "artistName" : "Nadia Bulic",
+    "trackName" : "Jesen",
+    "msPlayed" : 188999
+  },
+  {
+    "endTime" : "2023-12-14 09:51",
+    "artistName" : "Kamila Tait",
+    "trackName" : "Sleep Drone In C",
+    "msPlayed" : 167999
+  },
+  {
+    "endTime" : "2023-12-14 09:53",
+    "artistName" : "Alec Wynter",
+    "trackName" : "Indiglow",
+    "msPlayed" : 147428
+  },
+  {
+    "endTime" : "2023-12-14 09:56",
+    "artistName" : "Laura Dawson",
+    "trackName" : "Placebo",
+    "msPlayed" : 189249
+  },
+  {
+    "endTime" : "2023-12-14 09:59",
+    "artistName" : "Aiden Gaarder",
+    "trackName" : "Hiraeth",
+    "msPlayed" : 180666
+  },
+  {
+    "endTime" : "2023-12-14 10:03",
+    "artistName" : "Mari Cafferty",
+    "trackName" : "Lively Bluebottle",
+    "msPlayed" : 191999
+  },
+  {
+    "endTime" : "2023-12-14 10:06",
+    "artistName" : "Raina Marigold",
+    "trackName" : "Desire Path",
+    "msPlayed" : 234256
+  },
+  {
+    "endTime" : "2023-12-14 10:09",
+    "artistName" : "Neoline Ewing",
+    "trackName" : "Forest Mirror",
+    "msPlayed" : 138666
+  },
+  {
+    "endTime" : "2023-12-14 10:12",
+    "artistName" : "Hashree",
+    "trackName" : "Kshanon",
+    "msPlayed" : 202857
+  },
+  {
+    "endTime" : "2023-12-14 10:15",
+    "artistName" : "Zonyoh",
+    "trackName" : "Omega Sleep",
+    "msPlayed" : 151833
+  },
+  {
+    "endTime" : "2023-12-14 10:18",
+    "artistName" : "Ester Ackerman",
+    "trackName" : "Tillsammans",
+    "msPlayed" : 190777
+  },
+  {
+    "endTime" : "2023-12-14 10:20",
+    "artistName" : "unvrsl frqncy",
+    "trackName" : "Sensory Bypass",
+    "msPlayed" : 151799
+  },
+  {
+    "endTime" : "2023-12-14 10:24",
+    "artistName" : "Sounds of Love",
+    "trackName" : "Green Leaves",
+    "msPlayed" : 200999
+  },
+  {
+    "endTime" : "2023-12-14 10:27",
+    "artistName" : "Maurie",
+    "trackName" : "Calming Measures",
+    "msPlayed" : 198461
+  },
+  {
+    "endTime" : "2023-12-14 10:31",
+    "artistName" : "Tiger Stories",
+    "trackName" : "A Mirror in Every Drawer",
+    "msPlayed" : 246057
+  },
+  {
+    "endTime" : "2023-12-14 10:35",
+    "artistName" : "Reverend XYZ",
+    "trackName" : "Baggy Green",
+    "msPlayed" : 204999
+  },
+  {
+    "endTime" : "2023-12-14 10:38",
+    "artistName" : "Leya Watson",
+    "trackName" : "Memory Bliss",
+    "msPlayed" : 192299
+  },
+  {
+    "endTime" : "2023-12-14 10:41",
+    "artistName" : "Angelic Planet",
+    "trackName" : "Explorer",
+    "msPlayed" : 183225
+  },
+  {
+    "endTime" : "2023-12-14 10:43",
+    "artistName" : "Roy Holtz",
+    "trackName" : "Falling Autumn Leaves",
+    "msPlayed" : 134865
+  },
+  {
+    "endTime" : "2023-12-14 10:46",
+    "artistName" : "Næturkall",
+    "trackName" : "Drone For Dreamers",
+    "msPlayed" : 176999
+  },
+  {
+    "endTime" : "2023-12-14 10:49",
+    "artistName" : "Cloudville",
+    "trackName" : "Doux Sommeil",
+    "msPlayed" : 150545
+  },
+  {
+    "endTime" : "2023-12-14 10:54",
+    "artistName" : "myndstream",
+    "trackName" : "It Begins",
+    "msPlayed" : 318999
+  },
+  {
+    "endTime" : "2023-12-14 10:57",
+    "artistName" : "Somaya Kudri",
+    "trackName" : "Floating Time",
+    "msPlayed" : 169999
+  },
+  {
+    "endTime" : "2023-12-14 10:59",
+    "artistName" : "Juliana Stipe",
+    "trackName" : "Inner River",
+    "msPlayed" : 147499
+  },
+  {
+    "endTime" : "2023-12-14 11:02",
+    "artistName" : "Constantine Lupo",
+    "trackName" : "Insieme",
+    "msPlayed" : 193777
+  },
+  {
+    "endTime" : "2023-12-14 11:05",
+    "artistName" : "Lulu Ray",
+    "trackName" : "Serene Clarity",
+    "msPlayed" : 139643
+  },
+  {
+    "endTime" : "2023-12-14 11:07",
+    "artistName" : "Nojus Lanka",
+    "trackName" : "Poilsis",
+    "msPlayed" : 160448
+  },
+  {
+    "endTime" : "2023-12-14 11:11",
+    "artistName" : "Danyel Hayes",
+    "trackName" : "Dreamcatcher",
+    "msPlayed" : 202499
+  },
+  {
+    "endTime" : "2023-12-14 11:14",
+    "artistName" : "Menidia",
+    "trackName" : "Peaceful Dreams",
+    "msPlayed" : 207806
+  },
+  {
+    "endTime" : "2023-12-14 11:18",
+    "artistName" : "Sammet",
+    "trackName" : "Inombords",
+    "msPlayed" : 208979
+  },
+  {
+    "endTime" : "2023-12-14 11:20",
+    "artistName" : "Sizmara",
+    "trackName" : "Tender Heartbeat",
+    "msPlayed" : 129485
+  },
+  {
+    "endTime" : "2023-12-14 11:22",
+    "artistName" : "Sizmara",
+    "trackName" : "Mind Gardening",
+    "msPlayed" : 147292
+  },
+  {
+    "endTime" : "2023-12-14 11:25",
+    "artistName" : "Beyond Time",
+    "trackName" : "Restore Balance",
+    "msPlayed" : 133999
+  },
+  {
+    "endTime" : "2023-12-14 11:27",
+    "artistName" : "Sizmara",
+    "trackName" : "Ethereal Nocturne",
+    "msPlayed" : 127723
+  },
+  {
+    "endTime" : "2023-12-14 11:29",
+    "artistName" : "Heart 2 Heart Relaxing Music",
+    "trackName" : "Immersed In Dreams",
+    "msPlayed" : 145350
+  },
+  {
+    "endTime" : "2023-12-14 11:33",
+    "artistName" : "oh, the joy.",
+    "trackName" : "illusions",
+    "msPlayed" : 223582
+  },
+  {
+    "endTime" : "2023-12-14 11:35",
+    "artistName" : "Relax Yourself",
+    "trackName" : "Tender Love",
+    "msPlayed" : 129485
+  },
+  {
+    "endTime" : "2023-12-14 11:38",
+    "artistName" : "Atmospheric Lights",
+    "trackName" : "Luminosity",
+    "msPlayed" : 184999
+  },
+  {
+    "endTime" : "2023-12-14 11:42",
+    "artistName" : "Alaskan Tapes",
+    "trackName" : "W(e) ave",
+    "msPlayed" : 224166
+  },
+  {
+    "endTime" : "2023-12-14 11:44",
+    "artistName" : "iamrw",
+    "trackName" : "Eclipse",
+    "msPlayed" : 132923
+  },
+  {
+    "endTime" : "2023-12-14 11:48",
+    "artistName" : "Applefish",
+    "trackName" : "Night Sky",
+    "msPlayed" : 240712
+  },
+  {
+    "endTime" : "2023-12-14 11:51",
+    "artistName" : "SleepTherapy",
+    "trackName" : "Transmission",
+    "msPlayed" : 153999
+  },
+  {
+    "endTime" : "2023-12-14 11:53",
+    "artistName" : "inertia.",
+    "trackName" : "Peace Within",
+    "msPlayed" : 155690
+  },
+  {
+    "endTime" : "2023-12-14 11:55",
+    "artistName" : "Beyond Time",
+    "trackName" : "Balance",
+    "msPlayed" : 125999
+  },
+  {
+    "endTime" : "2023-12-14 11:59",
+    "artistName" : "Dreamsome",
+    "trackName" : "cumulus dream",
+    "msPlayed" : 205611
+  },
+  {
+    "endTime" : "2023-12-14 12:11",
+    "artistName" : "EIRLYS",
+    "trackName" : "Fairy Light",
+    "msPlayed" : 144106
+  },
+  {
+    "endTime" : "2023-12-14 16:25",
+    "artistName" : "EIRLYS",
+    "trackName" : "Fairy Light",
+    "msPlayed" : 22893
+  }
+]

@@ -10,7 +10,7 @@ from requests_mock import Mocker, adapter
 from werkzeug.test import TestResponse
 
 from mixtapestudy.config import SPOTIFY_BASE_URL, RecommendationService
-from test.conftest import FAKE_ACCESS_TOKEN, FAKE_LISTENBRAINZ_API_KEY
+from test.app.conftest import FAKE_ACCESS_TOKEN, FAKE_LISTENBRAINZ_API_KEY
 
 # TODO: Tests for edge cases
 

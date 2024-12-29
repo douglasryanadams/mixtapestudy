@@ -10,7 +10,7 @@ from sqlalchemy.orm import Session
 from mixtapestudy.database import User, get_session
 from mixtapestudy.errors import UserDatabaseRowMissingError, UserIDMissingError
 from mixtapestudy.routes.util import get_user
-from test.conftest import FAKE_ACCESS_TOKEN, FAKE_REFRESH_TOKEN, FAKE_USER_ID
+from test.app.conftest import FAKE_ACCESS_TOKEN, FAKE_REFRESH_TOKEN, FAKE_USER_ID
 
 
 def test_get_user_no_session(client_without_session: FlaskClient) -> None:

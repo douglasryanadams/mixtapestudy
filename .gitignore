@@ -9,3 +9,5 @@ __pycache__/
 *.log
 build/
 .ipynb_checkpoints/
+track_data/*.csv
+track_data/download/*.zip

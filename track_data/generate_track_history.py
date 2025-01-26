@@ -1,22 +1,24 @@
+import csv
 import inspect
 import json
 import logging
 import os
+from sqlite3 import Connection
+import sqlite3
 import sys
-from dataclasses import dataclass
+from dataclasses import astuple, dataclass, fields
 from pathlib import Path
 from typing import TextIO
 
-import tomllib
-from urllib.request import HTTPBasicAuthHandler
-from loguru import logger
 import requests
+from loguru import logger
 from requests.auth import HTTPBasicAuth
 
 # Temporary doc/notes (for future reference)
 # 1. Local feature extraction: https://essentia.upf.edu/models.html
 # 2. Open source feature database (deprecated): https://acousticbrainz.org/
 # 3. Drop-in Spotify Proxy (maybe): https://soundlens.pro/api/docs#/operations/api_spotify_replacement_get_audio_features
+#    a. Unfortunately it appears to timeout trying to fetch songs
 # 4. Song popularity stats: https://songstats.com/for/developers
 # 5. Additional links to Kaggle datasets in track_data/README.md
 
@@ -63,23 +65,8 @@ class SpotifyTrack:
 
 
 @dataclass
-class ApiTrack:
+class TrackFeatures:
     spotify_id: str
-    isrc: str
-    tempo: int
-    time_signature: str
-    loudness: float
-    key: str
-    mode: str
-    valence: float
-    danceability: float
-    energe: float
-    instrumentalness: float
-    acousticness: float
-
-
-@dataclass
-class CsvTrack:
     isrc: str
     tempo: int
     time_signature: str
@@ -122,9 +109,9 @@ def _get_track_id(token: str, track: SpotifyTrack) -> str:
     return response_json["tracks"]["items"][0]["id"]
 
 
-def _get_track_features(track_id: str) -> ApiTrack:
+def _get_track_features(track_id: str) -> TrackFeatures:
     logger.debug("  fetching track features for: {}", track_id)
-    return ApiTrack(
+    return TrackFeatures(
         spotify_id=track_id,
         isrc="temp",
         tempo=-1,
@@ -140,6 +127,19 @@ def _get_track_features(track_id: str) -> ApiTrack:
     )
 
 
+def create_cache_tables(connection: Connection) -> None:
+    cursor = connection.cursor()
+    cursor.execute(
+        "CREATE TABLE track ( "
+        "spotify_id TEXT PRIMARY KEY, "
+        "artist TEXT, "
+        "name TEXT"
+        ");"
+    )
+    cursor.execute("CREATE UNIQUE INDEX name_and_artist ON track (artist, name)")
+    connection.commit()
+
+
 def load_history(json_input: TextIO) -> list[SpotifyTrack]:
     raw_input = json.load(json_input)
     return [
@@ -153,23 +153,36 @@ def load_history(json_input: TextIO) -> list[SpotifyTrack]:
     ]
 
 
-def get_features(config: Config, tracks: list[SpotifyTrack]) -> list[ApiTrack]:
-    token = _get_spotify_token(config)
+def get_features(
+    config: Config, tracks: list[SpotifyTrack], cache_connection: Connection
+) -> list[TrackFeatures]:
     track_features = []
+    spotify_access_token = None
+    cursor = cache_connection.cursor()
     for track in tracks:
-        track_id = _get_track_id(token, track)
+        cached_track = cursor.execute(
+            "SELECT spotify_id FROM track WHERE artist=? AND name=?",
+            (track.artist_name, track.track_name),
+        ).fetchone()
+        if cached_track:
+            track_id = cached_track[0]
+        else:
+            if not spotify_access_token:
+                spotify_access_token = _get_spotify_token(config)
+            track_id = _get_track_id(spotify_access_token, track)
         features = _get_track_features(track_id)
         track_features.append(features)
     return track_features
 
 
-def convert_to_csv(tracks: list[ApiTrack]) -> str:
-    return "temp"  # TODO
-
-
-def write_csv(filepath: str, csv_input: str) -> None:
+def convert_to_csv(tracks: list[TrackFeatures], filepath: str) -> None:
     with Path(filepath).open("w") as csv_out:
-        csv_out.write(csv_input)
+        headers = [f.name for f in fields(TrackFeatures)]
+        writer = csv.writer(csv_out, dialect="unix")
+        writer.writerow(headers)
+        for track in tracks:
+            track_dict = astuple(track)
+            writer.writerow(track_dict)
 
 
 def main(filepath: str) -> None:
@@ -181,13 +194,16 @@ def main(filepath: str) -> None:
         logger.error("Invalid environment variable set: {}", config)
         sys.exit(1)
 
-    with Path(filepath).open("r") as json_input:
-        tracks_loaded = load_history(json_input)
+    cache_connection = sqlite3.connect("cache.db")
+    try:
+        with Path(filepath).open("r") as json_input:
+            tracks_loaded = load_history(json_input)
 
-    tracks_features = get_features(config, tracks_loaded)
-    csv_text = convert_to_csv(tracks_features)
-    write_filepath = filepath.replace(".json", ".csv")
-    write_csv(write_filepath, csv_text)
+        tracks_features = get_features(config, tracks_loaded, cache_connection)
+        write_filepath = filepath.replace(".json", ".csv")
+        convert_to_csv(tracks_features, write_filepath)
+    finally:
+        cache_connection.close()
 
 
 if __name__ == "__main__":

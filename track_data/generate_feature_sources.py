@@ -301,30 +301,6 @@ DOWNLOADS: dict[str, Download] = {
             "year": Column(float, CsvFeature.YEAR),
         },
     ),
-    "priyamchoksi/spotify-dataset-114k-songs": Download(
-        filenames=["dataset.csv"],
-        column_map={
-            "acousticness": Column(float, CsvFeature.ACOUSTICNESS),
-            "artists": Column(float, CsvFeature.PRIMARY_ARTIST),
-            "danceability": Column(float, CsvFeature.DANCEABILITY),
-            "duration_ms": Column(int, CsvFeature.DURATION_MS),
-            "energy": Column(float, CsvFeature.ENERGY),
-            "explicit": Column(bool, CsvFeature.EXPLICIT),
-            "instrumentalness": Column(float, CsvFeature.INSTRUMENTALNESS),
-            "key": Column(int, CsvFeature.KEY),
-            "liveness": Column(float, CsvFeature.LIVENESS),
-            "loudness": Column(float, CsvFeature.LOUDNESS),
-            "mode": Column(float, CsvFeature.MODE),
-            "popularity": Column(float, CsvFeature.POPULARITY),
-            "speechiness": Column(float, CsvFeature.SPEECHINESS),
-            "tempo": Column(float, CsvFeature.TEMPO),
-            "time_signature": Column(float, CsvFeature.TIME_SIGNATURE),
-            "track_genre": Column(float, CsvFeature.GENRE),
-            "track_id": Column(str, CsvFeature.SPOTIFY_ID),
-            "track_name": Column(str, CsvFeature.TRACK_NAME),
-            "valence": Column(float, CsvFeature.VALENCE),
-        },
-    ),
 }
 
 

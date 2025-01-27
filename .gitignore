@@ -6,10 +6,10 @@ __pycache__/
 .env
 .env.sh
 *.db
+*.db-journal
 *.log
 build/
 .ipynb_checkpoints/
 test/data/*.csv
 track_data/*.csv
-track_data/download/*.zip
-track_data/download/*.csv
+track_data/download/

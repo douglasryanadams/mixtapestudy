@@ -3,11 +3,11 @@ import inspect
 import json
 import logging
 import os
-from sqlite3 import Connection
 import sqlite3
 import sys
 from dataclasses import astuple, dataclass, fields
 from pathlib import Path
+from sqlite3 import Connection
 from typing import TextIO
 
 import requests
@@ -68,16 +68,26 @@ class SpotifyTrack:
 class TrackFeatures:
     spotify_id: str
     isrc: str
-    tempo: int
-    time_signature: str
+    year: int
+    duration_ms: int
+    played_ms: int
+    end_time: str
+    tempo: float
+    explicit: bool
+    time_signature: int
     loudness: float
     key: str
     mode: str
+    speechiness: float
     valence: float
     danceability: float
-    energe: float
+    energy: float
+    liveness: float
     instrumentalness: float
     acousticness: float
+    popularity: float
+    genre: str
+    beats_per_minute: int
 
 
 def _get_spotify_token(config: Config) -> str:
@@ -114,16 +124,26 @@ def _get_track_features(track_id: str) -> TrackFeatures:
     return TrackFeatures(
         spotify_id=track_id,
         isrc="temp",
+        year=-1,
+        duration_ms=-1,
+        played_ms=-1,
+        end_time="temp",
         tempo=-1,
-        time_signature="temp",
-        loudness=-1.1,
+        explicit=False,
+        time_signature=-1,
+        loudness=-0.1,
         key="temp",
         mode="temp",
-        valence=-1.1,
-        danceability=-1.1,
-        energe=-1.1,
-        instrumentalness=-1.1,
-        acousticness=-1.1,
+        speechiness=-0.1,
+        valence=-0.1,
+        danceability=-0.1,
+        energy=-0.1,
+        liveness=-0.1,
+        instrumentalness=-0.1,
+        acousticness=-0.1,
+        popularity=-0.1,
+        genre="temp",
+        beats_per_minute=-1,
     )
 
 

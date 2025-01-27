@@ -113,16 +113,26 @@ def fake_csv_tracks() -> list[TrackFeatures]:
         TrackFeatures(
             spotify_id=f"track-id-{i}",
             isrc="test",
+            year=-1,
+            duration_ms=-1,
+            played_ms=-1,
+            end_time="test",
             tempo=-1,
-            time_signature="test",
-            loudness=-1.1,
+            explicit=False,
+            time_signature=-1,
+            loudness=-0.1,
             key="test",
             mode="test",
-            valence=-1.1,
-            danceability=-1.1,
-            energe=-1.1,
-            instrumentalness=-1.1,
-            acousticness=-1.1,
+            speechiness=-0.1,
+            valence=-0.1,
+            danceability=-0.1,
+            energy=-0.1,
+            liveness=-0.1,
+            instrumentalness=-0.1,
+            acousticness=-0.1,
+            popularity=-0.1,
+            genre="test",
+            beats_per_minute=-1,
         )
         for i in range(10)
     ]
@@ -160,8 +170,8 @@ def test_load_history_any_size(track_path: Path) -> None:
 def test_get_features(
     config: Config,
     short_history_data: list[SpotifyTrack],
-    fake_spotify_token: adapter._Matcher,  # noqa: ARG001
-    fake_search_history_short: list[adapter._Matcher],  # noqa: ARG001
+    fake_spotify_token: adapter._Matcher,
+    fake_search_history_short: list[adapter._Matcher],
     cache_connection: Connection,
 ) -> None:
     features = get_features(config, short_history_data, cache_connection)
@@ -177,8 +187,8 @@ def test_get_features(
 def test_get_features_cached(
     config: Config,
     short_history_data: list[SpotifyTrack],
-    fake_spotify_token: adapter._Matcher,  # noqa: ARG001
-    fake_search_history_short: list[adapter._Matcher],  # noqa: ARG001
+    fake_spotify_token: adapter._Matcher,
+    fake_search_history_short: list[adapter._Matcher],
     populated_cache: Connection,
 ) -> None:
     features = get_features(config, short_history_data, populated_cache)

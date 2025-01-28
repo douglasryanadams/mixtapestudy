@@ -1,10 +1,10 @@
 import csv
-from dataclasses import dataclass
-from enum import Enum, StrEnum
 import inspect
 import logging
 import sqlite3
 import sys
+from dataclasses import dataclass
+from enum import StrEnum
 from pathlib import Path
 from zipfile import ZipFile
 
@@ -383,6 +383,13 @@ cursor.execute(
     "year INTEGER"
     ")"
 )
+cursor.execute("CREATE INDEX IF NOT EXISTS idx_isrc ON features (isrc)")
+cursor.execute(
+    "CREATE TABLE IF NOT EXISTS progress ("
+    "download TEXT PRIMARY KEY, "
+    "last_position INTEGER"
+    ")"
+)
 connection.commit()
 
 
@@ -397,9 +404,26 @@ try:
         for file in schema.filenames:
             data_file = extracted_directory.joinpath(file)
             cursor = connection.cursor()
-            counter = 0
+            try:
+                cursor.execute(
+                    "INSERT INTO progress (download, last_position) VALUES (?, 0)",
+                    (str(data_file),),
+                )
+                connection.commit()
+                counter = 0
+                logger.info("New file, starting from beginning")
+            except sqlite3.IntegrityError:
+                counter_found = cursor.execute(
+                    "SELECT last_position FROM progress WHERE download=?",
+                    (str(data_file),),
+                ).fetchone()
+                counter = int(counter_found[0])
+                logger.info("Already this file, starting from: {}", counter)
+
             with data_file.open("r") as file_in:
                 reader = csv.DictReader(file_in)
+                for _ in range(counter):
+                    next(reader)
                 for row in reader:
                     # logger.debug("  row: {}", row)
                     write_dict = {}
@@ -456,10 +480,18 @@ try:
                         raise
 
                     counter += 1
-                    if counter > 100:  # noqa: PLR2004
+                    if counter % 100 == 0:
+                        cursor.execute(
+                            "UPDATE progress SET last_position=? WHERE download=?",
+                            (counter, str(data_file)),
+                        )
                         connection.commit()
-                        counter = 0
 
+            cursor.execute(
+                "UPDATE progress SET last_position=? WHERE download=?",
+                (counter, str(data_file)),
+            )
             connection.commit()
+            counter = 0
 finally:
     connection.close()

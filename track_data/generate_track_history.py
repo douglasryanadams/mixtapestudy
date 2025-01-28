@@ -14,6 +14,8 @@ import requests
 from loguru import logger
 from requests.auth import HTTPBasicAuth
 
+# TODO: Fix tests
+
 # Temporary doc/notes (for future reference)
 # 1. Local feature extraction: https://essentia.upf.edu/models.html
 # 2. Open source feature database (deprecated): https://acousticbrainz.org/
@@ -242,10 +244,15 @@ def get_features(
                 spotify_access_token = _get_spotify_token(config)
             try:
                 track_ids = _get_track_ids(spotify_access_token, track)
-                track_id = track_ids.spotify_id
-                isrc = track_ids.isrc
             except NoTrackFoundError:
                 continue
+            track_id = track_ids.spotify_id
+            isrc = track_ids.isrc
+            cursor.execute(
+                "INSERT INTO track (spotify_id, isrc, artist, name) VALUES (?, ?, ?, ?)",
+                (track_id, isrc, track.artist_name, track.track_name),
+            )
+            cache_connection.commit()
         features = _get_track_features(track_id, isrc, track, features_connection)
         track_features.append(features)
     return track_features

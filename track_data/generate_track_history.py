@@ -196,16 +196,15 @@ def create_cache_tables(connection: Connection) -> None:
     cursor = connection.cursor()
     cursor.execute(
         "CREATE TABLE IF NOT EXISTS track ( "
-        "spotify_id TEXT PRIMARY KEY, "
+        "spotify_id TEXT, "
         "isrc TEXT, "
         "artist TEXT, "
         "name TEXT"
         ");"
     )
-    cursor.execute(
-        "CREATE UNIQUE INDEX IF NOT EXISTS name_and_artist ON track (artist, name)"
-    )
-    cursor.execute("CREATE UNIQUE INDEX IF NOT EXISTS idx_isrc ON track(isrc)")
+    cursor.execute("CREATE INDEX IF NOT EXISTS name_and_artist ON track (artist, name)")
+    cursor.execute("CREATE INDEX IF NOT EXISTS idx_spotify_id ON track(spotify_id)")
+    cursor.execute("CREATE INDEX IF NOT EXISTS idx_isrc ON track(isrc)")
     connection.commit()
 
 

@@ -411,21 +411,24 @@ try:
                 )
                 connection.commit()
                 counter = 0
-                logger.info("New file, starting from beginning")
+                logger.info("New file ({}), starting from beginning", data_file)
             except sqlite3.IntegrityError:
                 counter_found = cursor.execute(
                     "SELECT last_position FROM progress WHERE download=?",
                     (str(data_file),),
                 ).fetchone()
                 counter = int(counter_found[0])
-                logger.info("Already this file, starting from: {}", counter)
+                logger.info(
+                    "Already loaded some of this file ({}), starting from: {}",
+                    data_file,
+                    counter,
+                )
 
             with data_file.open("r") as file_in:
                 reader = csv.DictReader(file_in)
                 for _ in range(counter):
                     next(reader)
                 for row in reader:
-                    # logger.debug("  row: {}", row)
                     write_dict = {}
                     for column_name, column_meta in schema.column_map.items():
                         datum = row.get(column_name)
@@ -435,7 +438,6 @@ try:
                                 write_dict[CsvFeature.SPOTIFY_ID] = datum.split(":")[-1]
                             else:
                                 write_dict[target_column] = datum
-                    # logger.debug("  write_dict: {}", { str(k): v for k, v in write_dict.items() } )
 
                     insert_str = (
                         "INSERT INTO features ("  # noqa: S608
@@ -447,32 +449,47 @@ try:
                     update_str = (
                         f"UPDATE features SET {'=? , '.join(write_dict.keys())}=?"  # noqa: S608
                     )
+                    select_str = "SELECT 1 FROM features "
 
                     use_isrc_for_pk = False
+                    spotify_id = write_dict.get(CsvFeature.SPOTIFY_ID)
 
-                    if not write_dict or not write_dict.get(CsvFeature.SPOTIFY_ID):
+                    if not write_dict or not spotify_id:
                         isrc = write_dict.get(CsvFeature.ISRC)
                         if isrc:
                             update_str += "WHERE isrc=?"
+                            select_str += "WHERE isrc=?"
                             use_isrc_for_pk = True
                         else:
                             logger.warning("No spotify ID or ISRC found: {}", row)
-                        continue
+                            continue
                     else:
                         update_str += "WHERE spotify_id=?"
+                        select_str += "WHERE spotify_id=?"
+
+                    existing_row = cursor.execute(
+                        select_str,
+                        [isrc if use_isrc_for_pk else spotify_id],
+                    ).fetchone()
+                    # logger.debug("existing_row: {}", existing_row)
 
                     try:
-                        cursor.execute(insert_str, list(write_dict.values()))
-                    except sqlite3.IntegrityError:
-                        cursor.execute(
-                            update_str,
-                            [
-                                *list(write_dict.values()),
-                                write_dict[CsvFeature.ISRC]
-                                if use_isrc_for_pk
-                                else write_dict[CsvFeature.SPOTIFY_ID],
-                            ],
-                        )
+                        if existing_row:
+                            # logger.debug(
+                            #     "updating: {} {}", update_str, write_dict.values()
+                            # )
+                            cursor.execute(
+                                update_str,
+                                [
+                                    *list(write_dict.values()),
+                                    isrc if use_isrc_for_pk else spotify_id,
+                                ],
+                            )
+                        else:
+                            # logger.debug(
+                            #     "inserting: {} {}", insert_str, write_dict.values()
+                            # )
+                            cursor.execute(insert_str, list(write_dict.values()))
                     except sqlite3.OperationalError:
                         logger.error("Error structuring SQL statement")
                         logger.error("  insert_str: {}", insert_str)

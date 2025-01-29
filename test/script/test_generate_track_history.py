@@ -53,11 +53,11 @@ def populated_cache(
     cache_connection: Connection, short_history_data: list[SpotifyTrack]
 ) -> Connection:
     data = [
-        (f"track-id-{i}", track.artist_name, track.track_name)
+        (f"track-id-{i}", "isrc-{i}", track.artist_name, track.track_name)
         for i, track in enumerate(short_history_data)
     ]
     cursor = cache_connection.cursor()
-    cursor.executemany("INSERT INTO track VALUES (?, ?, ?)", data)
+    cursor.executemany("INSERT INTO track VALUES (?, ?, ?, ?)", data)
     cache_connection.commit()
     return cache_connection
 

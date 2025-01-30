@@ -2,6 +2,7 @@ import csv
 import sqlite3
 from base64 import b64encode
 from collections.abc import Iterator
+from dataclasses import asdict
 from pathlib import Path
 from sqlite3 import Connection
 from urllib.parse import urlencode
@@ -9,6 +10,7 @@ from urllib.parse import urlencode
 import pytest
 from requests_mock import Mocker, adapter
 
+from track_data.generate_feature_sources import create_features_table
 from track_data.generate_track_history import (
     Config,
     SpotifyTrack,
@@ -21,6 +23,7 @@ from track_data.generate_track_history import (
 
 FAKE_ACCESS_TOKEN = "fake-access-token"  # noqa: S105
 PATH_CACHE = Path("test_cache.db")
+PATH_FEATURES = Path("test_features.db")
 PATH_ALL_DATA = Path("test/data/music_history_all.json")
 PATH_PARTIAL_DATA = Path("test/data/music_history_missing_data.json")
 PATH_REALISTIC_DATA = Path("test/data/music_history_realistic.json")
@@ -49,6 +52,15 @@ def cache_connection() -> Iterator[Connection]:
 
 
 @pytest.fixture
+def features_connection() -> Iterator[Connection]:
+    connection = sqlite3.connect(PATH_FEATURES)
+    create_features_table(connection)
+    yield connection
+    connection.close()
+    PATH_FEATURES.unlink()
+
+
+@pytest.fixture
 def populated_cache(
     cache_connection: Connection, short_history_data: list[SpotifyTrack]
 ) -> Connection:
@@ -60,6 +72,69 @@ def populated_cache(
     cursor.executemany("INSERT INTO track VALUES (?, ?, ?, ?)", data)
     cache_connection.commit()
     return cache_connection
+
+
+@pytest.fixture
+def populated_features(
+    features_connection: Connection, short_history_data: list[SpotifyTrack]
+) -> Connection:
+    data = [
+        (
+            1,  # acousticness
+            1,  # beats per minute
+            1,  # danceability
+            1000,  # duration in milliseconds
+            1,  # energy
+            1,  # explicit
+            "genre",
+            1,  # instrumentalness
+            f"isrc-{i}",  # ISRC
+            1,  # key
+            1,  # liveness
+            1,  # loudness
+            1,  # mode
+            1,  # popularity
+            f"artist-name-{i}",  # primary artist
+            1,  # speechiness
+            f"track-id-{i}",  # spotify_id
+            10,  # tempo
+            1,  # time_signature
+            f"track-name-{i}",  # track name
+            1,  # valence
+            1986,  # year
+        )
+        for i, track in enumerate(short_history_data)
+    ]
+    cursor = features_connection.cursor()
+    cursor.executemany(
+        "INSERT INTO features ("  # noqa: S608
+        "acousticness, "
+        "beats_per_minute, "
+        "danceability, "
+        "duration_ms, "
+        "energy, "
+        "explicit, "
+        "genre, "
+        "instrumentalness, "
+        "isrc, "
+        "key, "
+        "liveness, "
+        "loudness, "
+        "mode, "
+        "popularity, "
+        "primary_artist, "
+        "speechiness, "
+        "spotify_id, "
+        "tempo, "
+        "time_signature, "
+        "track_name, "
+        "valence, "
+        "year"
+        f") VALUES ({', '.join(['?' for _ in range(22)])})",
+        data,
+    )
+    features_connection.commit()
+    return features_connection
 
 
 @pytest.fixture
@@ -94,7 +169,16 @@ def fake_search_history_short(
             requests_mock.get(
                 f"https://api.spotify.com/v1/search?{params}",
                 request_headers={"Authorization": f"Bearer {FAKE_ACCESS_TOKEN}"},
-                json={"tracks": {"items": [{"id": f"track-id-{track_id_counter}"}]}},
+                json={
+                    "tracks": {
+                        "items": [
+                            {
+                                "id": f"track-id-{track_id_counter}",
+                                "external_ids": {"isrc": f"isrc-{track_id_counter}"},
+                            }
+                        ]
+                    }
+                },
             )
         )
     return mocked_requests
@@ -112,7 +196,9 @@ def fake_csv_tracks() -> list[TrackFeatures]:
     return [
         TrackFeatures(
             spotify_id=f"track-id-{i}",
-            isrc="test",
+            track_name=f"track-{i}",
+            artist=f"artist-{i}",
+            isrc=f"isrc={i}",
             year=-1,
             duration_ms=-1,
             played_ms=-1,
@@ -167,31 +253,41 @@ def test_load_history_any_size(track_path: Path) -> None:
         load_history(data_file)
 
 
-def test_get_features(
+def test_get_features(  # noqa: PLR0913
     config: Config,
     short_history_data: list[SpotifyTrack],
     fake_spotify_token: adapter._Matcher,
     fake_search_history_short: list[adapter._Matcher],
     cache_connection: Connection,
+    populated_features: Connection,
 ) -> None:
-    features = get_features(config, short_history_data, cache_connection)
+    features = get_features(
+        config, short_history_data, cache_connection, populated_features
+    )
     track_count = 3
     assert len(features) == track_count
-    for i in range(track_count):
-        assert features[i].spotify_id == f"track-id-{i}"
+    for i, feature in enumerate(features):
+        assert feature.spotify_id == f"track-id-{i}"
+        assert feature.isrc == f"isrc-{i}"
+        for v in asdict(feature).values():
+            assert v
+
     assert fake_spotify_token.called
     for history in fake_search_history_short:
         assert history.called
 
 
-def test_get_features_cached(
+def test_get_features_cached(  # noqa: PLR0913
     config: Config,
     short_history_data: list[SpotifyTrack],
     fake_spotify_token: adapter._Matcher,
     fake_search_history_short: list[adapter._Matcher],
     populated_cache: Connection,
+    populated_features: Connection,
 ) -> None:
-    features = get_features(config, short_history_data, populated_cache)
+    features = get_features(
+        config, short_history_data, populated_cache, populated_features
+    )
     track_count = 3
     assert len(features) == track_count
     for i in range(track_count):

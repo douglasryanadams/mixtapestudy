@@ -14,8 +14,6 @@ import requests
 from loguru import logger
 from requests.auth import HTTPBasicAuth
 
-# TODO: Fix tests
-
 # Temporary doc/notes (for future reference)
 # 1. Local feature extraction: https://essentia.upf.edu/models.html
 # 2. Open source feature database (deprecated): https://acousticbrainz.org/
@@ -23,6 +21,11 @@ from requests.auth import HTTPBasicAuth
 #    a. Unfortunately it appears to timeout trying to fetch songs
 # 4. Song popularity stats: https://songstats.com/for/developers
 # 5. Additional links to Kaggle datasets in track_data/README.md
+
+# This script could use a lot of improvements:
+# 1. Add tests
+# 2. Modularize the processing
+# 3. Replace csv reading, data formatting, and for loops with pandas
 
 
 class InterceptHandler(logging.Handler):

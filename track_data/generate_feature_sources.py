@@ -6,6 +6,7 @@ import sys
 from dataclasses import dataclass
 from enum import StrEnum
 from pathlib import Path
+from sqlite3 import Connection
 from zipfile import ZipFile
 
 import requests
@@ -328,187 +329,207 @@ def _download_kaggle_data(kaggle_path: str, download_path: Path):
             file_target.write(chunk)
 
 
-DOWNLOAD_DIR.mkdir(exist_ok=True)
+def create_features_table(connection: Connection):
+    cursor = connection.cursor()
+    logger.debug("Creating table if necessary")
+    cursor.execute(
+        "CREATE TABLE IF NOT EXISTS features ("
+        "acousticness NUMERIC, "
+        "beats_per_minute NUMERIC, "
+        "danceability NUMERIC, "
+        "duration_ms INTEGER, "
+        "energy NUMERIC, "
+        "explicit INTEGER, "
+        "genre TEXT, "
+        "instrumentalness NUMERIC, "
+        "isrc TEXT, "
+        "key NUMERIC, "
+        "liveness NUMERIC, "
+        "loudness NUMERIC, "
+        "mode NUMERIC, "
+        "popularity NUMERIC, "
+        "primary_artist TEXT, "
+        "speechiness NUMERIC, "
+        "spotify_id TEXT PRIMARY KEY, "
+        "tempo NUMERIC, "
+        "time_signature NUMERIC, "
+        "track_name TEXT, "
+        "valence NUMERIC, "
+        "year INTEGER"
+        ")"
+    )
+    cursor.execute("CREATE INDEX IF NOT EXISTS idx_isrc ON features (isrc)")
+    cursor.execute(
+        "CREATE TABLE IF NOT EXISTS progress ("
+        "download TEXT PRIMARY KEY, "
+        "last_position INTEGER"
+        ")"
+    )
+    connection.commit()
 
-zip_file_paths: list[Path] = []
-for download in DOWNLOADS:
-    kaggle_path = download
-    download_name = kaggle_path.replace("/", "_") + ".zip"
-    download_zip = Path(download_name)
-    download_path = DOWNLOAD_DIR.joinpath(download_zip)
-    zip_file_paths.append(download_path)
 
-    if download_path.exists():
-        logger.info("File already downloaded: {}", download_path)
-    else:
-        logger.info("Downloading file: {}", download_path)
-        _download_kaggle_data(kaggle_path, download_path)
+def _download_files() -> list[str]:
+    zip_file_paths = []
+    for download in DOWNLOADS:
+        kaggle_path = download
+        download_name = kaggle_path.replace("/", "_") + ".zip"
+        download_zip = Path(download_name)
+        download_path = DOWNLOAD_DIR.joinpath(download_zip)
+        zip_file_paths.append(download_path)
 
-for zip_file_path in zip_file_paths:
-    with ZipFile(zip_file_path) as zip_file:
-        extraction_path = DOWNLOAD_DIR.joinpath(zip_file_path.stem)
-        if extraction_path.exists() and list(extraction_path.iterdir()):
-            logger.info("Zip already extractd: {}", zip_file_path)
+        if download_path.exists():
+            logger.info("File already downloaded: {}", download_path)
         else:
-            logger.info("Extracting {} to {}", zip_file_path, extraction_path)
-            zip_file.extractall(extraction_path)
-
-logger.info("Connecting to write database")
-connection = sqlite3.connect("features.db")
-cursor = connection.cursor()
-logger.debug("Creating table if necessary")
-cursor.execute(
-    "CREATE TABLE IF NOT EXISTS features ("
-    "acousticness NUMERIC, "
-    "beats_per_minute NUMERIC, "
-    "danceability NUMERIC, "
-    "duration_ms INTEGER, "
-    "energy NUMERIC, "
-    "explicit INTEGER, "
-    "genre TEXT, "
-    "instrumentalness NUMERIC, "
-    "isrc TEXT, "
-    "key NUMERIC, "
-    "liveness NUMERIC, "
-    "loudness NUMERIC, "
-    "mode NUMERIC, "
-    "popularity NUMERIC, "
-    "primary_artist TEXT, "
-    "speechiness NUMERIC, "
-    "spotify_id TEXT PRIMARY KEY, "
-    "tempo NUMERIC, "
-    "time_signature NUMERIC, "
-    "track_name TEXT, "
-    "valence NUMERIC, "
-    "year INTEGER"
-    ")"
-)
-cursor.execute("CREATE INDEX IF NOT EXISTS idx_isrc ON features (isrc)")
-cursor.execute(
-    "CREATE TABLE IF NOT EXISTS progress ("
-    "download TEXT PRIMARY KEY, "
-    "last_position INTEGER"
-    ")"
-)
-connection.commit()
+            logger.info("Downloading file: {}", download_path)
+            _download_kaggle_data(kaggle_path, download_path)
+    return zip_file_paths
 
 
-# This section will always run
-try:
-    for kaggle_path, schema in DOWNLOADS.items():
-        # There may be tools like pandas to speed this up dramatically
-        # will see if that's necessary first.
-        directory_name = kaggle_path.replace("/", "_")
-        extracted_directory = DOWNLOAD_DIR.joinpath(directory_name)
-        logger.debug("Reading files from: {}", extracted_directory)
-        for file in schema.filenames:
-            data_file = extracted_directory.joinpath(file)
-            cursor = connection.cursor()
-            try:
+def _unzip_files(zip_file_paths) -> None:
+    for zip_file_path in zip_file_paths:
+        with ZipFile(zip_file_path) as zip_file:
+            extraction_path = DOWNLOAD_DIR.joinpath(zip_file_path.stem)
+            if extraction_path.exists() and list(extraction_path.iterdir()):
+                logger.info("Zip already extractd: {}", zip_file_path)
+            else:
+                logger.info("Extracting {} to {}", zip_file_path, extraction_path)
+                zip_file.extractall(extraction_path)
+
+
+def main() -> None:
+    DOWNLOAD_DIR.mkdir(exist_ok=True)
+
+    zip_file_paths = _download_files()
+
+    _unzip_files(zip_file_paths)
+
+    logger.info("Connecting to write database")
+    connection = sqlite3.connect("features.db")
+
+    create_features_table(connection)
+
+    # This section will always run
+    try:
+        for kaggle_path, schema in DOWNLOADS.items():
+            # There may be tools like pandas to speed this up dramatically
+            # will see if that's necessary first.
+            directory_name = kaggle_path.replace("/", "_")
+            extracted_directory = DOWNLOAD_DIR.joinpath(directory_name)
+            logger.debug("Reading files from: {}", extracted_directory)
+            for file in schema.filenames:
+                data_file = extracted_directory.joinpath(file)
+                cursor = connection.cursor()
+                try:
+                    cursor.execute(
+                        "INSERT INTO progress (download, last_position) VALUES (?, 0)",
+                        (str(data_file),),
+                    )
+                    connection.commit()
+                    counter = 0
+                    logger.info("New file ({}), starting from beginning", data_file)
+                except sqlite3.IntegrityError:
+                    counter_found = cursor.execute(
+                        "SELECT last_position FROM progress WHERE download=?",
+                        (str(data_file),),
+                    ).fetchone()
+                    counter = int(counter_found[0])
+                    logger.info(
+                        "Already loaded some of this file ({}), starting from: {}",
+                        data_file,
+                        counter,
+                    )
+
+                with data_file.open("r") as file_in:
+                    reader = csv.DictReader(file_in)
+                    for _ in range(counter):
+                        next(reader)
+                    for row in reader:
+                        write_dict = {}
+                        for column_name, column_meta in schema.column_map.items():
+                            datum = row.get(column_name)
+                            target_column = column_meta.new_key
+                            if datum:
+                                if column_meta.new_key == CsvFeature.SPOTIFY_URI:
+                                    write_dict[CsvFeature.SPOTIFY_ID] = datum.split(
+                                        ":"
+                                    )[-1]
+                                else:
+                                    write_dict[target_column] = datum
+
+                        insert_str = (
+                            "INSERT INTO features ("  # noqa: S608
+                            f"{', '.join(write_dict.keys())}"
+                            ") VALUES ("
+                            f"{', '.join(['?' for _ in write_dict])}"
+                            ")"
+                        )
+                        update_str = (
+                            f"UPDATE features SET {'=? , '.join(write_dict.keys())}=?"  # noqa: S608
+                        )
+                        select_str = "SELECT 1 FROM features "
+
+                        use_isrc_for_pk = False
+                        spotify_id = write_dict.get(CsvFeature.SPOTIFY_ID)
+
+                        if not write_dict or not spotify_id:
+                            isrc = write_dict.get(CsvFeature.ISRC)
+                            if isrc:
+                                update_str += "WHERE isrc=?"
+                                select_str += "WHERE isrc=?"
+                                use_isrc_for_pk = True
+                            else:
+                                logger.warning("No spotify ID or ISRC found: {}", row)
+                                continue
+                        else:
+                            update_str += "WHERE spotify_id=?"
+                            select_str += "WHERE spotify_id=?"
+
+                        existing_row = cursor.execute(
+                            select_str,
+                            [isrc if use_isrc_for_pk else spotify_id],
+                        ).fetchone()
+                        # logger.debug("existing_row: {}", existing_row)
+
+                        try:
+                            if existing_row:
+                                # logger.debug(
+                                #     "updating: {} {}", update_str, write_dict.values()
+                                # )
+                                cursor.execute(
+                                    update_str,
+                                    [
+                                        *list(write_dict.values()),
+                                        isrc if use_isrc_for_pk else spotify_id,
+                                    ],
+                                )
+                            else:
+                                # logger.debug(
+                                #     "inserting: {} {}", insert_str, write_dict.values()
+                                # )
+                                cursor.execute(insert_str, list(write_dict.values()))
+                        except sqlite3.OperationalError:
+                            logger.error("Error structuring SQL statement")
+                            logger.error("  insert_str: {}", insert_str)
+                            logger.error("  update_str: {}", update_str)
+                            raise
+
+                        counter += 1
+                        if counter % 100 == 0:
+                            cursor.execute(
+                                "UPDATE progress SET last_position=? WHERE download=?",
+                                (counter, str(data_file)),
+                            )
+                            connection.commit()
+
                 cursor.execute(
-                    "INSERT INTO progress (download, last_position) VALUES (?, 0)",
-                    (str(data_file),),
+                    "UPDATE progress SET last_position=? WHERE download=?",
+                    (counter, str(data_file)),
                 )
                 connection.commit()
                 counter = 0
-                logger.info("New file ({}), starting from beginning", data_file)
-            except sqlite3.IntegrityError:
-                counter_found = cursor.execute(
-                    "SELECT last_position FROM progress WHERE download=?",
-                    (str(data_file),),
-                ).fetchone()
-                counter = int(counter_found[0])
-                logger.info(
-                    "Already loaded some of this file ({}), starting from: {}",
-                    data_file,
-                    counter,
-                )
+    finally:
+        connection.close()
 
-            with data_file.open("r") as file_in:
-                reader = csv.DictReader(file_in)
-                for _ in range(counter):
-                    next(reader)
-                for row in reader:
-                    write_dict = {}
-                    for column_name, column_meta in schema.column_map.items():
-                        datum = row.get(column_name)
-                        target_column = column_meta.new_key
-                        if datum:
-                            if column_meta.new_key == CsvFeature.SPOTIFY_URI:
-                                write_dict[CsvFeature.SPOTIFY_ID] = datum.split(":")[-1]
-                            else:
-                                write_dict[target_column] = datum
 
-                    insert_str = (
-                        "INSERT INTO features ("  # noqa: S608
-                        f"{', '.join(write_dict.keys())}"
-                        ") VALUES ("
-                        f"{', '.join(['?' for _ in write_dict])}"
-                        ")"
-                    )
-                    update_str = (
-                        f"UPDATE features SET {'=? , '.join(write_dict.keys())}=?"  # noqa: S608
-                    )
-                    select_str = "SELECT 1 FROM features "
-
-                    use_isrc_for_pk = False
-                    spotify_id = write_dict.get(CsvFeature.SPOTIFY_ID)
-
-                    if not write_dict or not spotify_id:
-                        isrc = write_dict.get(CsvFeature.ISRC)
-                        if isrc:
-                            update_str += "WHERE isrc=?"
-                            select_str += "WHERE isrc=?"
-                            use_isrc_for_pk = True
-                        else:
-                            logger.warning("No spotify ID or ISRC found: {}", row)
-                            continue
-                    else:
-                        update_str += "WHERE spotify_id=?"
-                        select_str += "WHERE spotify_id=?"
-
-                    existing_row = cursor.execute(
-                        select_str,
-                        [isrc if use_isrc_for_pk else spotify_id],
-                    ).fetchone()
-                    # logger.debug("existing_row: {}", existing_row)
-
-                    try:
-                        if existing_row:
-                            # logger.debug(
-                            #     "updating: {} {}", update_str, write_dict.values()
-                            # )
-                            cursor.execute(
-                                update_str,
-                                [
-                                    *list(write_dict.values()),
-                                    isrc if use_isrc_for_pk else spotify_id,
-                                ],
-                            )
-                        else:
-                            # logger.debug(
-                            #     "inserting: {} {}", insert_str, write_dict.values()
-                            # )
-                            cursor.execute(insert_str, list(write_dict.values()))
-                    except sqlite3.OperationalError:
-                        logger.error("Error structuring SQL statement")
-                        logger.error("  insert_str: {}", insert_str)
-                        logger.error("  update_str: {}", update_str)
-                        raise
-
-                    counter += 1
-                    if counter % 100 == 0:
-                        cursor.execute(
-                            "UPDATE progress SET last_position=? WHERE download=?",
-                            (counter, str(data_file)),
-                        )
-                        connection.commit()
-
-            cursor.execute(
-                "UPDATE progress SET last_position=? WHERE download=?",
-                (counter, str(data_file)),
-            )
-            connection.commit()
-            counter = 0
-finally:
-    connection.close()
+if __name__ == "__main__":
+    main()

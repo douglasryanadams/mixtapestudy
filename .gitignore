@@ -12,4 +12,4 @@ build/
 .ipynb_checkpoints/
 test/data/*.csv
 track_data/*.csv
-track_data/download/
+download/

@@ -1,7 +1,5 @@
 import csv
-import inspect
 import json
-import logging
 import os
 import sqlite3
 import sys
@@ -14,6 +12,8 @@ import requests
 from loguru import logger
 from requests.auth import HTTPBasicAuth
 
+from track_data.logsetup import setup_logger
+
 # Temporary doc/notes (for future reference)
 # 1. Local feature extraction: https://essentia.upf.edu/models.html
 # 2. Open source feature database (deprecated): https://acousticbrainz.org/
@@ -21,38 +21,14 @@ from requests.auth import HTTPBasicAuth
 #    a. Unfortunately it appears to timeout trying to fetch songs
 # 4. Song popularity stats: https://songstats.com/for/developers
 # 5. Additional links to Kaggle datasets in track_data/README.md
+# 6. Posted on Spotify forum: https://soundstat.info/api/v1/docs#/
+#    a. Has some quirks but very responsive developer
+#    b. Data is different from Spotify and not 1-1 comparable
 
 # This script could use a lot of improvements:
 # 1. Add tests
 # 2. Modularize the processing
 # 3. Replace csv reading, data formatting, and for loops with pandas
-
-
-class InterceptHandler(logging.Handler):
-    def emit(self, record: logging.LogRecord) -> None:
-        # Get corresponding Loguru level if it exists.
-        try:
-            level = logger.level(record.levelname).name
-        except ValueError:
-            level = record.levelno
-
-        # Find caller from where originated the logged message.
-        frame, depth = inspect.currentframe(), 0
-        while frame and (depth == 0 or frame.f_code.co_filename == logging.__file__):
-            frame = frame.f_back
-            depth += 1
-
-        logger.opt(depth=depth, exception=record.exc_info).log(
-            level, record.getMessage()
-        )
-
-
-logger.remove()
-logging.basicConfig(handlers=[InterceptHandler()], level=0, force=True)
-logger.add(sys.stdout, colorize=True)
-requests_logger = logging.getLogger("requests.packages.urllib3")
-requests_logger.setLevel(logging.DEBUG)
-requests_logger.propagate = True
 
 
 @dataclass
@@ -106,12 +82,16 @@ class TrackFeatures:
 class NoTrackFoundError(Exception): ...
 
 
+setup_logger(logger)
+
+
 def _get_spotify_token(config: Config) -> str:
     logger.info("Getting Spotify auth token")
     response = requests.post(
         "https://accounts.spotify.com/api/token",
         auth=HTTPBasicAuth(config.spotify_client_id, config.spotify_client_secret),
         data={"grant_type": "client_credentials"},
+        timeout=30,
     )
     response.raise_for_status()
     return response.json()["access_token"]
@@ -127,10 +107,10 @@ def _get_track_ids(token: str, track: SpotifyTrack) -> SpotifyIds:
             "type": "track",
             "limit": 1,
         },
+        timeout=30,
     )
     response.raise_for_status()
     response_json = response.json()
-    # logger.debug("  response: {}", response.text)
 
     if response_json and response_json["tracks"] and response_json["tracks"]["items"]:
         first_result = response_json["tracks"]["items"][0]
@@ -156,11 +136,7 @@ def _get_track_features(
         "SELECT * FROM features WHERE spotify_id=? OR isrc=?", (track_id, isrc)
     ).fetchall()
 
-    consolidated_dict = {}
-    for row in related_rows:
-        for k, v in row.items():
-            if v:
-                consolidated_dict[k] = v
+    consolidated_dict = {k: v for row in related_rows for k, v in row.items() if v}
 
     return TrackFeatures(
         spotify_id=track_id,
@@ -251,7 +227,8 @@ def get_features(
             track_id = track_ids.spotify_id
             isrc = track_ids.isrc
             cursor.execute(
-                "INSERT INTO track (spotify_id, isrc, artist, name) VALUES (?, ?, ?, ?)",
+                "INSERT INTO track (spotify_id, isrc, artist, name) "
+                "VALUES (?, ?, ?, ?)",
                 (track_id, isrc, track.artist_name, track.track_name),
             )
             cache_connection.commit()
@@ -279,8 +256,8 @@ def main(filepath: str) -> None:
         logger.error("Invalid environment variable set: {}", config)
         sys.exit(1)
 
-    cache_connection = sqlite3.connect("cache.db")
-    features_connection = sqlite3.connect("features.db")
+    cache_connection = sqlite3.connect("../cache.db")
+    features_connection = sqlite3.connect("../features.db")
     create_cache_tables(cache_connection)
     try:
         with Path(filepath).open("r") as json_input:

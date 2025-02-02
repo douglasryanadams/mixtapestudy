@@ -13,15 +13,18 @@ clean:
 .PHONY: tidy
 tidy:
 	.venv/bin/ruff check --fix mixtapestudy
+	.venv/bin/ruff check --fix track_data
 	.venv/bin/ruff check --fix alembic
 	.venv/bin/ruff check --fix test
 	.venv/bin/ruff format mixtapestudy
+	.venv/bin/ruff format track_data
 	.venv/bin/ruff format alembic
 	.venv/bin/ruff format test
 
 .PHONY: lint
 lint:
 	.venv/bin/ruff check mixtapestudy
+	.venv/bin/ruff check track_data
 	.venv/bin/ruff check alembic
 	.venv/bin/ruff check test
 

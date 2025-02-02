@@ -1,8 +1,5 @@
 import csv
-import inspect
-import logging
 import sqlite3
-import sys
 from dataclasses import dataclass
 from enum import StrEnum
 from pathlib import Path
@@ -12,35 +9,12 @@ from zipfile import ZipFile
 import requests
 from loguru import logger
 
+from track_data.logsetup import setup_logger
+
 # Note: This file doesn't have unit tests, it either works or it doesn't
 # because the HTTP calls are cached and long running.
 
-
-class InterceptHandler(logging.Handler):
-    def emit(self, record: logging.LogRecord) -> None:
-        # Get corresponding Loguru level if it exists.
-        try:
-            level = logger.level(record.levelname).name
-        except ValueError:
-            level = record.levelno
-
-        # Find caller from where originated the logged message.
-        frame, depth = inspect.currentframe(), 0
-        while frame and (depth == 0 or frame.f_code.co_filename == logging.__file__):
-            frame = frame.f_back
-            depth += 1
-
-        logger.opt(depth=depth, exception=record.exc_info).log(
-            level, record.getMessage()
-        )
-
-
-logger.remove()
-logging.basicConfig(handlers=[InterceptHandler()], level=0, force=True)
-logger.add(sys.stdout, colorize=True)
-requests_logger = logging.getLogger("requests.packages.urllib3")
-requests_logger.setLevel(logging.DEBUG)
-requests_logger.propagate = True
+setup_logger(logger)
 
 
 class CsvFeature(StrEnum):
@@ -58,7 +32,7 @@ class CsvFeature(StrEnum):
     LOUDNESS = "loudness"
     MODE = "mode"
     POPULARITY = "popularity"
-    PRIMARY_ARTIST = "primary_artist"
+    artist = "artist"
     SPEECHINESS = "speechiness"
     SPOTIFY_ID = "spotify_id"
     SPOTIFY_URI = "spotify_uri"  # This is special, it needs parsing
@@ -70,19 +44,14 @@ class CsvFeature(StrEnum):
 
 
 @dataclass
-class Column:
-    datatype: type
-    new_key: CsvFeature
-
-
-@dataclass
 class Download:
     filenames: list[str]
-    column_map: dict[str, Column]
+    csv_key: dict[str, CsvFeature]
+    search_spotify_id: bool = False
 
 
 KAGGLE_BASE_URL = "https://www.kaggle.com/api/v1/datasets/download"
-DOWNLOAD_DIR = Path("./download/")
+DOWNLOAD_DIR = Path("../download/")
 
 # This section of the script is huge, but makes it much easier
 # to add new sources of data as they're discovered.
@@ -91,94 +60,72 @@ DOWNLOAD_DIR = Path("./download/")
 DOWNLOADS: dict[str, Download] = {
     "rodolfofigueroa/spotify-12m-songs": Download(
         filenames=["tracks_features.csv"],
-        column_map={
-            "acousticness": Column(float, CsvFeature.ACOUSTICNESS),
-            "artists": Column(list[str], CsvFeature.PRIMARY_ARTIST),
-            "danceability": Column(str, CsvFeature.DANCEABILITY),
-            "duration_ms": Column(int, CsvFeature.DURATION_MS),
-            "energy": Column(str, CsvFeature.ENERGY),
-            "explicit": Column(str, CsvFeature.EXPLICIT),
-            "id": Column(str, CsvFeature.SPOTIFY_ID),
-            "instrumentalness": Column(float, CsvFeature.INSTRUMENTALNESS),
-            "key": Column(str, CsvFeature.KEY),
-            "liveness": Column(float, CsvFeature.LIVENESS),
-            "loudness": Column(float, CsvFeature.LOUDNESS),
-            "mode": Column(str, CsvFeature.MODE),
-            "name": Column(str, CsvFeature.TRACK_NAME),
-            "speechiness": Column(float, CsvFeature.SPEECHINESS),
-            "tempo": Column(int, CsvFeature.TEMPO),
-            "time_signature": Column(str, CsvFeature.TIME_SIGNATURE),
-            "valence": Column(float, CsvFeature.VALENCE),
-            "year": Column(str, CsvFeature.YEAR),
+        csv_key={
+            "acousticness": CsvFeature.ACOUSTICNESS,
+            "artists": CsvFeature.artist,
+            "danceability": CsvFeature.DANCEABILITY,
+            "duration_ms": CsvFeature.DURATION_MS,
+            "energy": CsvFeature.ENERGY,
+            "explicit": CsvFeature.EXPLICIT,
+            "id": CsvFeature.SPOTIFY_ID,
+            "instrumentalness": CsvFeature.INSTRUMENTALNESS,
+            "key": CsvFeature.KEY,
+            "liveness": CsvFeature.LIVENESS,
+            "loudness": CsvFeature.LOUDNESS,
+            "mode": CsvFeature.MODE,
+            "name": CsvFeature.TRACK_NAME,
+            "speechiness": CsvFeature.SPEECHINESS,
+            "tempo": CsvFeature.TEMPO,
+            "time_signature": CsvFeature.TIME_SIGNATURE,
+            "valence": CsvFeature.VALENCE,
+            "year": CsvFeature.YEAR,
         },
     ),
-    # No Spotify IDs but 50k rows
-    # "vicsuperman/prediction-of-music-genre": Download(
-    #     filenames=["music_genre.csv"],
-    #     column_map={
-    #         "acousticness": Column(float, CsvFeature.ACOUSTICNESS),
-    #         "artist_name": Column(str, CsvFeature.PRIMARY_ARTIST),
-    #         "danceability": Column(float, CsvFeature.DANCEABILITY),
-    #         "duration_ms": Column(int, CsvFeature.DURATION_MS),
-    #         "energy": Column(float, CsvFeature.ENERGY),
-    #         "instrumentalness": Column(float, CsvFeature.INSTRUMENTALNESS),
-    #         "key": Column(str, CsvFeature.KEY),
-    #         "liveness": Column(float, CsvFeature.LIVENESS),
-    #         "loudness": Column(float, CsvFeature.LOUDNESS),
-    #         "mode": Column(str, CsvFeature.MODE),
-    #         "music_genre": Column(str, CsvFeature.GENRE),
-    #         "popularity": Column(float, CsvFeature.POPULARITY),
-    #         "speechiness": Column(float, CsvFeature.SPEECHINESS),
-    #         "tempo": Column(int, CsvFeature.TEMPO),
-    #         "track_name": Column(str, CsvFeature.TRACK_NAME),
-    #         "valence": Column(float, CsvFeature.VALENCE),
-    #     },
-    # ),
     "mcfurland/10-m-beatport-tracks-spotify-audio-features": Download(
         # These files are different from the others in that they each have
         # partial data, the order is important in this case because
         # we'll use the cached values from the first file to write the
         # data from the second file in the appropriate rows
         filenames=["sp_track.csv", "audio_features.csv"],
-        column_map={
-            "acousticness": Column(float, CsvFeature.ACOUSTICNESS),
-            "danceability": Column(float, CsvFeature.DANCEABILITY),
-            "duration_ms": Column(float, CsvFeature.DURATION_MS),
-            "energy": Column(float, CsvFeature.ENERGY),
-            "explicit": Column(float, CsvFeature.EXPLICIT),
-            "instrumentalness": Column(float, CsvFeature.INSTRUMENTALNESS),
-            "isrc": Column(float, CsvFeature.ISRC),
-            "key": Column(float, CsvFeature.KEY),
-            "liveness": Column(float, CsvFeature.LIVENESS),
-            "loudness": Column(float, CsvFeature.LOUDNESS),
-            "mode": Column(float, CsvFeature.MODE),
-            "speechiness": Column(float, CsvFeature.SPEECHINESS),
-            "tempo": Column(float, CsvFeature.TEMPO),
-            "time_signature": Column(float, CsvFeature.TIME_SIGNATURE),
-            "track_id": Column(float, CsvFeature.SPOTIFY_ID),
-            "track_title": Column(float, CsvFeature.TRACK_NAME),
-            "valence": Column(float, CsvFeature.VALENCE),
+        csv_key={
+            "acousticness": CsvFeature.ACOUSTICNESS,
+            "danceability": CsvFeature.DANCEABILITY,
+            "duration_ms": CsvFeature.DURATION_MS,
+            "energy": CsvFeature.ENERGY,
+            "explicit": CsvFeature.EXPLICIT,
+            "instrumentalness": CsvFeature.INSTRUMENTALNESS,
+            "isrc": CsvFeature.ISRC,
+            "key": CsvFeature.KEY,
+            "liveness": CsvFeature.LIVENESS,
+            "loudness": CsvFeature.LOUDNESS,
+            "mode": CsvFeature.MODE,
+            "speechiness": CsvFeature.SPEECHINESS,
+            "tempo": CsvFeature.TEMPO,
+            "time_signature": CsvFeature.TIME_SIGNATURE,
+            "track_id": CsvFeature.SPOTIFY_ID,
+            "track_title": CsvFeature.TRACK_NAME,
+            "valence": CsvFeature.VALENCE,
         },
     ),
     "maharshipandya/-spotify-tracks-dataset": Download(
         filenames=["dataset.csv"],
-        column_map={
-            "acousticness": Column(float, CsvFeature.ACOUSTICNESS),
-            "artists": Column(str, CsvFeature.PRIMARY_ARTIST),
-            "danceability": Column(float, CsvFeature.DANCEABILITY),
-            "duration_ms": Column(int, CsvFeature.DURATION_MS),
-            "energy": Column(float, CsvFeature.ENERGY),
-            "explicit": Column(bool, CsvFeature.EXPLICIT),
-            "instrumentalness": Column(float, CsvFeature.INSTRUMENTALNESS),
-            "liveness": Column(float, CsvFeature.LIVENESS),
-            "loudness": Column(float, CsvFeature.LOUDNESS),
-            "popularity": Column(float, CsvFeature.POPULARITY),
-            "speechiness": Column(float, CsvFeature.SPEECHINESS),
-            "tempo": Column(int, CsvFeature.TEMPO),
-            "track_genre": Column(str, CsvFeature.GENRE),
-            "track_id": Column(str, CsvFeature.SPOTIFY_ID),
-            "track_name": Column(str, CsvFeature.TRACK_NAME),
-            "valence": Column(float, CsvFeature.VALENCE),
+        csv_key={
+            "acousticness": CsvFeature.ACOUSTICNESS,
+            "artists": CsvFeature.artist,
+            "danceability": CsvFeature.DANCEABILITY,
+            "duration_ms": CsvFeature.DURATION_MS,
+            "energy": CsvFeature.ENERGY,
+            "explicit": CsvFeature.EXPLICIT,
+            "instrumentalness": CsvFeature.INSTRUMENTALNESS,
+            "liveness": CsvFeature.LIVENESS,
+            "loudness": CsvFeature.LOUDNESS,
+            "popularity": CsvFeature.POPULARITY,
+            "speechiness": CsvFeature.SPEECHINESS,
+            "tempo": CsvFeature.TEMPO,
+            "track_genre": CsvFeature.GENRE,
+            "track_id": CsvFeature.SPOTIFY_ID,
+            "track_name": CsvFeature.TRACK_NAME,
+            "valence": CsvFeature.VALENCE,
         },
     ),
     "solomonameh/spotify-music-dataset": Download(
@@ -186,47 +133,47 @@ DOWNLOADS: dict[str, Download] = {
             "high_popularity_spotify_data.csv",
             "low_popularity_spotify_data.csv",
         ],
-        column_map={
-            "acousticness": Column(float, CsvFeature.ACOUSTICNESS),
-            "danceability": Column(float, CsvFeature.DANCEABILITY),
-            "duration_ms": Column(int, CsvFeature.DURATION_MS),
-            "energy": Column(float, CsvFeature.ENERGY),
-            "id": Column(str, CsvFeature.SPOTIFY_ID),
-            "instrumentalness": Column(float, CsvFeature.INSTRUMENTALNESS),
-            "key": Column(int, CsvFeature.KEY),
-            "liveness": Column(float, CsvFeature.LIVENESS),
-            "loudness": Column(float, CsvFeature.LOUDNESS),
-            "mode": Column(int, CsvFeature.MODE),
-            "playlist_genre": Column(str, CsvFeature.GENRE),
-            "speechiness": Column(float, CsvFeature.SPEECHINESS),
-            "tempo": Column(float, CsvFeature.TEMPO),
-            "time_signature": Column(int, CsvFeature.TIME_SIGNATURE),
-            "track_artist": Column(str, CsvFeature.PRIMARY_ARTIST),
-            "track_name": Column(str, CsvFeature.TRACK_NAME),
-            "track_popularity": Column(float, CsvFeature.POPULARITY),
-            "valence": Column(float, CsvFeature.VALENCE),
+        csv_key={
+            "acousticness": CsvFeature.ACOUSTICNESS,
+            "danceability": CsvFeature.DANCEABILITY,
+            "duration_ms": CsvFeature.DURATION_MS,
+            "energy": CsvFeature.ENERGY,
+            "id": CsvFeature.SPOTIFY_ID,
+            "instrumentalness": CsvFeature.INSTRUMENTALNESS,
+            "key": CsvFeature.KEY,
+            "liveness": CsvFeature.LIVENESS,
+            "loudness": CsvFeature.LOUDNESS,
+            "mode": CsvFeature.MODE,
+            "playlist_genre": CsvFeature.GENRE,
+            "speechiness": CsvFeature.SPEECHINESS,
+            "tempo": CsvFeature.TEMPO,
+            "time_signature": CsvFeature.TIME_SIGNATURE,
+            "track_artist": CsvFeature.artist,
+            "track_name": CsvFeature.TRACK_NAME,
+            "track_popularity": CsvFeature.POPULARITY,
+            "valence": CsvFeature.VALENCE,
         },
     ),
     "joebeachcapital/30000-spotify-songs": Download(
         filenames=["spotify_songs.csv"],
-        column_map={
-            "acousticness": Column(float, CsvFeature.ACOUSTICNESS),
-            "danceability": Column(float, CsvFeature.DANCEABILITY),
-            "duration_ms": Column(int, CsvFeature.DURATION_MS),
-            "energy": Column(float, CsvFeature.ENERGY),
-            "instrumentalness": Column(float, CsvFeature.ENERGY),
-            "key": Column(int, CsvFeature.KEY),
-            "liveness": Column(float, CsvFeature.LIVENESS),
-            "loudness": Column(float, CsvFeature.LOUDNESS),
-            "mode": Column(int, CsvFeature.MODE),
-            "playlist_genre": Column(str, CsvFeature.GENRE),
-            "speechiness": Column(float, CsvFeature.SPEECHINESS),
-            "tempo": Column(float, CsvFeature.TEMPO),
-            "track_artist": Column(str, CsvFeature.PRIMARY_ARTIST),
-            "track_id": Column(str, CsvFeature.SPOTIFY_ID),
-            "track_name": Column(str, CsvFeature.TRACK_NAME),
-            "track_popularity": Column(int, CsvFeature.POPULARITY),
-            "valence": Column(float, CsvFeature.VALENCE),
+        csv_key={
+            "acousticness": CsvFeature.ACOUSTICNESS,
+            "danceability": CsvFeature.DANCEABILITY,
+            "duration_ms": CsvFeature.DURATION_MS,
+            "energy": CsvFeature.ENERGY,
+            "instrumentalness": CsvFeature.ENERGY,
+            "key": CsvFeature.KEY,
+            "liveness": CsvFeature.LIVENESS,
+            "loudness": CsvFeature.LOUDNESS,
+            "mode": CsvFeature.MODE,
+            "playlist_genre": CsvFeature.GENRE,
+            "speechiness": CsvFeature.SPEECHINESS,
+            "tempo": CsvFeature.TEMPO,
+            "track_artist": CsvFeature.artist,
+            "track_id": CsvFeature.SPOTIFY_ID,
+            "track_name": CsvFeature.TRACK_NAME,
+            "track_popularity": CsvFeature.POPULARITY,
+            "valence": CsvFeature.VALENCE,
         },
     ),
     "theoverman/the-spotify-hit-predictor-dataset": Download(
@@ -238,74 +185,185 @@ DOWNLOADS: dict[str, Download] = {
             "dataset-of-80s.csv",
             "dataset-of-90s.csv",
         ],
-        column_map={
-            "acousticness": Column(float, CsvFeature.ACOUSTICNESS),
-            "artist": Column(str, CsvFeature.PRIMARY_ARTIST),
-            "danceability": Column(float, CsvFeature.DANCEABILITY),
-            "duration_ms": Column(int, CsvFeature.DURATION_MS),
-            "energy": Column(float, CsvFeature.ENERGY),
-            "instrumentalness": Column(float, CsvFeature.INSTRUMENTALNESS),
-            "key": Column(int, CsvFeature.KEY),
-            "liveness": Column(float, CsvFeature.LIVENESS),
-            "loudness": Column(float, CsvFeature.LOUDNESS),
-            "mode": Column(float, CsvFeature.MODE),
-            "speechiness": Column(float, CsvFeature.SPEECHINESS),
-            "tempo": Column(float, CsvFeature.TEMPO),
-            "time_signature": Column(int, CsvFeature.TIME_SIGNATURE),
-            "track": Column(str, CsvFeature.TRACK_NAME),
-            "uri": Column(str, CsvFeature.SPOTIFY_URI),
-            "valence": Column(float, CsvFeature.VALENCE),
+        csv_key={
+            "acousticness": CsvFeature.ACOUSTICNESS,
+            "artist": CsvFeature.artist,
+            "danceability": CsvFeature.DANCEABILITY,
+            "duration_ms": CsvFeature.DURATION_MS,
+            "energy": CsvFeature.ENERGY,
+            "instrumentalness": CsvFeature.INSTRUMENTALNESS,
+            "key": CsvFeature.KEY,
+            "liveness": CsvFeature.LIVENESS,
+            "loudness": CsvFeature.LOUDNESS,
+            "mode": CsvFeature.MODE,
+            "speechiness": CsvFeature.SPEECHINESS,
+            "tempo": CsvFeature.TEMPO,
+            "time_signature": CsvFeature.TIME_SIGNATURE,
+            "track": CsvFeature.TRACK_NAME,
+            "uri": CsvFeature.SPOTIFY_URI,
+            "valence": CsvFeature.VALENCE,
         },
     ),
     "byomokeshsenapati/spotify-song-attributes": Download(
         filenames=["Spotify_Song_Attributes.csv"],
-        column_map={
-            "acousticness": Column(float, CsvFeature.ACOUSTICNESS),
-            "artistName": Column(str, CsvFeature.PRIMARY_ARTIST),
-            "danceability": Column(float, CsvFeature.DANCEABILITY),
-            "duration_ms": Column(int, CsvFeature.DURATION_MS),
-            "energy": Column(float, CsvFeature.ENERGY),
-            "genre": Column(str, CsvFeature.GENRE),
-            "id": Column(str, CsvFeature.SPOTIFY_ID),
-            "instrumentalness": Column(float, CsvFeature.INSTRUMENTALNESS),
-            "key": Column(float, CsvFeature.KEY),
-            "liveness": Column(float, CsvFeature.LIVENESS),
-            "loudness": Column(float, CsvFeature.LOUDNESS),
-            "mode": Column(float, CsvFeature.MODE),
-            "speechiness": Column(float, CsvFeature.SPEECHINESS),
-            "tempo": Column(float, CsvFeature.TEMPO),
-            "time_signature": Column(float, CsvFeature.TIME_SIGNATURE),
-            "trackName": Column(str, CsvFeature.TRACK_NAME),
-            "valence": Column(float, CsvFeature.VALENCE),
+        csv_key={
+            "acousticness": CsvFeature.ACOUSTICNESS,
+            "artistName": CsvFeature.artist,
+            "danceability": CsvFeature.DANCEABILITY,
+            "duration_ms": CsvFeature.DURATION_MS,
+            "energy": CsvFeature.ENERGY,
+            "genre": CsvFeature.GENRE,
+            "id": CsvFeature.SPOTIFY_ID,
+            "instrumentalness": CsvFeature.INSTRUMENTALNESS,
+            "key": CsvFeature.KEY,
+            "liveness": CsvFeature.LIVENESS,
+            "loudness": CsvFeature.LOUDNESS,
+            "mode": CsvFeature.MODE,
+            "speechiness": CsvFeature.SPEECHINESS,
+            "tempo": CsvFeature.TEMPO,
+            "time_signature": CsvFeature.TIME_SIGNATURE,
+            "trackName": CsvFeature.TRACK_NAME,
+            "valence": CsvFeature.VALENCE,
         },
     ),
     "gauthamvijayaraj/spotify-tracks-dataset-updated-every-week": Download(
         filenames=["spotify_tracks.csv"],
-        column_map={
-            "acousticness": Column(float, CsvFeature.ACOUSTICNESS),
-            "artist_name": Column(str, CsvFeature.PRIMARY_ARTIST),
-            "danceability": Column(float, CsvFeature.DANCEABILITY),
-            "duration_ms": Column(int, CsvFeature.DURATION_MS),
-            "energy": Column(float, CsvFeature.ENERGY),
-            "instrumentalness": Column(float, CsvFeature.INSTRUMENTALNESS),
-            "key": Column(float, CsvFeature.KEY),
-            "liveness": Column(float, CsvFeature.LIVENESS),
-            "loudness": Column(float, CsvFeature.LOUDNESS),
-            "mode": Column(float, CsvFeature.MODE),
-            "popularity": Column(float, CsvFeature.POPULARITY),
-            "speechiness": Column(float, CsvFeature.SPEECHINESS),
-            "tempo": Column(float, CsvFeature.TEMPO),
-            "time_signature": Column(float, CsvFeature.TIME_SIGNATURE),
-            "track_id": Column(float, CsvFeature.SPOTIFY_ID),
-            "track_name": Column(float, CsvFeature.TRACK_NAME),
-            "valence": Column(float, CsvFeature.VALENCE),
-            "year": Column(float, CsvFeature.YEAR),
+        csv_key={
+            "acousticness": CsvFeature.ACOUSTICNESS,
+            "artist_name": CsvFeature.artist,
+            "danceability": CsvFeature.DANCEABILITY,
+            "duration_ms": CsvFeature.DURATION_MS,
+            "energy": CsvFeature.ENERGY,
+            "instrumentalness": CsvFeature.INSTRUMENTALNESS,
+            "key": CsvFeature.KEY,
+            "liveness": CsvFeature.LIVENESS,
+            "loudness": CsvFeature.LOUDNESS,
+            "mode": CsvFeature.MODE,
+            "popularity": CsvFeature.POPULARITY,
+            "speechiness": CsvFeature.SPEECHINESS,
+            "tempo": CsvFeature.TEMPO,
+            "time_signature": CsvFeature.TIME_SIGNATURE,
+            "track_id": CsvFeature.SPOTIFY_ID,
+            "track_name": CsvFeature.TRACK_NAME,
+            "valence": CsvFeature.VALENCE,
+            "year": CsvFeature.YEAR,
         },
+    ),
+    # TODO: Doesn't have Spotify ID or ISRC
+    "vicsuperman/prediction-of-music-genre": Download(
+        filenames=["music_genre.csv"],
+        csv_key={
+            "acousticness": CsvFeature.ACOUSTICNESS,
+            "artist_name": CsvFeature.artist,
+            "danceability": CsvFeature.DANCEABILITY,
+            "duration_ms": CsvFeature.DURATION_MS,
+            "energy": CsvFeature.ENERGY,
+            "instrumentalness": CsvFeature.INSTRUMENTALNESS,
+            "key": CsvFeature.KEY,
+            "liveness": CsvFeature.LIVENESS,
+            "loudness": CsvFeature.LOUDNESS,
+            "mode": CsvFeature.MODE,
+            "music_genre": CsvFeature.GENRE,
+            "popularity": CsvFeature.POPULARITY,
+            "speechiness": CsvFeature.SPEECHINESS,
+            "tempo": CsvFeature.TEMPO,
+            "track_name": CsvFeature.TRACK_NAME,
+            "valence": CsvFeature.VALENCE,
+        },
+        search_spotify_id=True,
+    ),
+    "gulczas/spotify-dataset": Download(
+        filenames=["Spotify_Dataset.csv"],
+        csv_key={
+            "acousticness": CsvFeature.ACOUSTICNESS,
+            "artist_name": CsvFeature.artist,
+            "danceability": CsvFeature.DANCEABILITY,
+            "duration_ms": CsvFeature.DURATION_MS,
+            "energy": CsvFeature.ENERGY,
+            "instrumentalness": CsvFeature.INSTRUMENTALNESS,
+            "key": CsvFeature.KEY,
+            "liveness": CsvFeature.LIVENESS,
+            "loudness": CsvFeature.LOUDNESS,
+            "mode": CsvFeature.MODE,
+            "music_genre": CsvFeature.GENRE,
+            "popularity": CsvFeature.POPULARITY,
+            "speechiness": CsvFeature.SPEECHINESS,
+            "tempo": CsvFeature.TEMPO,
+            "track_name": CsvFeature.TRACK_NAME,
+            "valence": CsvFeature.VALENCE,
+        },
+        search_spotify_id=True,
+    ),
+    "vatsalmavani/spotify-dataset": Download(
+        filenames=["data/data.csv"],
+        csv_key={
+            "acousticness": CsvFeature.ACOUSTICNESS,
+            "artist_name": CsvFeature.artist,
+            "danceability": CsvFeature.DANCEABILITY,
+            "duration_ms": CsvFeature.DURATION_MS,
+            "energy": CsvFeature.ENERGY,
+            "instrumentalness": CsvFeature.INSTRUMENTALNESS,
+            "key": CsvFeature.KEY,
+            "liveness": CsvFeature.LIVENESS,
+            "loudness": CsvFeature.LOUDNESS,
+            "mode": CsvFeature.MODE,
+            "music_genre": CsvFeature.GENRE,
+            "popularity": CsvFeature.POPULARITY,
+            "speechiness": CsvFeature.SPEECHINESS,
+            "tempo": CsvFeature.TEMPO,
+            "track_name": CsvFeature.TRACK_NAME,
+            "valence": CsvFeature.VALENCE,
+        },
+        search_spotify_id=True,
+    ),
+    "sanjanchaudhari/spotify-dataset": Download(
+        filenames=["cleaned_dataset.csv"],
+        csv_key={
+            "acousticness": CsvFeature.ACOUSTICNESS,
+            "artist_name": CsvFeature.artist,
+            "danceability": CsvFeature.DANCEABILITY,
+            "duration_ms": CsvFeature.DURATION_MS,
+            "energy": CsvFeature.ENERGY,
+            "instrumentalness": CsvFeature.INSTRUMENTALNESS,
+            "key": CsvFeature.KEY,
+            "liveness": CsvFeature.LIVENESS,
+            "loudness": CsvFeature.LOUDNESS,
+            "mode": CsvFeature.MODE,
+            "music_genre": CsvFeature.GENRE,
+            "popularity": CsvFeature.POPULARITY,
+            "speechiness": CsvFeature.SPEECHINESS,
+            "tempo": CsvFeature.TEMPO,
+            "track_name": CsvFeature.TRACK_NAME,
+            "valence": CsvFeature.VALENCE,
+        },
+        search_spotify_id=True,
+    ),
+    "henrydalrymple/spotify-dataset": Download(
+        filenames=["test.csv", "train.csv"],
+        csv_key={
+            "acousticness": CsvFeature.ACOUSTICNESS,
+            "artist_name": CsvFeature.artist,
+            "danceability": CsvFeature.DANCEABILITY,
+            "duration_ms": CsvFeature.DURATION_MS,
+            "energy": CsvFeature.ENERGY,
+            "instrumentalness": CsvFeature.INSTRUMENTALNESS,
+            "key": CsvFeature.KEY,
+            "liveness": CsvFeature.LIVENESS,
+            "loudness": CsvFeature.LOUDNESS,
+            "mode": CsvFeature.MODE,
+            "music_genre": CsvFeature.GENRE,
+            "popularity": CsvFeature.POPULARITY,
+            "speechiness": CsvFeature.SPEECHINESS,
+            "tempo": CsvFeature.TEMPO,
+            "track_name": CsvFeature.TRACK_NAME,
+            "valence": CsvFeature.VALENCE,
+        },
+        search_spotify_id=True,
     ),
 }
 
 
-def _download_kaggle_data(kaggle_path: str, download_path: Path):
+def _download_kaggle_data(kaggle_path: str, download_path: Path) -> None:
     request_path = f"{KAGGLE_BASE_URL}/{kaggle_path}"
 
     logger.info("Downloading: {}", request_path)
@@ -329,7 +387,7 @@ def _download_kaggle_data(kaggle_path: str, download_path: Path):
             file_target.write(chunk)
 
 
-def create_features_table(connection: Connection):
+def create_features_table(connection: Connection) -> None:
     cursor = connection.cursor()
     logger.debug("Creating table if necessary")
     cursor.execute(
@@ -348,7 +406,7 @@ def create_features_table(connection: Connection):
         "loudness NUMERIC, "
         "mode NUMERIC, "
         "popularity NUMERIC, "
-        "primary_artist TEXT, "
+        "artist TEXT, "
         "speechiness NUMERIC, "
         "spotify_id TEXT PRIMARY KEY, "
         "tempo NUMERIC, "
@@ -359,16 +417,19 @@ def create_features_table(connection: Connection):
         ")"
     )
     cursor.execute("CREATE INDEX IF NOT EXISTS idx_isrc ON features (isrc)")
+    cursor.execute("CREATE INDEX IF NOT EXISTS idx_track_name ON features (track_name)")
+    cursor.execute("CREATE INDEX IF NOT EXISTS idx_artist ON features (artist)")
     cursor.execute(
         "CREATE TABLE IF NOT EXISTS progress ("
         "download TEXT PRIMARY KEY, "
-        "last_position INTEGER"
+        "last_position INTEGER, "
+        "complete INTEGER"
         ")"
     )
     connection.commit()
 
 
-def _download_files() -> list[str]:
+def _download_files() -> list[Path]:
     zip_file_paths = []
     for download in DOWNLOADS:
         kaggle_path = download
@@ -385,7 +446,7 @@ def _download_files() -> list[str]:
     return zip_file_paths
 
 
-def _unzip_files(zip_file_paths) -> None:
+def _unzip_files(zip_file_paths: list[Path]) -> None:
     for zip_file_path in zip_file_paths:
         with ZipFile(zip_file_path) as zip_file:
             extraction_path = DOWNLOAD_DIR.joinpath(zip_file_path.stem)
@@ -396,7 +457,8 @@ def _unzip_files(zip_file_paths) -> None:
                 zip_file.extractall(extraction_path)
 
 
-def main() -> None:
+# TODO: Simplify this method and refactor
+def main() -> None:  # noqa: C901, PLR0912, PLR0915
     DOWNLOAD_DIR.mkdir(exist_ok=True)
 
     zip_file_paths = _download_files()
@@ -404,7 +466,7 @@ def main() -> None:
     _unzip_files(zip_file_paths)
 
     logger.info("Connecting to write database")
-    connection = sqlite3.connect("features.db")
+    connection = sqlite3.connect("../features.db")
 
     create_features_table(connection)
 
@@ -421,7 +483,8 @@ def main() -> None:
                 cursor = connection.cursor()
                 try:
                     cursor.execute(
-                        "INSERT INTO progress (download, last_position) VALUES (?, 0)",
+                        "INSERT INTO progress (download, last_position, complete) "
+                        "VALUES (?, 0, 0)",
                         (str(data_file),),
                     )
                     connection.commit()
@@ -429,10 +492,17 @@ def main() -> None:
                     logger.info("New file ({}), starting from beginning", data_file)
                 except sqlite3.IntegrityError:
                     counter_found = cursor.execute(
-                        "SELECT last_position FROM progress WHERE download=?",
+                        "SELECT last_position, complete FROM progress WHERE download=?",
                         (str(data_file),),
                     ).fetchone()
                     counter = int(counter_found[0])
+                    complete = bool(counter_found[1])
+                    if complete:
+                        logger.info(
+                            "Already loaded this file completely: {}", data_file
+                        )
+                        continue
+
                     logger.info(
                         "Already loaded some of this file ({}), starting from: {}",
                         data_file,
@@ -445,7 +515,7 @@ def main() -> None:
                         next(reader)
                     for row in reader:
                         write_dict = {}
-                        for column_name, column_meta in schema.column_map.items():
+                        for column_name, column_meta in schema.csv_key.items():
                             datum = row.get(column_name)
                             target_column = column_meta.new_key
                             if datum:
@@ -488,13 +558,9 @@ def main() -> None:
                             select_str,
                             [isrc if use_isrc_for_pk else spotify_id],
                         ).fetchone()
-                        # logger.debug("existing_row: {}", existing_row)
 
                         try:
                             if existing_row:
-                                # logger.debug(
-                                #     "updating: {} {}", update_str, write_dict.values()
-                                # )
                                 cursor.execute(
                                     update_str,
                                     [
@@ -503,9 +569,6 @@ def main() -> None:
                                     ],
                                 )
                             else:
-                                # logger.debug(
-                                #     "inserting: {} {}", insert_str, write_dict.values()
-                                # )
                                 cursor.execute(insert_str, list(write_dict.values()))
                         except sqlite3.OperationalError:
                             logger.error("Error structuring SQL statement")

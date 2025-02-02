@@ -122,7 +122,7 @@ def populated_features(
         "loudness, "
         "mode, "
         "popularity, "
-        "primary_artist, "
+        "artist, "
         "speechiness, "
         "spotify_id, "
         "tempo, "
